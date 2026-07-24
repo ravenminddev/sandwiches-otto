@@ -77,9 +77,9 @@ export const computeSummary = (sales) => {
         const unidadesVenta = (venta.detalles_venta || []).reduce((sum, d) => sum + Number(d.cantidad || 0), 0);
         return acc + unidadesVenta;
     }, 0);
-    const ticketPromedio = pedidosTotales > 0 ? totalPeriodo / pedidosTotales : 0;
+    const ventaPromedio = pedidosTotales > 0 ? totalPeriodo / pedidosTotales : 0;
 
-    return { pedidosTotales, totalPeriodo, unidadesVendidas, ticketPromedio };
+    return { pedidosTotales, totalPeriodo, unidadesVendidas, ventaPromedio };
 };
 
 /**
