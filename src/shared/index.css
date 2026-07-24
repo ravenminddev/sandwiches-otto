@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+@theme {
+    --color-yellow-otto: #E7B901;
+    --color-yellow-otto-light: #FFD630;
+    --color-graywhite: #F9FAFB; 
+
+    /* Paleta del dashboard de historial de ventas */
+    --color-dash-yellow: #FBC02D;
+    --color-dash-red: #E53935;
+    --color-dash-ink: #1a1a1a;
+    --color-dash-gray: #5F5E5A;
+    --color-dash-gray-soft: #9a9891;
+    --color-dash-border: #e6e4dc;
+    --color-dash-green: #2E7D32;
+
+    --animate-slide-up: slide-up 0.3s ease-out;
+    --animate-slide-left: slide-left 0.3s ease-out;
+    --animate-slide-out-left: slide-out-left 0.3s ease-in forwards;
+    --animate-pop: pop 0.25s ease-in-out;
+    --animate-pattern: pattern 30s linear infinite;
+}
+
+@keyframes slide-up {
+    from { transform: translateY(100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slide-left {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
+}
+
+@keyframes slide-out-left {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(-100%); opacity: 0; }
+}
+
+@keyframes pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+@keyframes pattern {
+  from {
+    transform: translateY(0%);
+  }
+
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+@custom-variant landscape (@media (orientation: landscape));
+@custom-variant portrait (@media (orientation: portrait));
+
+body{
+    background-color: #F7F6F2;
+}

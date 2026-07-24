@@ -1,0 +1,73 @@
+.btn--primary{
+    background-color: #000000;
+    color: white;
+    font-weight: 600;
+    border-radius: 20px;
+    padding: 15px 20px;
+    width: auto;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+.btn--primary:hover{
+    filter: brightness(1.15);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    transform: translateY(-1px);
+}
+.btn--primary:active{
+    transform: translateY(0);
+    filter: brightness(0.9);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+.btn--primary:focus-visible{
+    outline: 2px solid var(--yellow-otto, #F5B301);
+    outline-offset: 2px;
+}
+
+.btn--cancel{
+    background-color: #FF2323;
+    color: white;
+    font-weight: 600;
+    border-radius: 20px;
+    padding: 15px 20px;
+    width: auto;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(255, 35, 35, 0.2);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+.btn--cancel:hover{
+    filter: brightness(0.92);
+    box-shadow: 0 6px 16px rgba(255, 35, 35, 0.25);
+    transform: translateY(-1px);
+}
+.btn--cancel:active{
+    transform: translateY(0);
+    filter: brightness(0.85);
+}
+.btn--cancel:focus-visible{
+    outline: 2px solid #FF2323;
+    outline-offset: 2px;
+}
+
+.alert--container{
+    background-color: white;
+    border-radius: 24px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+    padding: 8px;
+}
+
+.swal2-backdrop-show{
+    background: rgba(86, 86, 86, 0.25) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+.swal2-actions{
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}

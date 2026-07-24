@@ -1,0 +1,102 @@
+import { useEffect, useRef } from 'react';
+import { Chart, ensureChartRegistered, createVerticalGradient } from '../utils/chartSetup.js';
+import { formatShortDate, formatLongDate } from '../utils/salesAnalytics.js';
+
+ensureChartRegistered();
+
+const AMBER = '#f59e0b';
+const INK = '#1e293b';
+const GRID = '#eef1f5';
+const MUTED = '#94a3b8';
+
+export default function SalesEvolutionChart({ data }) {
+    const canvasRef = useRef(null);
+    const chartRef = useRef(null);
+
+    useEffect(() => {
+        if (!canvasRef.current) return;
+        const ctx = canvasRef.current.getContext('2d');
+        const gradient = createVerticalGradient(ctx, 260, 'rgba(245,158,11,0.28)', 'rgba(245,158,11,0.02)');
+
+        chartRef.current = new Chart(canvasRef.current, {
+            type: 'line',
+            data: {
+                labels: data.map((d) => formatShortDate(d.date)),
+                datasets: [{
+                    data: data.map((d) => d.total),
+                    borderColor: AMBER,
+                    backgroundColor: gradient,
+                    fill: true,
+                    tension: 0.4,
+                    borderWidth: 2.5,
+                    pointBackgroundColor: '#fff',
+                    pointBorderColor: AMBER,
+                    pointBorderWidth: 2,
+                    pointRadius: 3,
+                    pointHoverRadius: 6,
+                    pointHoverBorderWidth: 3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: { duration: 700, easing: 'easeOutQuart' },
+                interaction: { intersect: false, mode: 'index' },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1e293b',
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        padding: 10,
+                        cornerRadius: 10,
+                        displayColors: false,
+                        callbacks: {
+                            title: (items) => formatLongDate(data[items[0].dataIndex].date),
+                            label: (c) => '$' + c.parsed.y.toLocaleString('es-CO')
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: GRID },
+                        border: { display: false },
+                        ticks: { color: MUTED, font: { size: 11 }, callback: (v) => '$' + (v / 1000) + 'k' }
+                    },
+                    x: {
+                        grid: { display: false },
+                        border: { display: false },
+                        ticks: { color: MUTED, font: { size: 11 } }
+                    }
+                }
+            }
+        });
+
+        return () => chartRef.current?.destroy();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
+        const chart = chartRef.current;
+        if (!chart) return;
+        chart.data.labels = data.map((d) => formatShortDate(d.date));
+        chart.data.datasets[0].data = data.map((d) => d.total);
+        chart.update();
+    }, [data]);
+
+    return (
+        <div style={{ position: 'relative', width: '100%', height: 260 }}>
+            <canvas
+                ref={canvasRef}
+                role="img"
+                aria-label="Gráfica de línea de evolución de ventas por fecha"
+            />
+            {data.length === 0 && (
+                <div className="absolute inset-0 flex items-center justify-center text-slate-400 text-sm">
+                    No hay ventas en este período para graficar
+                </div>
+            )}
+        </div>
+    );
+}

@@ -1,0 +1,22 @@
+Esta es una pequeña guía de como se está usando la libreria Exceljs para le implementación
+de la función 'exportarExcel'.
+
+1.para poder trabajar instalamos npm install Exceljs
+
+2.Primero se crea un libro con new Exceljs.Workbook(), ojo que este solo está dentro de la
+memoria del programa js, no en los archivos del computador, es solo un objeto.
+
+3.Luego se crea una hoja del libro con miLibro.addWorksheet('nombre')
+
+4.Se define las columnas de esta hoja con worksheet.colum=[{},{}...]donde cada {} es un 
+objeto con las propiedades:
+    4.1Header: nombre de la columna
+    4.2Key: identificador de la columna
+    4.3width: ancho de la misma
+
+5.se incertan las filas de la columna, se puede hacer con worksheet.addRow(fila)
+
+6.Ahora debemos saber que los archivos no se guardan como texto de js, se guardan como 
+conjuntos de bytes, pero eso creamos un buffer con:
+    const buffer = Workbook.xlsx.writeBuffer();
+donde como podemos ver creamos un buffer con el formato xlsx que maneja excel.
