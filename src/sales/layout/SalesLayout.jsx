@@ -40,7 +40,7 @@ function DrawerLink({ icon, label, path, onClick, onAction }) {
 function SalesLayoutInner() {
     const { isModalOpen } = useModal();
     const location = useLocation();
-    const isRegisterRoute = location.pathname === '/sales/';
+    const isRegisterRoute = location.pathname === '/sales/' || location.pathname === '/sales';
     const isAdminRoute = location.pathname.startsWith('/sales/admin');
     const [carrito, setCarrito] = useState([]);
     const hasDesktopCart = isRegisterRoute && carrito.length > 0;
@@ -51,17 +51,15 @@ function SalesLayoutInner() {
     useEffect(() => {
         if (hasDesktopCart && !prevHasDesktopCart.current) {
             setDesktopCartShown(true);
-            const raf = requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                    setDesktopCartAnimated(true);
-                });
-            });
-            return () => cancelAnimationFrame(raf);
+            const timer = setTimeout(() => {
+                setDesktopCartAnimated(true);
+            }, 350);
+            return () => clearTimeout(timer);
         } else if (!hasDesktopCart && prevHasDesktopCart.current) {
             setDesktopCartAnimated(false);
             const timer = setTimeout(() => {
                 setDesktopCartShown(false);
-            }, 500);
+            }, 700);
             return () => clearTimeout(timer);
         }
         prevHasDesktopCart.current = hasDesktopCart;
@@ -206,13 +204,13 @@ function SalesLayoutInner() {
 
             <main className='[grid-area:main] w-full px-5 sm:px-10 lg:py-10 max-lg:pt-28 max-lg:pb-10 overflow-y-auto relative'>
                 <div className='flex gap-6 w-full relative z-10'>
-                    <div className={`transition-all duration-500 ease-out ${showDesktopCart ? 'lg:w-2/3' : 'lg:w-full'}`}>
+                    <div className={`transition-all duration-700 ease-out ${showDesktopCart ? 'lg:w-2/3' : 'lg:w-full'}`}>
                         <Outlet context={{ agregarAlCarrito, carrito }} />
                     </div>
                     {showDesktopCart && (
                         <div
-                            className={`hidden lg:block lg:w-1/3 transition-all duration-500 ease-out ${
-                                desktopCartAnimated ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+                            className={`hidden lg:block lg:w-1/3 transition-all duration-700 ease-out ${
+                                desktopCartAnimated ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'
                             }`}
                         >
                             <ShoppingCart
