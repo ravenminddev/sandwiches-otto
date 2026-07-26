@@ -155,7 +155,7 @@ export default function GeneralSales(){
                         <TotalsCard
                             ventas={formatCOP(resumen.totalPeriodo)}
                             pedidos={resumen.pedidosTotales}
-                            ticketPromedio={formatCOP(resumen.ticketPromedio)}
+                            ventaPromedio={formatCOP(resumen.ventaPromedio)}
                             unidades={resumen.unidadesVendidas}
                         />
 
