@@ -87,14 +87,14 @@ export default function ProductsRankingChart({ sales }) {
     return (
         <div className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 flex flex-col shadow-sm transition-shadow duration-300 hover:shadow-md">
             <div className="flex items-center justify-between mb-2.5">
-                <h3 className="text-[15px] font-bold text-slate-800">Productos</h3>
+                <h2 className="text-section-title">Productos</h2>
                 <span className="w-2 h-2 rounded-full bg-amber-400" />
             </div>
 
             <div className="flex gap-1.5 mb-3">
                 <button
                     onClick={() => setVista('mas')}
-                    className={`flex-1 sm:flex-none text-center text-[11.5px] sm:text-xs font-semibold px-3.5 py-1.5 sm:py-2 rounded-full cursor-pointer transition-all duration-200 ${
+                    className={`btn-filter-chip rounded-full flex-1 sm:flex-none text-center ${
                         vista === 'mas' ? 'bg-slate-800 text-white shadow-sm' : 'bg-slate-50 text-slate-500 border border-slate-200 hover:bg-slate-100'
                     }`}
                 >
@@ -102,7 +102,7 @@ export default function ProductsRankingChart({ sales }) {
                 </button>
                 <button
                     onClick={() => setVista('menos')}
-                    className={`flex-1 sm:flex-none text-center text-[11.5px] sm:text-xs font-semibold px-3.5 py-1.5 sm:py-2 rounded-full cursor-pointer transition-all duration-200 ${
+                    className={`btn-filter-chip rounded-full flex-1 sm:flex-none text-center ${
                         vista === 'menos' ? 'bg-slate-800 text-white shadow-sm' : 'bg-slate-50 text-slate-500 border border-slate-200 hover:bg-slate-100'
                     }`}
                 >
@@ -124,7 +124,7 @@ export default function ProductsRankingChart({ sales }) {
                     <button
                         key={opt.value}
                         onClick={() => setRange(opt.value)}
-                        className={`flex-1 text-center text-[11px] font-semibold px-2.5 py-1.5 rounded-lg border cursor-pointer transition-all duration-200 ${
+                        className={`btn-filter-chip flex-1 text-center rounded-lg border ${
                             range === opt.value ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-white text-slate-500 border-slate-200 hover:bg-slate-50'
                         }`}
                     >

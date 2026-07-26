@@ -19,7 +19,7 @@ export default function ReceiptModal({ venta, onClose }) {
                 
                 {/* Header */}
                 <div className='bg-yellow-otto text-white p-6 flex justify-between items-center sticky top-0'>
-                    <h2 className='text-2xl font-bold'>Recibo de Venta</h2>
+                    <h2 className='text-modal-title text-white'>Recibo de Venta</h2>
                     <button
                         onClick={onClose}
                         className='cursor-pointer text-white hover:bg-yellow-600 p-2 rounded'
@@ -55,7 +55,7 @@ export default function ReceiptModal({ venta, onClose }) {
 
                     {/* Productos */}
                     <div className='mb-8'>
-                        <h3 className='text-xl font-bold mb-4'>Productos</h3>
+                        <h3 className='text-modal-subsection mb-4'>Productos</h3>
                         <div className='space-y-3'>
                             {venta.detalles_venta && venta.detalles_venta.length > 0 ? (
                                 venta.detalles_venta.map(detalle => (
@@ -102,7 +102,7 @@ export default function ReceiptModal({ venta, onClose }) {
 
                     {/* Pagos */}
                     <div className='mb-8'>
-                        <h3 className='text-xl font-bold mb-4'>Pagos</h3>
+                        <h3 className='text-modal-subsection mb-4'>Pagos</h3>
                         <div className='space-y-3'>
                             {venta.pagos && venta.pagos.length > 0 ? (
                                 venta.pagos.map(pago => (

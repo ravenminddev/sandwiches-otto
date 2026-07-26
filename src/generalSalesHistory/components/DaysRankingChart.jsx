@@ -90,14 +90,14 @@ export default function DaysRankingChart({ sales }) {
     return (
         <div className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 flex flex-col shadow-sm transition-shadow duration-300 hover:shadow-md">
             <div className="flex items-center justify-between mb-2.5">
-                <h3 className="text-[15px] font-bold text-slate-800">Ventas por día</h3>
+                <h2 className="text-section-title">Ventas por día</h2>
                 <span className="w-2 h-2 rounded-full bg-emerald-400" />
             </div>
 
             <div className="flex gap-1.5 mb-3">
                 <button
                     onClick={() => setVista('mejores')}
-                    className={`flex-1 sm:flex-none text-center text-[11.5px] sm:text-xs font-semibold px-3.5 py-1.5 sm:py-2 rounded-full cursor-pointer transition-all duration-200 ${
+                    className={`btn-filter-chip rounded-full flex-1 sm:flex-none text-center ${
                         vista === 'mejores' ? 'bg-slate-800 text-white shadow-sm' : 'bg-slate-50 text-slate-500 border border-slate-200 hover:bg-slate-100'
                     }`}
                 >
@@ -105,7 +105,7 @@ export default function DaysRankingChart({ sales }) {
                 </button>
                 <button
                     onClick={() => setVista('peores')}
-                    className={`flex-1 sm:flex-none text-center text-[11.5px] sm:text-xs font-semibold px-3.5 py-1.5 sm:py-2 rounded-full cursor-pointer transition-all duration-200 ${
+                    className={`btn-filter-chip rounded-full flex-1 sm:flex-none text-center ${
                         vista === 'peores' ? 'bg-slate-800 text-white shadow-sm' : 'bg-slate-50 text-slate-500 border border-slate-200 hover:bg-slate-100'
                     }`}
                 >
@@ -127,7 +127,7 @@ export default function DaysRankingChart({ sales }) {
                     <button
                         key={opt.value}
                         onClick={() => setRange(opt.value)}
-                        className={`flex-1 text-center text-[11px] font-semibold px-2.5 py-1.5 rounded-lg border cursor-pointer transition-all duration-200 ${
+                        className={`btn-filter-chip flex-1 text-center rounded-lg border ${
                             range === opt.value ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-white text-slate-500 border-slate-200 hover:bg-slate-50'
                         }`}
                     >

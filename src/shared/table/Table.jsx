@@ -82,12 +82,12 @@ export default function Table({rowData, onVerRecibo,onDelete,  use='diary'}){
                 return(
                     <div className="flex gap-3 py-2">
                         <button 
-                            className='cursor-pointer bg-yellow-otto text-white font-medium text-sm sm:text-base rounded-md py-1 px-3 w-full hover:brightness-95 transition-all' 
+                            className='btn-row-action cursor-pointer bg-yellow-otto text-white w-full hover:brightness-95' 
                             onClick={()=>handleEdit(p.data)}>
                             Editar
                         </button>
                         <button 
-                            className='cursor-pointer bg-[#FF2323] text-white font-medium text-sm sm:text-base rounded-md py-1 px-3 w-full hover:brightness-95 transition-all' 
+                            className='btn-row-action cursor-pointer bg-[#FF2323] text-white w-full hover:brightness-95' 
                             onClick={()=>handleDelete(p.data)}
                         >
                             Eliminar
@@ -162,14 +162,14 @@ export default function Table({rowData, onVerRecibo,onDelete,  use='diary'}){
             <div className="flex justify-center mt-6 gap-4 flex-wrap">
                 <button 
                     onClick={exportDataToCVS} 
-                    className="bg-white flex justify-center items-center border-2 cursor-pointer border-gray-300 text-black rounded-xl hover:bg-gray-100 transition px-6 py-3 font-medium"
+                    className="btn-page-action bg-white flex justify-center items-center cursor-pointer border-gray-300 text-black hover:bg-gray-100"
                 >
                     Exportar a CSV
                 </button>
 
                 <button 
                     onClick={exportExcel} 
-                    className="bg-white flex justify-center items-center gap-2 border-2 border-gray-300 text-black rounded-xl hover:bg-gray-100 cursor-pointer transition px-6 py-3 font-medium"
+                    className="btn-page-action bg-white flex justify-center items-center gap-2 cursor-pointer border-gray-300 text-black hover:bg-gray-100"
                 > 
                     Exportar Excel
                 </button>

@@ -55,6 +55,109 @@
 @custom-variant landscape (@media (orientation: landscape));
 @custom-variant portrait (@media (orientation: portrait));
 
+/* ============================================================
+   TIPOGRAFÍA — roles visuales (Capa 2)
+   Independientes del tag HTML (h1-h4) usado en cada componente.
+   El tag se elige por jerarquía de documento; la clase de aquí
+   por el contexto de layout donde vive el texto.
+   ============================================================ */
+
+/* Título de página completa. Aparece una vez por vista, en el
+   flujo principal (no en barras sticky/compactas).
+   Ej: Auth, Register, AdminView, EditProduct, EditSales,
+   DiarySales, GeneralSales (h1 de main). */
+@utility text-page-title {
+    @apply text-2xl sm:text-3xl font-black tracking-tighter text-gray-900;
+}
+
+/* Subtítulo bajo un page-title (Auth/Register). */
+@utility text-page-subtitle {
+    @apply text-base sm:text-lg font-semibold text-gray-600;
+}
+
+/* Título dentro de una barra sticky/compacta (poco alto
+   disponible, conviven con botones e íconos).
+   Ej: GeneralSales, barra superior. No es un heading por sí solo
+   cuando ya existe un h1 de página real más abajo. */
+@utility text-compact-header-title {
+    @apply text-lg sm:text-xl font-bold text-slate-800;
+}
+
+/* Encabezado de una sección de contenido dentro de una página
+   (no es el título de la página, no es un modal, no es una tarjeta).
+   Ej: SalesMoney (Nequi/Efectivo/Distribución/Pedidos),
+   GeneralSales (Evolución de ventas/Productos/Ventas por día/Detalle),
+   ProductManagement (Catálogo de productos). */
+@utility text-section-title {
+    @apply text-lg sm:text-xl font-bold text-gray-900;
+}
+
+/* Título de cabecera de modal/diálogo. */
+@utility text-modal-title {
+    @apply text-lg sm:text-xl lg:text-2xl font-bold text-gray-900;
+}
+
+/* Subencabezado dentro de un modal (subordinado al modal-title).
+   Ej: ReceiptModal "Productos"/"Pagos". */
+@utility text-modal-subsection {
+    @apply text-lg sm:text-xl font-bold text-gray-900;
+}
+
+/* Título de tarjeta de métrica/dashboard (contexto compacto,
+   varias por fila). Ej: DayPerformanceCard, ProductRankingCard
+   (actualmente sin uso en el código, pero token listo para cuando
+   se conecten). */
+@utility text-card-title {
+    @apply text-base sm:text-lg font-bold text-slate-800;
+}
+
+/* Título de ítem repetido dentro de una grilla de tarjetas
+   (nombre de producto). Ej: ProductCard (shared). */
+@utility text-item-title {
+    @apply text-xs sm:text-sm lg:text-base font-semibold text-gray-700;
+}
+
+/* Encabezado de sección dentro de un aside persistente y angosto
+   (el carrito de compras). Contexto mucho más comprimido que un
+   modal de pantalla completa, por eso no comparte token con
+   text-modal-title/text-modal-subsection. */
+@utility text-aside-section-title {
+    @apply text-xl font-bold text-gray-900;
+}
+@utility text-aside-subsection {
+    @apply font-bold text-sm text-gray-900;
+}
+
+/* Nombre de producto dentro de una fila de carrito (lista densa,
+   una línea, truncada). Ya no es un heading (ver auditoría de
+   jerarquía), pero conserva su peso visual. */
+@utility text-cart-item-name {
+    @apply font-semibold text-sm text-gray-900 truncate;
+}
+
+/* Mensaje de estado vacío ("No hay ventas", "No hay productos"). */
+@utility text-empty-state {
+    @apply text-lg sm:text-xl font-bold text-gray-700;
+}
+
+/* ============================================================
+   BOTONES — misma altura y tipografía en toda la app, aunque
+   la forma (radius) siga comunicando el tipo de acción:
+   pill = toggle de filtro, rounded-md = acción de fila,
+   rounded-xl con borde = acción de página/CTA secundaria.
+   ============================================================ */
+@utility btn-filter-chip {
+    @apply text-sm font-semibold px-3.5 py-2 cursor-pointer transition-all duration-200;
+}
+
+@utility btn-row-action {
+    @apply text-sm font-semibold px-3 py-2 rounded-md cursor-pointer transition-all duration-200;
+}
+
+@utility btn-page-action {
+    @apply text-sm font-semibold px-6 py-2 rounded-xl border-2 cursor-pointer transition-all duration-200;
+}
+
 body{
     background-color: #F7F6F2;
 }

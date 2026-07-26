@@ -120,19 +120,19 @@ export default function GeneralSales(){
                             </span>
                         </button>
                     </Link>
-                    <h1 className="m-0 text-lg sm:text-2xl font-bold text-slate-800">Historial de ventas</h1>
+                    <p className="m-0 text-compact-header-title">Historial de ventas</p>
                 </div>
             </header>
 
             <main className="max-w-[1180px] mx-auto w-full px-4 sm:px-8 lg:px-20 py-5 sm:py-6 flex flex-col gap-3.5 sm:gap-4">
             
-                <div className="flex flex-row text-2xl sm:text-3xl lg:text-4xl font-black text-black tracking-tighter text-left mb-6">
-                    <h1>Historial de ventas histórico</h1>
+                <div className="flex flex-row text-left mb-6">
+                    <h1 className="text-page-title">Historial de ventas histórico</h1>
                 </div>
 
                 {rawSales.length === 0 ? (
                     <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-8 text-center w-full animate-fade-in-up">
-                        <h2 className='text-2xl font-bold text-slate-800 mb-3'>No hay ventas</h2>
+                        <h2 className='text-empty-state mb-3'>No hay ventas</h2>
                         <p className='text-slate-500'>No se han registrado ventas en el sistema</p>
                     </div>
                 ) : (
@@ -160,7 +160,7 @@ export default function GeneralSales(){
                         />
 
                         <div className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 shadow-sm animate-fade-in-up transition-shadow duration-300 hover:shadow-md" style={{ animationDelay: '80ms' }}>
-                            <h3 className="text-[15px] font-bold text-slate-800 mb-2.5">Evolución de ventas</h3>
+                            <h2 className="text-section-title mb-2.5">Evolución de ventas</h2>
                             <SalesEvolutionChart data={evolucion} />
                         </div>
 
@@ -173,7 +173,7 @@ export default function GeneralSales(){
 
                         {/* Detalle de ventas */}
                         <div className="pt-2 animate-fade-in-up" style={{ animationDelay: '200ms' }}>
-                            <h3 className="font-bold text-lg text-slate-800 mb-4">Detalle de ventas</h3>
+                            <h2 className="text-section-title mb-4">Detalle de ventas</h2>
                             <Table 
                                 rowData={sales}
                                 onVerRecibo={handleVerRecibo}

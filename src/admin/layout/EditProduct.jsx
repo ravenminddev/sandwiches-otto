@@ -176,7 +176,7 @@ export default function EditProduct() {
                 Volver
             </button>
 
-            <h1 className='font-black text-xl sm:text-2xl lg:text-3xl tracking-tighter text-gray-900 mb-6 sm:mb-8'>
+            <h1 className='text-page-title mb-6 sm:mb-8'>
                 Editar producto
             </h1>
 

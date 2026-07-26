@@ -6,8 +6,8 @@ export default function Register() {
         <section className='bg-white rounded-[3rem] shadow-2xl px-2 py-6 sm:py-7 md:py-10 lg:py-14 w-full grid max-w-2xl gap-3 
                                         items-center text-[clamp(0.6rem,calc(1vw+1vh),1rem)] max-md:landscape:py-3 justify-self-center'>
             <div className='flex flex-col items-center justify-center'>
-                <h1 className='font-extrabold text-[clamp(1.6rem,calc(2vw+2vh),3rem)] text-center'>Registro</h1>
-                <h3 className='text-center'>¡Crea tu nuevo usuario!</h3>
+                <h1 className='text-page-title text-center'>Registro</h1>
+                <h2 className='text-page-subtitle text-center'>¡Crea tu nuevo usuario!</h2>
             </div>
             <div className='flex flex-col items-center gap-y-2 sm:gap-y-5 px-5 sm:px-10'>
                 <form className='flex flex-col w-full gap-3 sm:gap-6'>
