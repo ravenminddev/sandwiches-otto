@@ -45,7 +45,7 @@ export default function ProductList({ products = [], cols = 3, onProductosActual
     }
 
     return (
-        <ul className={`list-none grid gap-5 grid-cols-1 sm:grid-cols-2 ${cols === 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-2'}`}>
+        <ul className={`list-none grid gap-5 grid-cols-2 ${cols === 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-2'}`}>
             {products.map((product) => (
                 <li key={product.id_producto}>
                     <ProductListCard
