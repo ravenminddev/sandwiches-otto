@@ -143,7 +143,7 @@ export default function GeneralSales(){
                                 <button
                                     key={opcion.value}
                                     onClick={() => setPeriodo(opcion.value)}
-                                    className={`cursor-pointer px-3.5 py-1.5 rounded-full text-xs sm:text-[13px] font-semibold transition-all duration-200 ${
+                                    className={`btn-filter-chip py-1.5 rounded-full text-xs sm:text-[13px] ${
                                         periodo === opcion.value ? 'bg-slate-800 text-white shadow-sm' : 'text-slate-500 hover:bg-slate-100'
                                     }`}
                                 >
