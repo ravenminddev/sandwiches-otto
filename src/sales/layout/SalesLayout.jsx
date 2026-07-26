@@ -40,8 +40,34 @@ function DrawerLink({ icon, label, path, onClick, onAction }) {
 function SalesLayoutInner() {
     const { isModalOpen } = useModal();
     const location = useLocation();
+    const isRegisterRoute = location.pathname === '/sales/';
     const isAdminRoute = location.pathname.startsWith('/sales/admin');
     const [carrito, setCarrito] = useState([]);
+    const hasDesktopCart = isRegisterRoute && carrito.length > 0;
+    const [desktopCartShown, setDesktopCartShown] = useState(false);
+    const [desktopCartAnimated, setDesktopCartAnimated] = useState(false);
+    const prevHasDesktopCart = useRef(false);
+
+    useEffect(() => {
+        if (hasDesktopCart && !prevHasDesktopCart.current) {
+            setDesktopCartShown(true);
+            const raf = requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    setDesktopCartAnimated(true);
+                });
+            });
+            return () => cancelAnimationFrame(raf);
+        } else if (!hasDesktopCart && prevHasDesktopCart.current) {
+            setDesktopCartAnimated(false);
+            const timer = setTimeout(() => {
+                setDesktopCartShown(false);
+            }, 500);
+            return () => clearTimeout(timer);
+        }
+        prevHasDesktopCart.current = hasDesktopCart;
+    }, [hasDesktopCart]);
+
+    const showDesktopCart = desktopCartShown || hasDesktopCart;
     const [showCart, setShowCart] = useState(false);
     const [showMobileSidebar, setShowMobileSidebar] = useState(false);
     const { userData } = useAuth();
@@ -179,19 +205,25 @@ function SalesLayoutInner() {
             {isModalOpen && <div className='max-lg:hidden [grid-area:sidebar] bg-black/50 z-[101]' />}
 
             <main className='[grid-area:main] w-full px-5 sm:px-10 lg:py-10 max-lg:pt-28 max-lg:pb-10 overflow-y-auto relative'>
-                <div className='grid grid-cols-1 lg:grid-cols-3 gap-6 relative z-10'>
-                    <div className='lg:col-span-2'>
+                <div className='flex gap-6 w-full relative z-10'>
+                    <div className={`transition-all duration-500 ease-out ${showDesktopCart ? 'lg:w-2/3' : 'lg:w-full'}`}>
                         <Outlet context={{ agregarAlCarrito, carrito }} />
                     </div>
-                    <div className='hidden lg:block lg:col-span-1'>
-                        <ShoppingCart
-                            carrito={carrito}
-                            onAumentar={aumentarCantidad}
-                            onDisminuir={disminuirCantidad}
-                            onEliminar={eliminarDelCarrito}
-                            onRegistroExitoso={limpiarCarrito}
-                        />
-                    </div>
+                    {showDesktopCart && (
+                        <div
+                            className={`hidden lg:block lg:w-1/3 transition-all duration-500 ease-out ${
+                                desktopCartAnimated ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+                            }`}
+                        >
+                            <ShoppingCart
+                                carrito={carrito}
+                                onAumentar={aumentarCantidad}
+                                onDisminuir={disminuirCantidad}
+                                onEliminar={eliminarDelCarrito}
+                                onRegistroExitoso={limpiarCarrito}
+                            />
+                        </div>
+                    )}
                 </div>
             </main>
 
