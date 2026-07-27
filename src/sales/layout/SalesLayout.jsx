@@ -1,7 +1,7 @@
 import { Outlet, useNavigate, useLocation } from 'react-router';
 import ottoLogo from '@/assets/logo.png';
 import Sidebar from './Sidebar';
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback, useReducer } from 'react';
 import ShoppingCart from '../components/ShoppingCart.jsx';
 import CartDrawer from '../components/CartDrawer.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,6 +9,23 @@ import { faCartShopping, faBars, faCashRegister, faCircleDollarToSlot, faClockRo
 import { useAuth } from '../../lib/hooks/useAuth.js';
 import alertDecision from '../../utils/alertDecision.js';
 import { ModalProvider, useModal } from '../../lib/context/ModalContext.jsx';
+
+const cartPanelInitialState = { shown: false, animated: false };
+
+function cartPanelReducer(state, action) {
+    switch (action.type) {
+        case 'SHOW':
+            return { shown: true, animated: false };
+        case 'ANIMATE_IN':
+            return { ...state, animated: true };
+        case 'HIDE':
+            return { ...state, animated: false };
+        case 'UNMOUNT':
+            return { shown: false, animated: false };
+        default:
+            return state;
+    }
+}
 
 function DrawerLink({ icon, label, path, onClick, onAction }) {
     const navigate = useNavigate();
@@ -44,28 +61,26 @@ function SalesLayoutInner() {
     const isAdminRoute = location.pathname.startsWith('/sales/admin');
     const [carrito, setCarrito] = useState([]);
     const hasDesktopCart = isRegisterRoute && carrito.length > 0;
-    const [desktopCartShown, setDesktopCartShown] = useState(false);
-    const [desktopCartAnimated, setDesktopCartAnimated] = useState(false);
-    const prevHasDesktopCart = useRef(false);
+    const [cartPanel, dispatchCartPanel] = useReducer(cartPanelReducer, cartPanelInitialState);
 
     useEffect(() => {
-        if (hasDesktopCart && !prevHasDesktopCart.current) {
-            setDesktopCartShown(true);
+        if (hasDesktopCart && !cartPanel.shown) {
+            dispatchCartPanel({ type: 'SHOW' });
             const timer = setTimeout(() => {
-                setDesktopCartAnimated(true);
+                dispatchCartPanel({ type: 'ANIMATE_IN' });
             }, 350);
             return () => clearTimeout(timer);
-        } else if (!hasDesktopCart && prevHasDesktopCart.current) {
-            setDesktopCartAnimated(false);
+        }
+        if (!hasDesktopCart && cartPanel.shown) {
+            dispatchCartPanel({ type: 'HIDE' });
             const timer = setTimeout(() => {
-                setDesktopCartShown(false);
+                dispatchCartPanel({ type: 'UNMOUNT' });
             }, 700);
             return () => clearTimeout(timer);
         }
-        prevHasDesktopCart.current = hasDesktopCart;
-    }, [hasDesktopCart]);
+    }, [hasDesktopCart, cartPanel.shown]);
 
-    const showDesktopCart = desktopCartShown || hasDesktopCart;
+    const showDesktopCart = cartPanel.shown;
     const [showCart, setShowCart] = useState(false);
     const [showMobileSidebar, setShowMobileSidebar] = useState(false);
     const { userData } = useAuth();
@@ -210,7 +225,7 @@ function SalesLayoutInner() {
                     {showDesktopCart && (
                         <div
                             className={`hidden lg:block lg:w-1/3 transition-all duration-700 ease-out ${
-                                desktopCartAnimated ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'
+                                cartPanel.animated ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'
                             }`}
                         >
                             <ShoppingCart
