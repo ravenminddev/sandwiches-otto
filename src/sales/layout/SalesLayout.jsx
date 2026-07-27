@@ -1,7 +1,7 @@
 import { Outlet, useNavigate, useLocation } from 'react-router';
 import ottoLogo from '@/assets/logo.png';
 import Sidebar from './Sidebar';
-import { useState, useRef, useEffect, useCallback, useReducer } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import ShoppingCart from '../components/ShoppingCart.jsx';
 import CartDrawer from '../components/CartDrawer.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,23 +9,6 @@ import { faCartShopping, faBars, faCashRegister, faCircleDollarToSlot, faClockRo
 import { useAuth } from '../../lib/hooks/useAuth.js';
 import alertDecision from '../../utils/alertDecision.js';
 import { ModalProvider, useModal } from '../../lib/context/ModalContext.jsx';
-
-const cartPanelInitialState = { shown: false, animated: false };
-
-function cartPanelReducer(state, action) {
-    switch (action.type) {
-        case 'SHOW':
-            return { shown: true, animated: false };
-        case 'ANIMATE_IN':
-            return { ...state, animated: true };
-        case 'HIDE':
-            return { ...state, animated: false };
-        case 'UNMOUNT':
-            return { shown: false, animated: false };
-        default:
-            return state;
-    }
-}
 
 function DrawerLink({ icon, label, path, onClick, onAction }) {
     const navigate = useNavigate();
@@ -61,26 +44,6 @@ function SalesLayoutInner() {
     const isAdminRoute = location.pathname.startsWith('/sales/admin');
     const [carrito, setCarrito] = useState([]);
     const hasDesktopCart = isRegisterRoute && carrito.length > 0;
-    const [cartPanel, dispatchCartPanel] = useReducer(cartPanelReducer, cartPanelInitialState);
-
-    useEffect(() => {
-        if (hasDesktopCart && !cartPanel.shown) {
-            dispatchCartPanel({ type: 'SHOW' });
-            const timer = setTimeout(() => {
-                dispatchCartPanel({ type: 'ANIMATE_IN' });
-            }, 350);
-            return () => clearTimeout(timer);
-        }
-        if (!hasDesktopCart && cartPanel.shown) {
-            dispatchCartPanel({ type: 'HIDE' });
-            const timer = setTimeout(() => {
-                dispatchCartPanel({ type: 'UNMOUNT' });
-            }, 700);
-            return () => clearTimeout(timer);
-        }
-    }, [hasDesktopCart, cartPanel.shown]);
-
-    const showDesktopCart = cartPanel.shown;
     const [showCart, setShowCart] = useState(false);
     const [showMobileSidebar, setShowMobileSidebar] = useState(false);
     const { userData } = useAuth();
@@ -218,16 +181,16 @@ function SalesLayoutInner() {
             {isModalOpen && <div className='max-lg:hidden [grid-area:sidebar] bg-black/50 z-[101]' />}
 
             <main className='[grid-area:main] w-full px-5 sm:px-10 lg:py-10 max-lg:pt-28 max-lg:pb-10 overflow-y-auto relative'>
-                <div className='flex gap-6 w-full relative z-10'>
-                    <div className={`transition-all duration-700 ease-out ${showDesktopCart ? 'lg:w-2/3' : 'lg:w-full'}`}>
+                <div className={`flex w-full relative z-10 transition-all duration-700 ease-out ${hasDesktopCart ? 'gap-6' : 'gap-0'}`}>
+                    <div className={`transition-all duration-700 ease-out ${hasDesktopCart ? 'lg:w-2/3' : 'lg:w-full'}`}>
                         <Outlet context={{ agregarAlCarrito, carrito }} />
                     </div>
-                    {showDesktopCart && (
-                        <div
-                            className={`hidden lg:block lg:w-1/3 transition-all duration-700 ease-out ${
-                                cartPanel.animated ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'
-                            }`}
-                        >
+                    <div
+                        className={`hidden lg:block transition-all duration-700 ease-out overflow-hidden ${
+                            hasDesktopCart ? 'lg:w-1/3 translate-y-0 opacity-100' : 'lg:w-0 translate-y-12 opacity-0 pointer-events-none'
+                        }`}
+                    >
+                        {hasDesktopCart && (
                             <ShoppingCart
                                 carrito={carrito}
                                 onAumentar={aumentarCantidad}
@@ -235,8 +198,8 @@ function SalesLayoutInner() {
                                 onEliminar={eliminarDelCarrito}
                                 onRegistroExitoso={limpiarCarrito}
                             />
-                        </div>
-                    )}
+                        )}
+                    </div>
                 </div>
             </main>
 
