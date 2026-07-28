@@ -162,7 +162,7 @@ export default function ShoppingCart({ carrito, onAumentar, onDisminuir, onElimi
                                 </div>
                                 <button
                                     onClick={() => onEliminar(item.id)}
-                                    className='cursor-pointer text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all duration-200 p-1'
+                                    className='cursor-pointer text-gray-300 hover:text-red-500 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-200 p-1'
                                 >
                                     <FontAwesomeIcon icon={faTrash} size='sm' />
                                 </button>
@@ -308,7 +308,7 @@ export default function ShoppingCart({ carrito, onAumentar, onDisminuir, onElimi
                                     </div>
                                     <button
                                         onClick={() => eliminarPago(pago.id)}
-                                        className='cursor-pointer text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all duration-200 p-1'
+                                        className='cursor-pointer text-gray-300 hover:text-red-500 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-200 p-1'
                                     >
                                         <FontAwesomeIcon icon={faTrash} size='sm' />
                                     </button>
