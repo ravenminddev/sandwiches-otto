@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import moneyIcon from '@/assets/money.png';
 import nequiIcon from '@/assets/nequi-logo.png';
+import nequiWhiteIcon from '@/assets/nequi-white-logo.png';
 import { getPaymentsSummaryToday } from '@/lib/services/pagos.js';
 
 import Dog from "../../assets/dog.svg";
@@ -65,7 +66,8 @@ return (
             <h2 className='text-section-title'>Nequi</h2>
 
             <div className='w-1/5 min-w-[90px] md:w-2/5 mx-auto'>
-                <img  src={nequiIcon} alt='Nequi'/>
+                <img src={nequiIcon} alt='Nequi' className='w-full dark:hidden' />
+                <img src={nequiWhiteIcon} alt='Nequi' className='hidden w-full dark:block' />
             </div>
 
             <div className='font-bold text-[18px] md:text-xl lg:text-2xl flex flex-col justify-center items-center'> 
@@ -104,9 +106,9 @@ return (
                         <span>Efectivo</span>
                         <span>{loading ? '...' : `${cashPercent.toFixed(0)}%`}</span>
                     </div>
-                    <div className='w-full h-7 bg-gray-200 dark:bg-zinc-700 rounded-full overflow-hidden'>
+                    <div className='w-full h-7 bg-gray-200 dark:bg-white/15 rounded-full overflow-hidden'>
                         <div 
-                            className='h-full bg-green-600 rounded-full transition-all duration-500'
+                            className='h-full bg-green-600 dark:bg-[#40D39B] rounded-full transition-all duration-500'
                             style={{ width: `${loading ? 0 : cashPercent}%` }}
                         />
                     </div>
@@ -118,9 +120,9 @@ return (
                         <span>Transferencias</span>
                         <span>{loading ? '...' : `${nequiPercent.toFixed(0)}%`}</span>
                     </div>
-                    <div className='w-full h-7 bg-gray-200 dark:bg-zinc-700 rounded-full overflow-hidden'>
+                    <div className='w-full h-7 bg-gray-200 dark:bg-white/15 rounded-full overflow-hidden'>
                         <div 
-                            className='h-full bg-yellow-500 rounded-full transition-all duration-500'
+                            className='h-full bg-yellow-500 dark:bg-[#7500A3] rounded-full transition-all duration-500'
                             style={{ width: `${loading ? 0 : nequiPercent}%` }}
                         />
                     </div>
