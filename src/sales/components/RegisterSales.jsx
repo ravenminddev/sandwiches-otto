@@ -49,11 +49,11 @@ export default function RegisterSales({ isAdmin = false }) {
         return (
             <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6'>
                 {Array.from({ length: 8 }).map((_, i) => (
-                    <div key={i} className='rounded-2xl bg-white overflow-hidden animate-pulse'>
-                        <div className='w-full aspect-4/3 bg-gray-200' />
+                    <div key={i} className='rounded-2xl bg-white dark:bg-card overflow-hidden animate-pulse'>
+                        <div className='w-full aspect-4/3 bg-gray-200 dark:bg-zinc-700' />
                         <div className='p-4 space-y-3'>
-                            <div className='h-3 bg-gray-200 rounded w-3/4 mx-auto' />
-                            <div className='h-3 bg-gray-200 rounded w-1/2 mx-auto' />
+                            <div className='h-3 bg-gray-200 dark:bg-zinc-700 rounded w-3/4 mx-auto' />
+                            <div className='h-3 bg-gray-200 dark:bg-zinc-700 rounded w-1/2 mx-auto' />
                         </div>
                     </div>
                 ))}
@@ -65,9 +65,9 @@ export default function RegisterSales({ isAdmin = false }) {
         return (
             <div className='flex items-center justify-center min-h-[50vh]'>
                 <h1 className='sr-only'>Registrar venta</h1>
-                <div className='bg-white rounded-lg shadow-lg p-8 text-center'>
+                <div className='bg-white dark:bg-card rounded-lg shadow-lg p-8 text-center'>
                     <h2 className='text-empty-state'>No hay productos</h2>
-                    <p className='text-gray-600'>No se han registrado productos en la BD</p>
+                    <p className='text-gray-600 dark:text-zinc-400'>No se han registrado productos en la BD</p>
                 </div>
             </div>
         );
@@ -84,7 +84,7 @@ export default function RegisterSales({ isAdmin = false }) {
             <h2 className='sr-only'>Productos disponibles</h2>
 
             {filteredProducts.length === 0 ? (
-                <div className='text-center py-12 text-gray-500'>
+                <div className='text-center py-12 text-gray-500 dark:text-zinc-400'>
                     No se encontraron productos para &quot;{search}&quot;
                 </div>
             ) : (

@@ -5,8 +5,9 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import ShoppingCart from '../components/ShoppingCart.jsx';
 import CartDrawer from '../components/CartDrawer.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCartShopping, faBars, faCashRegister, faCircleDollarToSlot, faClockRotateLeft, faCog, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { faCartShopping, faBars, faCashRegister, faCircleDollarToSlot, faClockRotateLeft, faCog, faRightFromBracket, faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../../lib/hooks/useAuth.js';
+import { useTheme } from '../../lib/context/ThemeContext.jsx';
 import alertDecision from '../../utils/alertDecision.js';
 import { ModalProvider, useModal } from '../../lib/context/ModalContext.jsx';
 
@@ -28,10 +29,10 @@ function DrawerLink({ icon, label, path, onClick, onAction }) {
             className={`w-full flex items-center gap-3 px-3 py-3 rounded-xl transition-colors font-medium ${
                 isActive
                     ? 'bg-yellow-otto/20 text-yellow-otto'
-                    : 'hover:bg-yellow-otto/10 text-gray-700'
+                    : 'hover:bg-yellow-otto/10 text-gray-700 dark:text-zinc-300 dark:hover:text-zinc-100'
             }`}
         >
-            <FontAwesomeIcon icon={icon} className={`w-5 ${isActive ? 'text-yellow-otto' : 'text-gray-500'}`} />
+            <FontAwesomeIcon icon={icon} className={`w-5 ${isActive ? 'text-yellow-otto' : 'text-gray-500 dark:text-zinc-400'}`} />
             <span>{label}</span>
         </button>
     );
@@ -47,6 +48,7 @@ function SalesLayoutInner() {
     const [showCart, setShowCart] = useState(false);
     const [showMobileSidebar, setShowMobileSidebar] = useState(false);
     const { userData } = useAuth();
+    const { theme, toggleTheme } = useTheme();
     const isAdmin = userData?.id_rol === 1;
     const [navbarHidden, setNavbarHidden] = useState(false);
     const lastScrollY = useRef(0);
@@ -134,25 +136,41 @@ function SalesLayoutInner() {
                     navbarHidden || isModalOpen ? '-translate-y-full opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'
                 }`}>
                 <nav
-                    className="bg-white border-b border-dash-border/70 flex items-center justify-between px-4 h-16"
+                    className="bg-white dark:bg-card rounded-2xl shadow-lg flex items-center justify-between px-4 h-20"
                 >
                     <button
                         onClick={() => setShowMobileSidebar(true)}
-                        className={`text-xl transition-colors ${showMobileSidebar ? 'text-yellow-otto' : 'text-gray-700'}`}
+                        className={`text-2xl transition-colors ${showMobileSidebar ? 'text-yellow-otto' : 'text-gray-700 dark:text-zinc-300'}`}
                         aria-label="Abrir menú"
                     >
                         <FontAwesomeIcon icon={faBars} />
                     </button>
 
-                    <div className="flex items-center">
-                        <img src={ottoLogo} alt="Otto" className="w-10 h-10" />
+                    <div className="flex items-center gap-3">
+                        <button
+                            type="button"
+                            onClick={toggleTheme}
+                            title={theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}
+                            className="cursor-pointer text-muted hover:text-yellow-otto transition-colors"
+                        >
+                            <FontAwesomeIcon icon={theme === 'dark' ? faSun : faMoon} className="text-lg" />
+                        </button>
+                        <button
+                            type="button"
+                            onClick={toggleTheme}
+                            title={theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}
+                            className="cursor-pointer"
+                        >
+                            <img src={ottoLogo} alt="Otto" className="w-16 h-16 select-none" />
+                        </button>
+                    </div>
                     </div>
                 </nav>
             </div>
 
             {/* ── Mobile dropdown drawer (expands downward from navbar) ── */}
             <div
-                className={`lg:hidden fixed left-0 right-0 z-40 bg-white border-b border-dash-border/70 shadow-xl overflow-hidden transition-all duration-300 ease-in-out ${
+                className={`lg:hidden fixed left-0 right-0 z-40 bg-white dark:bg-card rounded-2xl shadow-xl overflow-hidden transition-all duration-300 ease-in-out ${
                     showMobileSidebar
                         ? 'max-h-[75dvh] opacity-100 translate-y-0'
                         : 'max-h-0 opacity-0 -translate-y-2 pointer-events-none'
@@ -166,7 +184,7 @@ function SalesLayoutInner() {
                     {isAdmin && (
                         <DrawerLink icon={faCog} label="Admin" path="/sales/admin" onClick={() => setShowMobileSidebar(false)} />
                     )}
-                    <hr className="my-2 border-gray-200" />
+                    <hr className="my-2 border-gray-200 dark:border-border" />
                     <DrawerLink icon={faRightFromBracket} label="Salir" onClick={() => setShowMobileSidebar(false)} onAction={handleLogout} />
                 </div>
             </div>

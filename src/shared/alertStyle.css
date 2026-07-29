@@ -71,3 +71,20 @@
     justify-content: center;
     gap: 15px;
 }
+
+html.dark .alert--container{
+    background-color: #18181b;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+html.dark .swal2-popup{
+    background: #18181b !important;
+}
+
+html.dark .swal2-title{
+    color: #fafafa !important;
+}
+
+html.dark .swal2-html-container{
+    color: #a1a1aa !important;
+}

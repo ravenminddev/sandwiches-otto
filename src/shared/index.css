@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
     --color-yellow-otto: #E7B901;
     --color-yellow-otto-light: #FFD630;
@@ -13,6 +15,16 @@
     --color-dash-gray-soft: #9a9891;
     --color-dash-border: #e6e4dc;
     --color-dash-green: #2E7D32;
+
+    /* Tokens semanticos para modo claro/oscuro */
+    --color-app: #F7F6F2;
+    --color-card: #ffffff;
+    --color-input: #ffffff;
+    --color-nav: #ffffff;
+    --color-main: #111827;
+    --color-muted: #4b5563;
+    --color-border: #e5e7eb;
+    --color-border-strong: #d1d5db;
 
     --animate-slide-up: slide-up 0.3s ease-out;
     --animate-slide-left: slide-left 0.3s ease-out;
@@ -98,12 +110,12 @@
    Ej: Auth, Register, AdminView, EditProduct, EditSales,
    DiarySales, GeneralSales (h1 de main). */
 @utility text-page-title {
-    @apply text-2xl sm:text-3xl font-black tracking-tighter text-gray-900;
+    @apply text-2xl sm:text-3xl font-black tracking-tighter text-gray-900 dark:text-zinc-100;
 }
 
 /* Subtítulo bajo un page-title (Auth/Register). */
 @utility text-page-subtitle {
-    @apply text-base sm:text-lg font-semibold text-gray-600;
+    @apply text-base sm:text-lg font-semibold text-gray-600 dark:text-zinc-400;
 }
 
 /* Título dentro de una barra sticky/compacta (poco alto
@@ -111,7 +123,7 @@
    Ej: GeneralSales, barra superior. No es un heading por sí solo
    cuando ya existe un h1 de página real más abajo. */
 @utility text-compact-header-title {
-    @apply text-lg sm:text-xl font-bold text-slate-800;
+    @apply text-lg sm:text-xl font-bold text-slate-800 dark:text-zinc-200;
 }
 
 /* Encabezado de una sección de contenido dentro de una página
@@ -120,18 +132,18 @@
    GeneralSales (Evolución de ventas/Productos/Ventas por día/Detalle),
    ProductManagement (Catálogo de productos). */
 @utility text-section-title {
-    @apply text-lg sm:text-xl font-bold text-gray-900;
+    @apply text-lg sm:text-xl font-bold text-gray-900 dark:text-zinc-100;
 }
 
 /* Título de cabecera de modal/diálogo. */
 @utility text-modal-title {
-    @apply text-lg sm:text-xl lg:text-2xl font-bold text-gray-900;
+    @apply text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-zinc-100;
 }
 
 /* Subencabezado dentro de un modal (subordinado al modal-title).
    Ej: ReceiptModal "Productos"/"Pagos". */
 @utility text-modal-subsection {
-    @apply text-lg sm:text-xl font-bold text-gray-900;
+    @apply text-lg sm:text-xl font-bold text-gray-900 dark:text-zinc-100;
 }
 
 /* Título de tarjeta de métrica/dashboard (contexto compacto,
@@ -139,13 +151,13 @@
    (actualmente sin uso en el código, pero token listo para cuando
    se conecten). */
 @utility text-card-title {
-    @apply text-base sm:text-lg font-bold text-slate-800;
+    @apply text-base sm:text-lg font-bold text-slate-800 dark:text-zinc-200;
 }
 
 /* Título de ítem repetido dentro de una grilla de tarjetas
    (nombre de producto). Ej: ProductCard (shared). */
 @utility text-item-title {
-    @apply text-xs sm:text-sm lg:text-base font-semibold text-gray-700;
+    @apply text-xs sm:text-sm lg:text-base font-semibold text-gray-700 dark:text-zinc-300;
 }
 
 /* Encabezado de sección dentro de un aside persistente y angosto
@@ -153,17 +165,17 @@
    modal de pantalla completa, por eso no comparte token con
    text-modal-title/text-modal-subsection. */
 @utility text-aside-section-title {
-    @apply text-xl font-bold text-gray-900;
+    @apply text-xl font-bold text-gray-900 dark:text-zinc-100;
 }
 @utility text-aside-subsection {
-    @apply font-bold text-sm text-gray-900;
+    @apply font-bold text-sm text-gray-900 dark:text-zinc-100;
 }
 
 /* Nombre de producto dentro de una fila de carrito (lista densa,
    una línea, truncada). Ya no es un heading (ver auditoría de
    jerarquía), pero conserva su peso visual. */
 @utility text-cart-item-name {
-    @apply font-semibold text-sm text-gray-900 truncate;
+    @apply font-semibold text-sm text-gray-900 dark:text-zinc-100 truncate;
 }
 
 /* Mensaje de estado vacío ("No hay ventas", "No hay productos"). */
@@ -190,5 +202,34 @@
 }
 
 body{
-    background-color: #F7F6F2;
+    background-color: var(--color-app);
+    color: var(--color-main);
+}
+
+html.dark {
+    --color-app: #09090b;
+    --color-card: #18181b;
+    --color-input: #27272a;
+    --color-nav: #18181b;
+    --color-main: #fafafa;
+    --color-muted: #a1a1aa;
+    --color-border: #3f3f46;
+    --color-border-strong: #52525b;
+
+    --ag-background-color: #18181b;
+    --ag-header-background-color: #27272a;
+    --ag-row-hover-color: rgba(255,255,255,0.04);
+    --ag-odd-row-background-color: rgba(255,255,255,0.02);
+    --ag-border-color: #3f3f46;
+    --ag-foreground-color: #fafafa;
+    --ag-secondary-foreground-color: #a1a1aa;
+    --ag-header-foreground-color: #fafafa;
+    --ag-input-focus-border-color: #E7B901;
+    --ag-range-selection-border-color: #E7B901;
+
+    --ag-control-panel-background-color: #18181b;
+    --ag-subheader-background-color: #27272a;
+    --ag-selected-row-background-color: rgba(231,185,1,0.1);
+    --ag-alpine-active-color: #E7B901;
+    --ag-input-disabled-background-color: #3f3f46;
 }
