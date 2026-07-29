@@ -1,7 +1,7 @@
 export default function SearchBar({ value, onChange, placeholder = 'Buscar producto...' }) {
     return (
         <div className='w-full flex justify-center'>
-            <div className='w-full max-w-md flex items-center border border-gray-300 dark:border-border-strong rounded-3xl px-4 py-2.5 text-sm focus-within:ring-yellow-500/15 focus-within:border-yellow-500 focus-within:ring-4 transition-shadow bg-white dark:bg-card'>
+            <div className='w-full max-w-md flex items-center border border-gray-300 dark:border-border-strong rounded-3xl px-4 py-2.5 text-sm focus-within:ring-yellow-500/15 focus-within:border-yellow-500 focus-within:ring-4 transition-shadow bg-white dark:bg-[#2a2a2a]'>
                 <svg
                     className='w-4 h-4 text-gray-400 dark:text-zinc-500 mr-3 shrink-0'
                     fill='none'
