@@ -181,8 +181,8 @@ function SalesLayoutInner() {
             {isModalOpen && <div className='max-lg:hidden [grid-area:sidebar] bg-black/50 z-[101]' />}
 
             <main className='[grid-area:main] w-full px-5 sm:px-10 lg:py-10 max-lg:pt-28 max-lg:pb-10 overflow-y-auto relative'>
-                <div className={`flex w-full relative z-10 transition-all duration-700 ease-out ${hasDesktopCart ? 'gap-6' : 'gap-0'}`}>
-                    <div className={`transition-all duration-700 ease-out ${hasDesktopCart ? 'lg:w-2/3' : 'lg:w-full'}`}>
+                <div className="flex w-full relative z-10">
+                    <div className={`transition-all duration-700 ease-out ${hasDesktopCart ? 'lg:w-2/3 lg:pr-6' : 'lg:w-full lg:pr-0'}`}>
                         <Outlet context={{ agregarAlCarrito, carrito }} />
                     </div>
                     <div
@@ -190,15 +190,13 @@ function SalesLayoutInner() {
                             hasDesktopCart ? 'lg:w-1/3 translate-y-0 opacity-100' : 'lg:w-0 translate-y-12 opacity-0 pointer-events-none'
                         }`}
                     >
-                        {hasDesktopCart && (
-                            <ShoppingCart
-                                carrito={carrito}
-                                onAumentar={aumentarCantidad}
-                                onDisminuir={disminuirCantidad}
-                                onEliminar={eliminarDelCarrito}
-                                onRegistroExitoso={limpiarCarrito}
-                            />
-                        )}
+                        <ShoppingCart
+                            carrito={carrito}
+                            onAumentar={aumentarCantidad}
+                            onDisminuir={disminuirCantidad}
+                            onEliminar={eliminarDelCarrito}
+                            onRegistroExitoso={limpiarCarrito}
+                        />
                     </div>
                 </div>
             </main>
