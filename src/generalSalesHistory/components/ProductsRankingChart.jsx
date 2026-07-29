@@ -103,7 +103,7 @@ export default function ProductsRankingChart({ sales }) {
                 <button
                     onClick={() => setVista('mas')}
                     className={`btn-filter-chip rounded-full flex-1 sm:flex-none text-center ${
-                        vista === 'mas' ? 'bg-slate-800 text-white shadow-sm' : 'bg-slate-50 text-slate-500 dark:text-zinc-400 border border-slate-200 dark:border-border hover:bg-slate-100 dark:hover:bg-zinc-800/70'
+                        vista === 'mas' ? 'bg-yellow-otto text-gray-900 shadow-sm' : 'text-slate-500 dark:text-zinc-400 border border-slate-200 dark:border-border hover:bg-slate-100 dark:hover:bg-zinc-800/70'
                     }`}
                 >
                     Más vendidos
@@ -111,7 +111,7 @@ export default function ProductsRankingChart({ sales }) {
                 <button
                     onClick={() => setVista('menos')}
                     className={`btn-filter-chip rounded-full flex-1 sm:flex-none text-center ${
-                        vista === 'menos' ? 'bg-slate-800 text-white shadow-sm' : 'bg-slate-50 text-slate-500 dark:text-zinc-400 border border-slate-200 dark:border-border hover:bg-slate-100 dark:hover:bg-zinc-800/70'
+                        vista === 'menos' ? 'bg-yellow-otto text-gray-900 shadow-sm' : 'text-slate-500 dark:text-zinc-400 border border-slate-200 dark:border-border hover:bg-slate-100 dark:hover:bg-zinc-800/70'
                     }`}
                 >
                     Menos vendidos
@@ -133,7 +133,7 @@ export default function ProductsRankingChart({ sales }) {
                         key={opt.value}
                         onClick={() => setRange(opt.value)}
                         className={`btn-filter-chip flex-1 text-center rounded-lg border ${
-                            range === opt.value ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-white dark:bg-card text-slate-500 dark:text-zinc-400 border-slate-200 dark:border-border hover:bg-slate-50 dark:hover:bg-zinc-700'
+                            range === opt.value ? 'bg-yellow-otto text-gray-900 shadow-sm' : 'text-slate-500 dark:text-zinc-400 border-slate-200 dark:border-border hover:bg-slate-50 dark:hover:bg-zinc-700'
                         }`}
                     >
                         {opt.label}

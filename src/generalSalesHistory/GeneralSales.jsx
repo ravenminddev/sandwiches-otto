@@ -144,7 +144,7 @@ export default function GeneralSales(){
                                     key={opcion.value}
                                     onClick={() => setPeriodo(opcion.value)}
                                     className={`btn-filter-chip py-1.5 rounded-full text-xs sm:text-[13px] ${
-                                        periodo === opcion.value ? 'bg-slate-800 text-white shadow-sm' : 'text-slate-500 dark:text-zinc-400 hover:bg-slate-100 dark:hover:bg-zinc-800/70'
+                                        periodo === opcion.value ? 'bg-yellow-otto text-gray-900 shadow-sm' : 'text-slate-500 dark:text-zinc-400 hover:bg-slate-100 dark:hover:bg-zinc-800/70'
                                     }`}
                                 >
                                     {opcion.label}
