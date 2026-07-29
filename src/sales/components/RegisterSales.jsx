@@ -64,8 +64,9 @@ export default function RegisterSales({ isAdmin = false }) {
     if (!loading && products.length === 0) {
         return (
             <div className='flex items-center justify-center min-h-[50vh]'>
+                <h1 className='sr-only'>Registrar venta</h1>
                 <div className='bg-white rounded-lg shadow-lg p-8 text-center'>
-                    <h2 className='text-2xl font-bold text-gray-800 mb-4'>No hay productos</h2>
+                    <h2 className='text-empty-state'>No hay productos</h2>
                     <p className='text-gray-600'>No se han registrado productos en la BD</p>
                 </div>
             </div>
@@ -75,9 +76,13 @@ export default function RegisterSales({ isAdmin = false }) {
     return (
         <div className='space-y-4'>
 
+            <h1 className='sr-only'>Registrar venta</h1>
+
             {/* BARRA DE BUSQUEDA */}
             <SearchBar value={search} onChange={setSearch}/>
-            
+
+            <h2 className='sr-only'>Productos disponibles</h2>
+
             {filteredProducts.length === 0 ? (
                 <div className='text-center py-12 text-gray-500'>
                     No se encontraron productos para &quot;{search}&quot;

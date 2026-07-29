@@ -48,9 +48,9 @@ export default function AdminView(){
         <section className='w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8'>
 
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-8">
-                <div className="font-black text-xl sm:text-2xl lg:text-3xl text-black tracking-tighter">
-                    <h1>Manejo de la plataforma</h1>
-                </div>
+                <h1 className="text-page-title">
+                    Manejo de la plataforma
+                </h1>
 
                 <div className='flex flex-col sm:flex-row gap-2 sm:gap-3 shrink-0'>
                     <Link

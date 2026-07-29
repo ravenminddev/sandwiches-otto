@@ -45,10 +45,10 @@ export default function Auth() {
             <section className='px-9 py-4 sm:py-7 md:py-10 lg:py-14 w-full grid max-w-2xl gap-3 items-center text-[clamp(0.6rem,calc(1vw+1vh),1rem)] max-md:landscape:py-3 justify-self-center portrait:mt-10'>
 
                 <div className='flex flex-col items-center justify-center mb-4 sm:mb-10'>
-                    <h1 className='font-extrabold text-[clamp(1.6rem,calc(2vw+2vh),3rem)] text-center'>
+                    <h1 className='text-page-title text-center'>
                         BIENVENIDO/A
                     </h1>
-                    <h3 className='text-center font-semibold text-xl'>¡Otto te da una cálida bienvenida!</h3>
+                    <h2 className='text-page-subtitle text-center'>¡Otto te da una cálida bienvenida!</h2>
                 </div>
 
                 <form className='flex flex-col w-full gap-3 sm:gap-6 px-5 sm:px-10' onSubmit={handleLogin}>

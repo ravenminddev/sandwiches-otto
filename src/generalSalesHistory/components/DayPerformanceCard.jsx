@@ -10,7 +10,7 @@ export default function DayPerformanceCard({ title, icon, days, tone = 'good' })
         <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-4 sm:p-6 flex flex-col h-full transition-shadow duration-300 hover:shadow-md">
             <div className="flex items-center gap-2 mb-4">
                 <FontAwesomeIcon icon={icon} className={toneClasses.icon} />
-                <h3 className="font-bold text-base sm:text-lg text-slate-800">{title}</h3>
+                <h3 className="text-card-title">{title}</h3>
             </div>
 
             {days.length === 0 ? (

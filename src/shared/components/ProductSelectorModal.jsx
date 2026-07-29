@@ -60,7 +60,7 @@ export default function ProductSelectorModal({ show, onClose, carritoActual, onA
 
                 {/* Header */}
                 <div className="flex justify-between items-center p-5 border-b sticky top-0 bg-white rounded-t-2xl z-10">
-                    <h2 className="text-xl font-bold text-gray-900">
+                    <h2 className="text-modal-title">
                         Agregar productos
                     </h2>
                     <button

@@ -25,7 +25,7 @@ export default function ProductCard({ img, name, price, description, actions, ov
                         ${formattedPrice}
                     </p>
                 )}
-                <h3 className="font-semibold text-xs sm:text-sm lg:text-base text-center leading-tight line-clamp-2 min-h-8 sm:min-h-10 text-gray-700">
+                <h3 className="text-item-title text-center leading-tight line-clamp-2 min-h-8 sm:min-h-10">
                     {name}
                 </h3>
                 {description && (

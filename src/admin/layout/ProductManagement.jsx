@@ -37,7 +37,7 @@ export default function ProductManagement({ products = [], onProductosActualizad
 
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                 <div>
-                    <h2 className="text-lg sm:text-xl lg:text-2xl font-bold tracking-tighter text-gray-900">
+                    <h2 className="text-section-title">
                         Catálogo de productos
                     </h2>
                     <p className="text-sm text-gray-500 mt-0.5">

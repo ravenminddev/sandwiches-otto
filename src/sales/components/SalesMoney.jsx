@@ -52,7 +52,7 @@ return (
             onMouseEnter={()=>setEnter('first')} 
             className='sm:col-span-2 relative bg-white w-full flex flex-col justify-center items-center py-5 lg:py-7 rounded-3xl gap-4 hover:ring-4 hover:ring-yellow-500/15 transition-all hover:-translate-y-1 overflow-hidden'
         >
-            <h1 className='relative z-10 font-bold text-[18px] md:text-xl lg:text-2xl'>Total ingresado el día de hoy</h1>
+            <h1 className='relative z-10 text-section-title'>Total ingresado el día de hoy</h1>
             <div className='relative z-10 bg-yellow-500/25 text-yellow-500 font-extrabold text-xl md:text-2xl lg:text-[26px] px-7 py-3 rounded-xl'>
                 <p>{loading?'cargando...':formatMoney(nequiMoney+cashMoney)}</p>
             </div>
@@ -62,7 +62,7 @@ return (
 
         {/* Nequi */}
         <div className='bg-white w-full flex flex-col justify-center items-center py-5 lg:py-7 rounded-3xl gap-4 hover:ring-4 hover:ring-yellow-500/15 transition-all hover:-translate-y-1'>
-            <h2 className='font-bold text-[18px] md:text-xl lg:text-2xl'>Nequi</h2>
+            <h2 className='text-section-title'>Nequi</h2>
 
             <div className='w-1/5 md:w-2/5 mx-auto'>
                 <img  src={nequiIcon} alt='Nequi'/>
@@ -79,7 +79,7 @@ return (
         </div>
 
         <div className='bg-white w-full flex flex-col justify-center items-center py-5 lg:py-7 rounded-3xl gap-4 hover:ring-4 hover:ring-yellow-500/15 transition-all hover:-translate-y-1'>
-            <h2 className='font-bold text-[18px] md:text-xl lg:text-2xl'>Efectivo</h2>
+            <h2 className='text-section-title'>Efectivo</h2>
 
             <div className='w-1/5 md:w-2/5 mx-auto'>
                 <img  src={moneyIcon} alt='Nequi'/>
@@ -96,7 +96,7 @@ return (
         </div>
 
         <div className='bg-white w-full flex flex-col justify-center items-center py-5 lg:py-7 rounded-3xl gap-4 hover:ring-4 hover:ring-yellow-500/15 transition-all hover:-translate-y-1 px-6'>
-            <h2 className='font-bold text-[18px] md:text-xl lg:text-2xl'>Distribución</h2>
+            <h2 className='text-section-title'>Distribución</h2>
 
             <div className='w-full flex flex-col gap-3'>
                 <div className='w-full'>
@@ -129,7 +129,7 @@ return (
         </div>
 
         <div className='bg-white w-full flex flex-col justify-center items-center py-5 lg:py-7 rounded-3xl gap-4 hover:ring-4 hover:ring-yellow-500/15 transition-all hover:-translate-y-1'>
-            <h2 className='font-bold text-[18px] md:text-xl lg:text-2xl'>Pedidos de hoy</h2>
+            <h2 className='text-section-title'>Pedidos de hoy</h2>
             {/* aquí va el número de pedidos y gasto promedio */}
         </div>
 

@@ -238,7 +238,7 @@ export default function EditSales() {
                 <span>Volver</span>
             </button>
 
-            <h1 className="font-bold text-xl sm:text-2xl lg:text-3xl text-left mb-6 tracking-tighter text-gray-900">
+            <h1 className="text-page-title text-left mb-6">
                 Editar Venta #{idVenta}
             </h1>
 
@@ -247,7 +247,7 @@ export default function EditSales() {
                 {/* ── COLUMNA IZQUIERDA: Productos ─────────────────────────── */}
                 <div className="bg-white rounded-2xl shadow-lg p-6 flex flex-col gap-4">
                     <div className="flex justify-between items-center border-b pb-4">
-                        <h2 className="font-bold text-lg text-gray-900">Productos</h2>
+                        <h2 className="text-section-title">Productos</h2>
                         <button
                             onClick={() => setShowModal(true)}
                             className="cursor-pointer flex items-center gap-2 bg-yellow-otto text-white text-sm font-semibold px-4 py-2 rounded-lg hover:brightness-95 transition-all"
@@ -377,7 +377,7 @@ export default function EditSales() {
 
                 {/* ── COLUMNA DERECHA: Pagos ───────────────────────────────── */}
                 <div className="bg-white rounded-2xl shadow-lg p-6 flex flex-col gap-4">
-                    <h2 className="font-bold text-lg text-gray-900 border-b pb-4">
+                    <h2 className="text-section-title border-b pb-4">
                         Métodos de pago
                     </h2>
 

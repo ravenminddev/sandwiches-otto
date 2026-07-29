@@ -201,7 +201,7 @@ export default function AddProduct({ onProductoAgregado }) {
 
                         {/* Header */}
                         <div className="flex justify-between items-center p-5 border-b border-gray-100 sticky top-0 bg-white rounded-t-2xl z-10">
-                            <h2 className="text-lg sm:text-xl font-bold tracking-tighter text-gray-900">
+                            <h2 className="text-modal-title">
                                 Añadir producto
                             </h2>
                             <button
