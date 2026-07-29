@@ -129,35 +129,35 @@ function SalesLayoutInner() {
     return (
         <div className="grid [grid-template-areas:'sidebar_main'] grid-cols-[clamp(70px,12vw,150px)_1fr] max-lg:[grid-template-areas:'main'] max-lg:grid-cols-1 min-h-dvh">
 
-            {/* ── Mobile floating navbar ── */}
-            <div className={`lg:hidden fixed top-3 left-8 right-8 z-50 transition-all duration-300 ${
-                    navbarHidden || isModalOpen ? '-translate-y-[calc(100%+3rem)] opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'
+            {/* ── Mobile navbar (full-width, integrated) ── */}
+            <div className={`lg:hidden fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+                    navbarHidden || isModalOpen ? '-translate-y-full opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'
                 }`}>
                 <nav
-                    className="bg-white rounded-2xl shadow-lg flex items-center justify-between px-4 h-20"
+                    className="bg-white border-b border-dash-border/70 flex items-center justify-between px-4 h-16"
                 >
                     <button
                         onClick={() => setShowMobileSidebar(true)}
-                        className={`text-2xl transition-colors ${showMobileSidebar ? 'text-yellow-otto' : 'text-gray-700'}`}
+                        className={`text-xl transition-colors ${showMobileSidebar ? 'text-yellow-otto' : 'text-gray-700'}`}
                         aria-label="Abrir menú"
                     >
                         <FontAwesomeIcon icon={faBars} />
                     </button>
 
                     <div className="flex items-center">
-                        <img src={ottoLogo} alt="Otto" className="w-16 h-16" />
+                        <img src={ottoLogo} alt="Otto" className="w-10 h-10" />
                     </div>
                 </nav>
             </div>
 
             {/* ── Mobile dropdown drawer (expands downward from navbar) ── */}
             <div
-                className={`lg:hidden fixed left-8 right-8 z-40 bg-white rounded-2xl shadow-xl overflow-hidden transition-all duration-300 ease-in-out ${
+                className={`lg:hidden fixed left-0 right-0 z-40 bg-white border-b border-dash-border/70 shadow-xl overflow-hidden transition-all duration-300 ease-in-out ${
                     showMobileSidebar
                         ? 'max-h-[75dvh] opacity-100 translate-y-0'
                         : 'max-h-0 opacity-0 -translate-y-2 pointer-events-none'
                 }`}
-                style={{ top: 'calc(5rem + 0.75rem + 0.75rem)' }} // 5rem = h-20, 0.75rem = top-3, extra gap
+                style={{ top: '4rem' }}
             >
                 <div className="p-4 space-y-1">
                     <DrawerLink icon={faCashRegister} label="Registrar" path="/sales/" onClick={() => setShowMobileSidebar(false)} />
@@ -178,9 +178,8 @@ function SalesLayoutInner() {
                 />
             )}
             <Sidebar className='max-lg:hidden [grid-area:sidebar]' />
-            {isModalOpen && <div className='max-lg:hidden [grid-area:sidebar] bg-black/50 z-[101]' />}
 
-            <main className='[grid-area:main] w-full px-5 sm:px-10 lg:py-10 max-lg:pt-28 max-lg:pb-10 overflow-y-auto relative'>
+            <main className='[grid-area:main] w-full px-4 sm:px-6 lg:px-10 lg:py-10 max-lg:pt-20 max-lg:pb-10 overflow-y-auto relative'>
                 <div className="flex w-full relative z-10">
                     <div className={`transition-all duration-700 ease-out ${hasDesktopCart ? 'lg:w-2/3 lg:pr-6' : 'lg:w-full lg:pr-0'}`}>
                         <Outlet context={{ agregarAlCarrito, carrito }} />
@@ -204,7 +203,7 @@ function SalesLayoutInner() {
             {(totalItems > 0 && !showCart) || isModalOpen || isAdminRoute ? (
                 <button
                     onClick={() => setShowCart(true)}
-                    className={`cursor-pointer lg:hidden fixed bottom-6 right-6 z-60 bg-yellow-otto text-white p-4 rounded-full shadow-lg hover:brightness-95 transition-all duration-[2000ms] active:scale-90 ${
+                    className={`cursor-pointer lg:hidden fixed bottom-6 right-6 z-40 bg-yellow-otto text-white p-4 rounded-full shadow-lg hover:brightness-95 transition-all duration-[2000ms] active:scale-90 ${
                         isModalOpen || isAdminRoute ? 'translate-y-40 opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'
                     }`}
                     aria-label="Abrir carrito"

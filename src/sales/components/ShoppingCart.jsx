@@ -130,7 +130,7 @@ export default function ShoppingCart({ carrito, onAumentar, onDisminuir, onElimi
                 <div className='w-9 h-9 rounded-xl bg-yellow-otto/10 flex items-center justify-center'>
                     <FontAwesomeIcon icon={faReceipt} className='text-yellow-otto' size='sm' />
                 </div>
-                <h2 className='text-aside-section-title'>
+                <h2 className='text-xl font-bold text-gray-900'>
                     Factura
                 </h2>
             </div>
@@ -153,9 +153,9 @@ export default function ShoppingCart({ carrito, onAumentar, onDisminuir, onElimi
                         >
                             <div className='flex justify-between items-start mb-2.5'>
                                 <div className='flex-1 min-w-0 pr-2'>
-                                    <p className='text-cart-item-name'>
+                                    <h4 className='font-semibold text-sm text-gray-900 truncate'>
                                         {item.name}
-                                    </p>
+                                    </h4>
                                     <p className='text-xs text-gray-500 mt-0.5'>
                                         ${item.precio.toLocaleString('es-CO')} c/u
                                     </p>
@@ -248,7 +248,7 @@ export default function ShoppingCart({ carrito, onAumentar, onDisminuir, onElimi
             {/* Sección de Pagos */}
             {carrito.length > 0 && (
                 <div className='pt-4 border-t border-gray-100 mb-6'>
-                    <h3 className='text-aside-subsection mb-3 flex items-center gap-1.5'>
+                    <h3 className='font-bold text-sm text-gray-900 mb-3 flex items-center gap-1.5'>
                         <FontAwesomeIcon icon={faCreditCard} className='text-gray-400' size='xs' />
                         Pagos
                     </h3>
