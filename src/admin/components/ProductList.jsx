@@ -68,7 +68,7 @@ export default function ProductList({ products = [], flat = false, search = '', 
                 </span>
                 <div>
                     <p className="text-empty-state">No hay productos registrados</p>
-                    <p className="text-sm text-dash-gray-soft mt-1">
+                    <p className="text-sm text-dash-gray-soft dark:text-zinc-400 mt-1">
                         Añade el primero con el botón de arriba
                     </p>
                 </div>
@@ -80,7 +80,7 @@ export default function ProductList({ products = [], flat = false, search = '', 
     if (flat) {
         return (
             <div className="flex flex-col gap-4">
-                <p className="text-sm text-dash-gray animate-fade-in">
+                <p className="text-sm text-dash-gray dark:text-zinc-300 animate-fade-in">
                     {products.length} {products.length === 1 ? 'resultado' : 'resultados'} para &quot;{search}&quot;
                 </p>
                 <ul className="list-none grid grid-cols-3 gap-3 sm:gap-4">
@@ -104,7 +104,7 @@ export default function ProductList({ products = [], flat = false, search = '', 
             {grupos.map(([categoria, items]) => (
                 <section key={categoria} className="flex flex-col gap-3">
                     <header className="inline-flex items-center gap-2 animate-rise">
-                        <h3 className="text-lg sm:text-xl font-bold text-gray-900">
+                        <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-zinc-100">
                             {categoria}
                         </h3>
                         <span className="text-xs font-medium bg-yellow-otto/10 text-yellow-otto rounded-full px-2 py-0.5 leading-none">

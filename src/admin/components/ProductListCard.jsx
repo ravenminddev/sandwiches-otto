@@ -29,12 +29,12 @@ export default function ProductListCard({ product, onDelete, isDeleting }) {
 
     return (
         <article
-            className={`group relative h-full flex flex-col bg-white rounded-2xl overflow-hidden ring-1 ring-dash-border/80 shadow-sm transition-[box-shadow,transform,ring-color] duration-200 ease-linear hover:shadow-lg hover:-translate-y-1 hover:ring-yellow-otto/40 active:scale-[0.98] ${
+            className={`group relative h-full flex flex-col bg-white dark:bg-card rounded-2xl overflow-hidden ring-1 ring-dash-border/80 dark:ring-zinc-700/80 shadow-sm transition-[box-shadow,transform,ring-color] duration-200 ease-linear hover:shadow-lg hover:-translate-y-1 hover:ring-yellow-otto/40 active:scale-[0.98] ${
                 isDeleting ? 'opacity-50 pointer-events-none' : ''
             }`}
         >
-            <div className="relative bg-graywhite p-2">
-                <div className="relative w-full aspect-[5/4] rounded-xl overflow-hidden bg-gray-100/60">
+            <div className="relative bg-graywhite dark:bg-zinc-800/70 p-2">
+                <div className="relative w-full aspect-[5/4] rounded-xl overflow-hidden bg-gray-100/60 dark:bg-zinc-700/60">
                     <img
                         src={img}
                         alt={name}
@@ -45,7 +45,7 @@ export default function ProductListCard({ product, onDelete, isDeleting }) {
                             e.currentTarget.nextElementSibling.style.display = 'flex';
                         }}
                     />
-                    <div className="hidden absolute inset-0 items-center justify-center text-3xl text-dash-gray-soft/60" aria-hidden="true">
+                    <div className="hidden absolute inset-0 items-center justify-center text-3xl text-dash-gray-soft/60 dark:text-zinc-500/60" aria-hidden="true">
                         🍽️
                     </div>
                 </div>
@@ -57,17 +57,17 @@ export default function ProductListCard({ product, onDelete, isDeleting }) {
                         onClick={() => setMenuOpen(v => !v)}
                         aria-label={`Opciones de ${name}`}
                         aria-expanded={menuOpen}
-                        className="w-8 h-8 rounded-full flex items-center justify-center bg-white/90 text-dash-gray shadow-sm ring-1 ring-dash-border/60 transition-all duration-200 hover:text-dash-ink hover:bg-white active:scale-90"
+                        className="w-8 h-8 rounded-full flex items-center justify-center bg-white/90 dark:bg-zinc-800/90 text-dash-gray dark:text-zinc-400 shadow-sm ring-1 ring-dash-border/60 dark:ring-zinc-700/60 transition-all duration-200 hover:text-dash-ink dark:hover:text-zinc-100 hover:bg-white dark:hover:bg-zinc-700 active:scale-90"
                     >
                         <FontAwesomeIcon icon={faEllipsisVertical} className="text-sm" />
                     </button>
 
                     {menuOpen && (
-                        <div className="absolute top-full right-0 mt-1.5 bg-white rounded-xl shadow-lg shadow-black/8 ring-1 ring-dash-border/80 py-1 w-max overflow-hidden z-10 animate-rise origin-top-right">
+                        <div className="absolute top-full right-0 mt-1.5 bg-white dark:bg-card rounded-xl shadow-lg shadow-black/8 ring-1 ring-dash-border/80 dark:ring-zinc-700/80 py-1 w-max overflow-hidden z-10 animate-rise origin-top-right">
                             <Link
                                 to={`/sales/admin/editProduct/${id_producto}`}
                                 onClick={closeMenu}
-                                className="flex items-center gap-2 px-2.5 py-2 text-sm text-dash-ink hover:bg-yellow-otto/10 transition-colors"
+                                className="flex items-center gap-2 px-2.5 py-2 text-sm text-dash-ink dark:text-zinc-300 hover:bg-yellow-otto/10 transition-colors"
                             >
                                 <FontAwesomeIcon icon={faPen} className="text-xs text-yellow-otto" />
                                 Editar
@@ -79,7 +79,7 @@ export default function ProductListCard({ product, onDelete, isDeleting }) {
                                 className={`w-full flex items-center gap-2 px-2.5 py-2 text-sm transition-colors ${
                                     isDeleting
                                         ? 'text-gray-400 cursor-not-allowed'
-                                        : 'text-dash-red hover:bg-red-50 cursor-pointer'
+                                        : 'text-dash-red dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 cursor-pointer'
                                 }`}
                             >
                                 <FontAwesomeIcon icon={isDeleting ? faSpinner : faTrash} className={`text-xs ${isDeleting ? 'animate-spin' : ''}`} />
@@ -91,10 +91,10 @@ export default function ProductListCard({ product, onDelete, isDeleting }) {
             </div>
 
             <div className="flex-1 px-2.5 pb-2.5 pt-1 flex flex-col">
-                <h3 className="text-[13px] font-medium leading-snug line-clamp-2 text-gray-900">
+                <h3 className="text-[13px] font-medium leading-snug line-clamp-2 text-gray-900 dark:text-zinc-100">
                     {name}
                 </h3>
-                <p className="text-[13px] font-medium text-dash-gray mt-0.5">
+                <p className="text-[13px] font-medium text-dash-gray dark:text-zinc-400 mt-0.5">
                     ${formattedPrice}
                 </p>
             </div>

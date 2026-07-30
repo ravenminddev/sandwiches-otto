@@ -180,7 +180,7 @@
 
 /* Mensaje de estado vacío ("No hay ventas", "No hay productos"). */
 @utility text-empty-state {
-    @apply text-lg sm:text-xl font-bold text-gray-700;
+    @apply text-lg sm:text-xl font-bold text-gray-700 dark:text-zinc-300;
 }
 
 /* ============================================================
