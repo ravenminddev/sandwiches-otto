@@ -8,7 +8,7 @@ import logoOtto from '@/assets/logo.png';
 import { useEffect, useState } from 'react';
 
 const routeToActive = {
-    '/sales/': 'registrar',
+    '/sales': 'registrar',
     '/sales/money': 'ventas',
     '/sales/history': 'historial',
     '/sales/admin': 'admin',
@@ -71,7 +71,7 @@ export default function Sidebar({ className, isDimmed }) {
 
             <div className={'flex flex-col gap-y-3 w-full'}>
 
-                <NavLink to='/sales/' onClick={()=>(setIsActive('registrar'))}>
+                <NavLink to='/sales' onClick={()=>(setIsActive('registrar'))}>
                     <div className={` ${isActive==='registrar'?'bg-yellow-otto/20 pl-4':''} group flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 hover:bg-yellow-otto/10 hover:pl-4 `}>
                         <FontAwesomeIcon 
                             icon={faCashRegister} 

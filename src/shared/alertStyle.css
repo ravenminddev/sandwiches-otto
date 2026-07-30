@@ -88,3 +88,17 @@ html.dark .swal2-title{
 html.dark .swal2-html-container{
     color: #a1a1aa !important;
 }
+
+html.dark .btn--primary{
+    background-color: #E7B901 !important;
+    color: #111827 !important;
+    box-shadow: 0 4px 12px rgba(231,185,1,0.25) !important;
+}
+
+html.dark .btn--primary:hover{
+    box-shadow: 0 6px 16px rgba(231,185,1,0.3) !important;
+}
+
+html.dark .btn--primary:active{
+    box-shadow: 0 2px 6px rgba(231,185,1,0.2) !important;
+}

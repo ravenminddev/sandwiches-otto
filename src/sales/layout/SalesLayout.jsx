@@ -178,7 +178,7 @@ function SalesLayoutInner() {
                 style={{ top: '4rem' }}
             >
                 <div className="p-4 space-y-1">
-                    <DrawerLink icon={faCashRegister} label="Registrar" path="/sales/" onClick={() => setShowMobileSidebar(false)} />
+                    <DrawerLink icon={faCashRegister} label="Registrar" path="/sales" onClick={() => setShowMobileSidebar(false)} />
                     <DrawerLink icon={faCircleDollarToSlot} label="Ventas" path="/sales/money" onClick={() => setShowMobileSidebar(false)} />
                     <DrawerLink icon={faClockRotateLeft} label="Historial" path="/sales/history" onClick={() => setShowMobileSidebar(false)} />
                     {isAdmin && (
