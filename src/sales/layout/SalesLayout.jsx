@@ -164,7 +164,6 @@ function SalesLayoutInner() {
                             <img src={ottoLogo} alt="Otto" className="w-16 h-16 select-none" />
                         </button>
                     </div>
-                    </div>
                 </nav>
             </div>
 
