@@ -40,8 +40,10 @@ function DrawerLink({ icon, label, path, onClick, onAction }) {
 function SalesLayoutInner() {
     const { isModalOpen } = useModal();
     const location = useLocation();
+    const isRegisterRoute = location.pathname === '/sales/' || location.pathname === '/sales';
     const isAdminRoute = location.pathname.startsWith('/sales/admin');
     const [carrito, setCarrito] = useState([]);
+    const hasDesktopCart = isRegisterRoute && carrito.length > 0;
     const [showCart, setShowCart] = useState(false);
     const [showMobileSidebar, setShowMobileSidebar] = useState(false);
     const { userData } = useAuth();
@@ -179,11 +181,15 @@ function SalesLayoutInner() {
             {isModalOpen && <div className='max-lg:hidden [grid-area:sidebar] bg-black/50 z-[101]' />}
 
             <main className='[grid-area:main] w-full px-5 sm:px-10 lg:py-10 max-lg:pt-28 max-lg:pb-10 overflow-y-auto relative'>
-                <div className='grid grid-cols-1 lg:grid-cols-3 gap-6 relative z-10'>
-                    <div className='lg:col-span-2'>
+                <div className="flex w-full relative z-10">
+                    <div className={`transition-all duration-700 ease-out ${hasDesktopCart ? 'lg:w-2/3 lg:pr-6' : 'lg:w-full lg:pr-0'}`}>
                         <Outlet context={{ agregarAlCarrito, carrito }} />
                     </div>
-                    <div className='hidden lg:block lg:col-span-1'>
+                    <div
+                        className={`hidden lg:block transition-all duration-700 ease-out overflow-hidden ${
+                            hasDesktopCart ? 'lg:w-1/3 translate-y-0 opacity-100' : 'lg:w-0 translate-y-12 opacity-0 pointer-events-none'
+                        }`}
+                    >
                         <ShoppingCart
                             carrito={carrito}
                             onAumentar={aumentarCantidad}
