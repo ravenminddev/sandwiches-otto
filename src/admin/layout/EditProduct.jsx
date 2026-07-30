@@ -6,7 +6,9 @@ import alertPop from '@/utils/alertPop.js';
 import { updateProduct, getProductById } from '../../lib/services/products.js';
 import { uploadImageToCloudinary, validateImage } from '../../lib/services/cloudinary/cloudinary.js';
 
-const inputClass = 'w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm sm:text-base text-gray-800 placeholder-gray-400 shadow-sm transition-all duration-200 outline-none focus:border-yellow-500 focus:ring-4 focus:ring-yellow-500/15 hover:border-gray-300';
+const inputClass = 'w-full rounded-xl border border-dash-border bg-white px-4 py-3 text-sm sm:text-base text-dash-ink placeholder-dash-gray-soft shadow-sm transition-all duration-200 outline-none focus:border-yellow-otto focus:ring-4 focus:ring-yellow-otto/15 hover:border-dash-gray-soft';
+
+const labelClass = 'text-sm font-semibold text-dash-gray';
 
 export default function EditProduct() {
     const { productId } = useParams();
@@ -146,15 +148,17 @@ export default function EditProduct() {
 
     if (loading) {
         return (
-            <section className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
+            <section className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
                 <div className="animate-pulse flex flex-col gap-6">
                     <div className="h-5 w-24 bg-gray-200 rounded" />
                     <div className="h-8 w-64 bg-gray-200 rounded" />
-                    <div className="bg-white rounded-2xl shadow-sm p-6 sm:p-8 flex flex-col gap-6">
-                        <div className="aspect-[4/3] sm:aspect-square rounded-xl bg-gray-100 max-w-xs w-full mx-auto sm:mx-0" />
-                        <div className="h-10 bg-gray-100 rounded-xl" />
-                        <div className="h-10 bg-gray-100 rounded-xl" />
-                        <div className="h-20 bg-gray-100 rounded-xl" />
+                    <div className="bg-white rounded-3xl ring-1 ring-dash-border/60 p-4 sm:p-6 flex flex-col sm:flex-row gap-6">
+                        <div className="w-full sm:w-60 shrink-0 aspect-4/3 sm:aspect-square rounded-2xl bg-gray-100" />
+                        <div className="flex-1 flex flex-col gap-5">
+                            <div className="h-11 bg-gray-100 rounded-xl" />
+                            <div className="h-11 bg-gray-100 rounded-xl" />
+                            <div className="h-24 bg-gray-100 rounded-xl" />
+                        </div>
                     </div>
                 </div>
             </section>
@@ -162,118 +166,130 @@ export default function EditProduct() {
     }
 
     if (!producto) {
-        return <div className='text-center py-10 text-gray-500'>Producto no encontrado</div>;
+        return <div className='text-center py-10 text-dash-gray'>Producto no encontrado</div>;
     }
 
     return (
-        <section className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
+        <section className="max-w-3xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
             <button
                 type='button'
                 onClick={handleVolver}
-                className="cursor-pointer mb-6 text-gray-600 hover:text-gray-900 transition-colors inline-flex items-center gap-2 text-sm font-medium"
+                className="cursor-pointer mb-5 text-dash-gray hover:text-dash-ink transition-colors inline-flex items-center gap-2 text-sm font-semibold animate-rise"
             >
                 <FontAwesomeIcon icon={faArrowLeft} />
                 Volver
             </button>
 
-            <h1 className='text-page-title mb-6 sm:mb-8'>
+            <h1 className='text-page-title mb-6 sm:mb-8 animate-rise' style={{ animationDelay: '40ms' }}>
                 Editar producto
             </h1>
 
-            <form onSubmit={handleSubmit} className='bg-white rounded-2xl shadow-sm p-5 sm:p-8 flex flex-col sm:flex-row gap-8'>
+            <form onSubmit={handleSubmit} className='flex flex-col gap-5'>
 
-                {/* Imagen */}
-                <div className="sm:w-56 shrink-0 flex flex-col items-center gap-3">
-                    <div className="relative w-full aspect-square rounded-xl overflow-hidden bg-gray-100 shadow-sm">
-                        <img
-                            src={file ? URL.createObjectURL(file) : (producto?.imagen_producto || 'https://via.placeholder.com/160')}
-                            alt={producto?.nombre_producto}
-                            className='w-full h-full object-cover'
+                <div className='bg-white rounded-3xl ring-1 ring-dash-border/80 shadow-sm p-4 sm:p-6 flex flex-col sm:flex-row gap-6 animate-rise' style={{ animationDelay: '80ms' }}>
+
+                    {/* Imagen */}
+                    <div className="sm:w-60 shrink-0">
+                        <div className="relative w-full aspect-4/3 sm:aspect-square rounded-2xl overflow-hidden bg-graywhite ring-1 ring-dash-border/60">
+                            <img
+                                src={file ? URL.createObjectURL(file) : (producto?.imagen_producto || 'https://via.placeholder.com/160')}
+                                alt={producto?.nombre_producto}
+                                className='w-full h-full object-cover'
+                            />
+
+                            <button
+                                type="button"
+                                onClick={clickEvent}
+                                aria-label={file ? 'Cambiar foto' : 'Actualizar foto'}
+                                title={file ? 'Cambiar foto' : 'Actualizar foto'}
+                                className="cursor-pointer absolute right-3 bottom-3 w-11 h-11 rounded-full bg-yellow-otto text-white shadow-lg flex items-center justify-center transition-all duration-200 hover:brightness-95 active:scale-90"
+                            >
+                                <FontAwesomeIcon icon={faCamera} />
+                            </button>
+                        </div>
+
+                        <input
+                            type="file"
+                            ref={inputRef}
+                            onChange={handleFileChange}
+                            accept="image/jpeg,image/png,image/gif"
+                            className='hidden'
                         />
+
+                        <p className="mt-2 text-xs text-dash-gray-soft text-center">
+                            Toca la cámara para {file ? 'cambiar' : 'actualizar'} la foto
+                        </p>
                     </div>
 
-                    <input
-                        type="file"
-                        ref={inputRef}
-                        onChange={handleFileChange}
-                        accept="image/jpeg,image/png,image/gif"
-                        className='hidden'
-                    />
+                    {/* Campos */}
+                    <div className="flex-1 flex flex-col gap-5">
+                        <div className='flex gap-2 flex-col'>
+                            <label htmlFor="nombre_producto" className={labelClass}>
+                                Nombre del producto
+                            </label>
+                            <input
+                                type="text"
+                                placeholder='Ej: Sándwich de Pollo'
+                                name="nombre_producto"
+                                id="nombre_producto"
+                                value={formData.nombre_producto}
+                                onChange={handleInputChange}
+                                className={inputClass}
+                            />
+                        </div>
 
-                    <button
-                        type="button"
-                        onClick={clickEvent}
-                        className="cursor-pointer w-full inline-flex items-center justify-center gap-2 border-2 border-gray-200 text-gray-700 font-medium text-sm rounded-lg py-2.5 px-4 hover:bg-gray-50 transition-colors"
-                    >
-                        <FontAwesomeIcon icon={faCamera} className="text-xs" />
-                        {file ? 'Cambiar foto' : 'Actualizar foto'}
-                    </button>
+                        <div className='flex gap-2 flex-col'>
+                            <label htmlFor="precio" className={labelClass}>
+                                Precio del producto
+                            </label>
+                            <div className="relative">
+                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-dash-gray-soft font-semibold text-sm pointer-events-none">$</span>
+                                <input
+                                    type="number"
+                                    placeholder='15000'
+                                    name="precio"
+                                    id="precio"
+                                    value={formData.precio}
+                                    onChange={handleInputChange}
+                                    step="0.01"
+                                    min="0"
+                                    className={`${inputClass} pl-8`}
+                                />
+                            </div>
+                        </div>
+
+                        <div className='flex gap-2 flex-col'>
+                            <label htmlFor="descripcion" className={labelClass}>
+                                Descripción (opcional)
+                            </label>
+                            <textarea
+                                name="descripcion"
+                                id="descripcion"
+                                value={formData.descripcion}
+                                onChange={handleInputChange}
+                                placeholder='Descripción del producto'
+                                className={`${inputClass} resize-none h-24`}
+                            />
+                        </div>
+                    </div>
                 </div>
 
-                {/* Campos */}
-                <div className="flex-1 flex flex-col gap-5">
-                    <div className='flex gap-2 flex-col'>
-                        <label htmlFor="nombre_producto" className='text-sm font-medium text-gray-700'>
-                            Nombre del producto
-                        </label>
-                        <input
-                            type="text"
-                            placeholder='Ej: Sándwich de Pollo'
-                            name="nombre_producto"
-                            id="nombre_producto"
-                            value={formData.nombre_producto}
-                            onChange={handleInputChange}
-                            className={inputClass}
-                        />
-                    </div>
-
-                    <div className='flex gap-2 flex-col'>
-                        <label htmlFor="precio" className='text-sm font-medium text-gray-700'>
-                            Precio del producto
-                        </label>
-                        <input
-                            type="number"
-                            placeholder='Ej: 15000'
-                            name="precio"
-                            id="precio"
-                            value={formData.precio}
-                            onChange={handleInputChange}
-                            step="0.01"
-                            min="0"
-                            className={inputClass}
-                        />
-                    </div>
-
-                    <div className='flex gap-2 flex-col'>
-                        <label htmlFor="descripcion" className='text-sm font-medium text-gray-700'>
-                            Descripción (opcional)
-                        </label>
-                        <textarea
-                            name="descripcion"
-                            id="descripcion"
-                            value={formData.descripcion}
-                            onChange={handleInputChange}
-                            placeholder='Descripción del producto'
-                            className={`${inputClass} resize-none h-24`}
-                        />
-                    </div>
-
-                    <div className='flex flex-col sm:flex-row gap-3 mt-2'>
-                        <button
-                            type='submit'
-                            disabled={saving}
-                            className={`cursor-pointer flex-1 bg-yellow-otto text-white font-medium rounded-lg py-3 px-4 transition-all ${saving ? 'opacity-60 cursor-not-allowed' : 'hover:brightness-95'}`}
-                        >
-                            {saving ? 'Guardando...' : 'Actualizar producto'}
-                        </button>
-                        <button
-                            type='button'
-                            onClick={handleVolver}
-                            className='cursor-pointer w-full sm:w-auto px-6 py-3 border-2 border-gray-200 text-gray-700 rounded-lg hover:bg-gray-50 font-medium transition-colors'
-                        >
-                            Cancelar
-                        </button>
-                    </div>
+                {/* Dock de acciones: siempre al alcance del pulgar en móvil */}
+                <div className='sticky bottom-4 z-30 bg-white/95 backdrop-blur rounded-2xl ring-1 ring-dash-border shadow-lg p-3 flex flex-row gap-3 animate-rise' style={{ animationDelay: '140ms' }}>
+                    <button
+                        type='button'
+                        onClick={handleVolver}
+                        className='cursor-pointer px-5 py-3 border-2 border-dash-border text-dash-gray rounded-xl hover:bg-graywhite font-semibold transition-colors'
+                    >
+                        Cancelar
+                    </button>
+                    <button
+                        type='submit'
+                        disabled={saving}
+                        className={`cursor-pointer flex-1 bg-yellow-otto text-white font-semibold rounded-xl py-3 px-4 transition-all active:scale-[0.98] ${saving ? 'opacity-60 cursor-not-allowed' : 'hover:brightness-95'}`}
+                    >
+                        {saving ? 'Guardando...' : 'Actualizar producto'}
+                    </button>
                 </div>
             </form>
         </section>

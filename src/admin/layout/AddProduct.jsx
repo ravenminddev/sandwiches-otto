@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faXmark, faCloudArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { uploadImageToCloudinary, validateImage } from '../../lib/services/cloudinary/cloudinary.js';
@@ -16,7 +17,9 @@ const initialFormData = {
     disponible: true
 };
 
-const inputClass = 'w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm sm:text-base text-gray-800 placeholder-gray-400 shadow-sm transition-all duration-200 outline-none focus:border-yellow-500 focus:ring-4 focus:ring-yellow-500/15 hover:border-gray-300';
+const inputClass = 'w-full rounded-xl border border-dash-border bg-white px-4 py-3 text-sm sm:text-base text-dash-ink placeholder-dash-gray-soft shadow-sm transition-all duration-200 outline-none focus:border-yellow-otto focus:ring-4 focus:ring-yellow-otto/15 hover:border-dash-gray-soft';
+
+const labelClass = 'text-sm font-semibold text-dash-gray';
 
 export default function AddProduct({ onProductoAgregado }) {
     const { openModal, closeModal } = useModal();
@@ -41,7 +44,7 @@ export default function AddProduct({ onProductoAgregado }) {
                 } else {
                     await alertPop('ERROR', 'No se pudieron cargar las categorías', 'error', 'Continuar');
                 }
-            } catch (error) {
+            } catch {
                 // Silenciado: si falla la carga de categorías, el formulario sigue
                 // usable, solo el selector queda vacío.
             }
@@ -56,7 +59,7 @@ export default function AddProduct({ onProductoAgregado }) {
         } else {
             closeModal();
         }
-    }, [isOpen]);
+    }, [isOpen, openModal, closeModal]);
 
     // Bloquear scroll de fondo, permitir cerrar con Escape
     useEffect(() => {
@@ -181,34 +184,45 @@ export default function AddProduct({ onProductoAgregado }) {
 
     return (
         <>
+            {/* FAB fijo en todas las pantallas */}
             <button
                 type="button"
                 onClick={() => setIsOpen(true)}
-                className="cursor-pointer inline-flex items-center justify-center gap-2 bg-yellow-otto text-white font-medium rounded-3xl py-3 w-full sm:w-auto px-5 hover:brightness-95 transition-all whitespace-nowrap"
+                aria-label="Añadir producto"
+                className="cursor-pointer fixed bottom-6 right-6 z-50 inline-flex items-center justify-center gap-2 rounded-full sm:rounded-3xl bg-yellow-otto text-dash-ink font-semibold shadow-xl shadow-yellow-otto/30 transition-all duration-300 hover:brightness-95 active:scale-90 ring-1 ring-inset ring-dash-ink/10 whitespace-nowrap w-14 h-14 text-lg sm:w-auto sm:h-auto sm:px-5 sm:py-3.5 sm:text-base"
             >
                 <FontAwesomeIcon icon={faPlus} />
-                Añadir producto
+                <span className="hidden sm:inline">Añadir producto</span>
             </button>
 
-            {isOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center">
+            {isOpen && createPortal(
+                <div
+                    className="fixed inset-0 z-[110] flex items-end sm:items-center justify-center"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="add-product-title"
+                >
                     <div
-                        className="absolute inset-0 bg-black/50 backdrop-blur-[2px]"
+                        className="fixed inset-0 z-[1] bg-black/50 animate-fade-in"
                         onClick={() => setIsOpen(false)}
                     />
 
-                    <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90dvh] flex flex-col mx-4 animate-slide-up sm:animate-pop">
+                    {/* Bottom-sheet en móvil, diálogo centrado desde sm */}
+                    <div className="relative z-[2] bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl w-full sm:max-w-2xl max-h-[92dvh] flex flex-col sm:mx-4 animate-slide-up sm:animate-scale-in">
+
+                        {/* Handle visual del sheet (solo móvil) */}
+                        <div className="sm:hidden mx-auto mt-2.5 h-1.5 w-12 rounded-full bg-dash-border shrink-0" aria-hidden="true" />
 
                         {/* Header */}
-                        <div className="flex justify-between items-center p-5 border-b border-gray-100 sticky top-0 bg-white rounded-t-2xl z-10">
-                            <h2 className="text-modal-title">
+                        <div className="flex justify-between items-center p-5 border-b border-dash-border/70 sticky top-0 bg-white rounded-t-3xl sm:rounded-t-2xl z-10">
+                            <h2 id="add-product-title" className="text-modal-title">
                                 Añadir producto
                             </h2>
                             <button
                                 type="button"
                                 onClick={() => setIsOpen(false)}
                                 aria-label="Cerrar"
-                                className="cursor-pointer p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-500"
+                                className="cursor-pointer p-2 hover:bg-graywhite rounded-full transition-colors text-dash-gray"
                             >
                                 <FontAwesomeIcon icon={faXmark} className="text-lg" />
                             </button>
@@ -222,16 +236,20 @@ export default function AddProduct({ onProductoAgregado }) {
                                 onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
                                 onDragLeave={() => setIsDragging(false)}
                                 onDrop={handleDrop}
-                                className={`flex flex-col items-center justify-center w-full border-2 border-dashed rounded-xl p-6 transition-colors ${isDragging ? 'border-yellow-500 bg-yellow-50' : 'border-gray-300 bg-gray-50'}`}
+                                className={`flex flex-col items-center justify-center w-full border-2 border-dashed rounded-2xl p-6 transition-all duration-200 ${
+                                    isDragging
+                                        ? 'border-yellow-otto bg-yellow-otto/5 scale-[1.01]'
+                                        : 'border-dash-border bg-graywhite hover:border-yellow-otto/50'
+                                }`}
                             >
                                 {file ? (
                                     <img
-                                        className='w-32 h-32 object-cover rounded-lg mb-4 shadow-sm'
+                                        className='w-28 h-28 object-cover rounded-xl mb-3 shadow-sm ring-1 ring-dash-border'
                                         src={URL.createObjectURL(file)}
                                         alt={file.name}
                                     />
                                 ) : (
-                                    <FontAwesomeIcon icon={faCloudArrowUp} className="text-3xl text-gray-300 mb-3" />
+                                    <FontAwesomeIcon icon={faCloudArrowUp} className="text-3xl text-dash-gray-soft mb-3" />
                                 )}
 
                                 <input
@@ -243,7 +261,7 @@ export default function AddProduct({ onProductoAgregado }) {
                                 />
 
                                 {!file && (
-                                    <p className="text-sm text-gray-400 mb-3 text-center">
+                                    <p className="text-sm text-dash-gray-soft mb-3 text-center">
                                         Arrastra una imagen aquí o selecciona un archivo
                                     </p>
                                 )}
@@ -251,7 +269,7 @@ export default function AddProduct({ onProductoAgregado }) {
                                 <button
                                     type="button"
                                     onClick={clickEvent}
-                                    className="cursor-pointer bg-yellow-otto text-white font-medium text-sm rounded-3xl px-4 py-2 hover:brightness-95 transition-all"
+                                    className="cursor-pointer bg-yellow-otto text-white font-medium text-sm rounded-3xl px-4 py-2 hover:brightness-95 active:scale-95 transition-all"
                                 >
                                     {file ? 'Cambiar imagen' : 'Seleccionar imagen'}
                                 </button>
@@ -260,7 +278,7 @@ export default function AddProduct({ onProductoAgregado }) {
                             {/* Nombre y Precio */}
                             <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                                 <div className='flex gap-2 flex-col'>
-                                    <label htmlFor="nombre_producto" className='text-sm font-medium text-gray-700'>
+                                    <label htmlFor="nombre_producto" className={labelClass}>
                                         Nombre del producto
                                     </label>
                                     <input
@@ -275,27 +293,30 @@ export default function AddProduct({ onProductoAgregado }) {
                                 </div>
 
                                 <div className='flex gap-2 flex-col'>
-                                    <label htmlFor="precio" className='text-sm font-medium text-gray-700'>
+                                    <label htmlFor="precio" className={labelClass}>
                                         Precio del producto
                                     </label>
-                                    <input
-                                        type="number"
-                                        placeholder='Ej: 15000'
-                                        name="precio"
-                                        id="precio"
-                                        value={formData.precio}
-                                        onChange={handleInputChange}
-                                        min="0"
-                                        step="0.01"
-                                        className={inputClass}
-                                    />
+                                    <div className="relative">
+                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-dash-gray-soft font-semibold text-sm pointer-events-none">$</span>
+                                        <input
+                                            type="number"
+                                            placeholder='15000'
+                                            name="precio"
+                                            id="precio"
+                                            value={formData.precio}
+                                            onChange={handleInputChange}
+                                            min="0"
+                                            step="0.01"
+                                            className={`${inputClass} pl-8`}
+                                        />
+                                    </div>
                                 </div>
                             </div>
 
                             {/* Categoría y Descripción */}
                             <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                                 <div className='flex gap-2 flex-col'>
-                                    <label htmlFor="id_categoria" className='text-sm font-medium text-gray-700'>
+                                    <label htmlFor="id_categoria" className={labelClass}>
                                         Categoría
                                     </label>
                                     <select
@@ -315,7 +336,7 @@ export default function AddProduct({ onProductoAgregado }) {
                                 </div>
 
                                 <div className='flex gap-2 flex-col'>
-                                    <label htmlFor="descripcion" className='text-sm font-medium text-gray-700'>
+                                    <label htmlFor="descripcion" className={labelClass}>
                                         Descripción
                                     </label>
                                     <input
@@ -332,7 +353,7 @@ export default function AddProduct({ onProductoAgregado }) {
 
                             {/* Ingredientes */}
                             <div className='flex gap-2 flex-col'>
-                                <label htmlFor="ingredientes" className='text-sm font-medium text-gray-700'>
+                                <label htmlFor="ingredientes" className={labelClass}>
                                     Ingredientes
                                 </label>
                                 <textarea
@@ -347,11 +368,11 @@ export default function AddProduct({ onProductoAgregado }) {
                         </form>
 
                         {/* Footer */}
-                        <div className="flex flex-col sm:flex-row gap-3 p-5 border-t border-gray-100 sticky bottom-0 bg-white rounded-b-2xl">
+                        <div className="flex flex-col sm:flex-row gap-3 p-5 border-t border-dash-border/70 sticky bottom-0 bg-white sm:rounded-b-2xl">
                             <button
                                 type="button"
                                 onClick={ResetForm}
-                                className="cursor-pointer w-full sm:w-auto px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-3xl hover:bg-gray-100 font-medium transition-colors"
+                                className="cursor-pointer w-full sm:w-auto px-6 py-3 border-2 border-dash-border text-dash-gray rounded-3xl hover:bg-graywhite font-semibold transition-colors"
                             >
                                 Limpiar
                             </button>
@@ -359,13 +380,14 @@ export default function AddProduct({ onProductoAgregado }) {
                                 type="button"
                                 onClick={handleSubmit}
                                 disabled={loading}
-                                className={`cursor-pointer flex-1 bg-yellow-otto text-white font-medium rounded-3xl py-3 px-4 transition-all ${loading ? 'opacity-60 cursor-not-allowed' : 'hover:brightness-95'}`}
+                                className={`cursor-pointer flex-1 bg-yellow-otto text-white font-semibold rounded-3xl py-3 px-4 transition-all active:scale-[0.98] ${loading ? 'opacity-60 cursor-not-allowed' : 'hover:brightness-95'}`}
                             >
                                 {loading ? 'Guardando...' : 'Ingresar nuevo producto'}
                             </button>
                         </div>
                     </div>
-                </div>
+                </div>,
+                document.body
             )}
         </>
     )
