@@ -2,6 +2,10 @@ import supabase from "../supabase/client.js";
 import { sendInvitationEmail } from "./email/email.js";
 
 // ============ GENERAR TOKEN DE INVITACIÓN ============
+
+/*
+ADVERTENCIA: ESTA FUNCION SE USA
+*/
 export const generateInvitationToken = async (idAdmin, emailNuevoUsuario) => {
     try {
         if (!idAdmin || !emailNuevoUsuario) {
@@ -129,6 +133,9 @@ export const validateInvitationToken = async (email, token) => {
 };
 
 // ============ MARCAR TOKEN COMO USADO ============
+/*
+ADVERTENCIA: ESTA FUNCION SE USA
+*/
 export const markTokenAsUsed = async (token, idUsuarioCreado) => {
     try {
         if (!token || !idUsuarioCreado) {

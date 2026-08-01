@@ -11,17 +11,17 @@ export const MENSAJES = {
 };
 
 
-export const VALIDACIONES= {
+export const VALIDACIONES = {
     MIN_PASSWORD_LENGTH: 8,
     MAX_PASSWORD_LENGTH: 20,
     MAX_USERNAME_LENGTH: 50,
     MAX_FILE_SIZE: 20 * 1024 * 1024, // 20MB
-    ALLOWED_FILE_TYPES: ["image/jpeg", "image/png", "image/gif"],
+    ALLOWED_FILE_TYPES: ["image/jpeg", "image/jpg", "image/webp", "image/png", "image/gif"],
     TIMEOUT_REQUEST: 60000,
 }
 
 
-export const RUTAS= {
+export const RUTAS = {
     HOME: "/",
     LOGIN: "/login",
     ADMIN: "/admin",
