@@ -89,17 +89,17 @@ export default function GeneralSales(){
 
     if (loading) {
         return (
-            <section className="min-h-screen flex items-center justify-center bg-slate-50">
+            <section className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-app">
                 <div className="flex flex-col items-center gap-3">
                     <div className="w-9 h-9 rounded-full border-[3px] border-amber-200 border-t-amber-500 animate-spin" />
-                    <p className="text-sm font-medium text-slate-500">Cargando historial...</p>
+                    <p className="text-sm font-medium text-slate-500 dark:text-zinc-400">Cargando historial...</p>
                 </div>
             </section>
         );
     }
 
     return(
-        <section className="min-h-screen bg-slate-50">
+        <section className="min-h-screen bg-slate-50 dark:bg-app">
 
             <style>{`
                 @keyframes fade-in-up {
@@ -111,10 +111,10 @@ export default function GeneralSales(){
                 }
             `}</style>
 
-            <header className={`bg-white/90 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-50 flex items-center justify-between gap-3 px-4 sm:px-6 py-3.5 sm:py-4 transition-transform duration-300 ${showHeader ? 'translate-y-0' : '-translate-y-full'}`}>
+            <header className={`bg-white dark:bg-card/90 backdrop-blur-sm border-b border-slate-200 dark:border-border sticky top-0 z-50 flex items-center justify-between gap-3 px-4 sm:px-6 py-3.5 sm:py-4 transition-transform duration-300 ${showHeader ? 'translate-y-0' : '-translate-y-full'}`}>
                 <div className="flex items-center gap-3">
                     <Link to={'/sales'}>
-                        <button className="cursor-pointer w-9 h-9 rounded-full flex items-center justify-center text-slate-500 transition-colors duration-200 hover:bg-slate-100 hover:text-slate-800">
+                        <button className="cursor-pointer w-9 h-9 rounded-full flex items-center justify-center text-slate-500 dark:text-zinc-400 transition-colors duration-200 hover:bg-slate-100 dark:hover:bg-zinc-800/70 hover:text-slate-800 dark:hover:text-zinc-200">
                             <span className="inline-block transition-transform duration-300 hover:-translate-x-0.5">
                                 <FontAwesomeIcon icon={faArrowLeft} size="lg"/>
                             </span>
@@ -131,20 +131,20 @@ export default function GeneralSales(){
                 </div>
 
                 {rawSales.length === 0 ? (
-                    <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-8 text-center w-full animate-fade-in-up">
+                    <div className="bg-white dark:bg-card rounded-2xl border border-slate-200 dark:border-border/80 shadow-sm p-8 text-center w-full animate-fade-in-up">
                         <h2 className='text-empty-state mb-3'>No hay ventas</h2>
-                        <p className='text-slate-500'>No se han registrado ventas en el sistema</p>
+                        <p className='text-slate-500 dark:text-zinc-400'>No se han registrado ventas en el sistema</p>
                     </div>
                 ) : (
                     <>
                         {/* Selector de período global (alimenta totales y evolución) */}
-                        <div className="flex gap-1.5 self-start bg-white border border-slate-200 rounded-full p-1 shadow-sm animate-fade-in-up">
+                        <div className="flex gap-1.5 self-start bg-white dark:bg-card border border-slate-200 dark:border-border rounded-full p-1 shadow-sm animate-fade-in-up">
                             {PERIOD_OPTIONS.map((opcion) => (
                                 <button
                                     key={opcion.value}
                                     onClick={() => setPeriodo(opcion.value)}
                                     className={`btn-filter-chip py-1.5 rounded-full text-xs sm:text-[13px] ${
-                                        periodo === opcion.value ? 'bg-slate-800 text-white shadow-sm' : 'text-slate-500 hover:bg-slate-100'
+                                        periodo === opcion.value ? 'bg-yellow-otto text-gray-900 shadow-sm' : 'text-slate-500 dark:text-zinc-400 hover:bg-slate-100 dark:hover:bg-zinc-800/70'
                                     }`}
                                 >
                                     {opcion.label}
@@ -159,7 +159,7 @@ export default function GeneralSales(){
                             unidades={resumen.unidadesVendidas}
                         />
 
-                        <div className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 shadow-sm animate-fade-in-up transition-shadow duration-300 hover:shadow-md" style={{ animationDelay: '80ms' }}>
+                        <div className="bg-white dark:bg-card border border-slate-200 dark:border-border/80 rounded-2xl p-4 sm:p-5 shadow-sm animate-fade-in-up transition-shadow duration-300 hover:shadow-md" style={{ animationDelay: '80ms' }}>
                             <h2 className="text-section-title mb-2.5">Evolución de ventas</h2>
                             <SalesEvolutionChart data={evolucion} />
                         </div>

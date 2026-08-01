@@ -142,7 +142,7 @@ export default function Table({rowData, onVerRecibo,onDelete,  use='diary'}){
 
     return(
         <section className="w-full">
-            <div className="ag-theme-alpine rounded-xl overflow-hidden border border-gray-300" 
+            <div className="ag-theme-alpine rounded-xl overflow-hidden border border-gray-300 dark:border-border-strong" 
                 style={{ height: 'clamp(300px, 50dvh, 450px)', width: '100%' }}
             >
                 <AgGridReact
@@ -162,14 +162,14 @@ export default function Table({rowData, onVerRecibo,onDelete,  use='diary'}){
             <div className="flex justify-center mt-6 gap-4 flex-wrap">
                 <button 
                     onClick={exportDataToCVS} 
-                    className="btn-page-action bg-white flex justify-center items-center cursor-pointer border-gray-300 text-black hover:bg-gray-100"
+                    className="btn-page-action bg-white dark:bg-card flex justify-center items-center cursor-pointer border-gray-300 dark:border-border-strong text-black dark:text-zinc-100 hover:bg-gray-100 dark:hover:bg-zinc-800/70"
                 >
                     Exportar a CSV
                 </button>
 
                 <button 
                     onClick={exportExcel} 
-                    className="btn-page-action bg-white flex justify-center items-center gap-2 cursor-pointer border-gray-300 text-black hover:bg-gray-100"
+                    className="btn-page-action bg-white dark:bg-card flex justify-center items-center gap-2 cursor-pointer border-gray-300 dark:border-border-strong text-black dark:text-zinc-100 hover:bg-gray-100 dark:hover:bg-zinc-800/70"
                 > 
                     Exportar Excel
                 </button>

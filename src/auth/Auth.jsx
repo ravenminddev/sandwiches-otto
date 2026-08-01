@@ -53,7 +53,7 @@ export default function Auth() {
 
                 <form className='flex flex-col w-full gap-3 sm:gap-6 px-5 sm:px-10' onSubmit={handleLogin}>
                     <div className='flex flex-col gap-2'>
-                        <label className='font-semibold text-gray-800' htmlFor='emailOrUsername'>
+                        <label className='font-semibold text-gray-800 dark:text-zinc-300' htmlFor='emailOrUsername'>
                             Correo electrónico o Usuario
                         </label>
                         <InputBasic 
@@ -66,7 +66,7 @@ export default function Auth() {
                     </div>
 
                     <div className='flex flex-col gap-2'>
-                        <label className='font-semibold text-gray-800' htmlFor='password'>
+                        <label className='font-semibold text-gray-800 dark:text-zinc-300' htmlFor='password'>
                             Contraseña
                         </label>
                         <InputBasic 
@@ -82,7 +82,7 @@ export default function Auth() {
                         <button 
                             type='submit'
                             disabled={loading}
-                            className='bg-black text-white font-medium rounded-3xl py-4 sm:py-5 md:py-7 w-full max-w-64 sm:max-w-57.5 hover:brightness-95 transition-all
+                            className='bg-black text-white dark:bg-yellow-otto dark:text-gray-900 font-medium rounded-3xl py-4 sm:py-5 md:py-7 w-full max-w-64 sm:max-w-57.5 hover:brightness-95 dark:hover:brightness-90 transition-all
                                         h-auto flex justify-center items-center cursor-pointer disabled:opacity-50'
                         >
                             {loading ? 'Cargando...' : 'Iniciar sesión'}

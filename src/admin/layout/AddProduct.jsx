@@ -17,9 +17,9 @@ const initialFormData = {
     disponible: true
 };
 
-const inputClass = 'w-full rounded-xl border border-dash-border bg-white px-4 py-3 text-sm sm:text-base text-dash-ink placeholder-dash-gray-soft shadow-sm transition-all duration-200 outline-none focus:border-yellow-otto focus:ring-4 focus:ring-yellow-otto/15 hover:border-dash-gray-soft';
+const inputClass = 'w-full rounded-xl border border-dash-border dark:border-border bg-white dark:bg-input px-4 py-3 text-sm sm:text-base text-dash-ink dark:text-zinc-100 placeholder-dash-gray-soft dark:placeholder:text-zinc-500 shadow-sm transition-all duration-200 outline-none focus:border-yellow-otto focus:ring-4 focus:ring-yellow-otto/15 dark:focus:border-yellow-otto hover:border-dash-gray-soft dark:hover:border-zinc-500';
 
-const labelClass = 'text-sm font-semibold text-dash-gray';
+const labelClass = 'text-sm font-semibold text-dash-gray dark:text-zinc-300';
 
 export default function AddProduct({ onProductoAgregado }) {
     const { openModal, closeModal } = useModal();
@@ -208,13 +208,13 @@ export default function AddProduct({ onProductoAgregado }) {
                     />
 
                     {/* Bottom-sheet en móvil, diálogo centrado desde sm */}
-                    <div className="relative z-[2] bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl w-full sm:max-w-2xl max-h-[92dvh] flex flex-col sm:mx-4 animate-slide-up sm:animate-scale-in">
+                    <div className="relative z-[2] bg-white dark:bg-card rounded-t-3xl sm:rounded-2xl shadow-2xl w-full sm:max-w-2xl max-h-[92dvh] flex flex-col sm:mx-4 animate-slide-up sm:animate-scale-in">
 
                         {/* Handle visual del sheet (solo móvil) */}
-                        <div className="sm:hidden mx-auto mt-2.5 h-1.5 w-12 rounded-full bg-dash-border shrink-0" aria-hidden="true" />
+                        <div className="sm:hidden mx-auto mt-2.5 h-1.5 w-12 rounded-full bg-dash-border dark:bg-zinc-600 shrink-0" aria-hidden="true" />
 
                         {/* Header */}
-                        <div className="flex justify-between items-center p-5 border-b border-dash-border/70 sticky top-0 bg-white rounded-t-3xl sm:rounded-t-2xl z-10">
+                        <div className="flex justify-between items-center p-5 border-b border-dash-border/70 dark:border-zinc-700/70 sticky top-0 bg-white dark:bg-card rounded-t-3xl sm:rounded-t-2xl z-10">
                             <h2 id="add-product-title" className="text-modal-title">
                                 Añadir producto
                             </h2>
@@ -222,7 +222,7 @@ export default function AddProduct({ onProductoAgregado }) {
                                 type="button"
                                 onClick={() => setIsOpen(false)}
                                 aria-label="Cerrar"
-                                className="cursor-pointer p-2 hover:bg-graywhite rounded-full transition-colors text-dash-gray"
+                                className="cursor-pointer p-2 hover:bg-graywhite dark:hover:bg-zinc-800/70 rounded-full transition-colors text-dash-gray dark:text-zinc-400"
                             >
                                 <FontAwesomeIcon icon={faXmark} className="text-lg" />
                             </button>
@@ -239,17 +239,17 @@ export default function AddProduct({ onProductoAgregado }) {
                                 className={`flex flex-col items-center justify-center w-full border-2 border-dashed rounded-2xl p-6 transition-all duration-200 ${
                                     isDragging
                                         ? 'border-yellow-otto bg-yellow-otto/5 scale-[1.01]'
-                                        : 'border-dash-border bg-graywhite hover:border-yellow-otto/50'
+                                        : 'border-dash-border dark:border-zinc-700 bg-graywhite dark:bg-zinc-800/70 hover:border-yellow-otto/50'
                                 }`}
                             >
                                 {file ? (
                                     <img
-                                        className='w-28 h-28 object-cover rounded-xl mb-3 shadow-sm ring-1 ring-dash-border'
+                                        className='w-28 h-28 object-cover rounded-xl mb-3 shadow-sm ring-1 ring-dash-border dark:ring-zinc-700'
                                         src={URL.createObjectURL(file)}
                                         alt={file.name}
                                     />
                                 ) : (
-                                    <FontAwesomeIcon icon={faCloudArrowUp} className="text-3xl text-dash-gray-soft mb-3" />
+                                    <FontAwesomeIcon icon={faCloudArrowUp} className="text-3xl text-dash-gray-soft dark:text-zinc-500 mb-3" />
                                 )}
 
                                 <input
@@ -261,7 +261,7 @@ export default function AddProduct({ onProductoAgregado }) {
                                 />
 
                                 {!file && (
-                                    <p className="text-sm text-dash-gray-soft mb-3 text-center">
+                                    <p className="text-sm text-dash-gray-soft dark:text-zinc-500 mb-3 text-center">
                                         Arrastra una imagen aquí o selecciona un archivo
                                     </p>
                                 )}
@@ -297,7 +297,7 @@ export default function AddProduct({ onProductoAgregado }) {
                                         Precio del producto
                                     </label>
                                     <div className="relative">
-                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-dash-gray-soft font-semibold text-sm pointer-events-none">$</span>
+                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-dash-gray-soft dark:text-zinc-400 font-semibold text-sm pointer-events-none">$</span>
                                         <input
                                             type="number"
                                             placeholder='15000'
@@ -368,11 +368,11 @@ export default function AddProduct({ onProductoAgregado }) {
                         </form>
 
                         {/* Footer */}
-                        <div className="flex flex-col sm:flex-row gap-3 p-5 border-t border-dash-border/70 sticky bottom-0 bg-white sm:rounded-b-2xl">
+                        <div className="flex flex-col sm:flex-row gap-3 p-5 border-t border-dash-border/70 dark:border-zinc-700/70 sticky bottom-0 bg-white dark:bg-card sm:rounded-b-2xl">
                             <button
                                 type="button"
                                 onClick={ResetForm}
-                                className="cursor-pointer w-full sm:w-auto px-6 py-3 border-2 border-dash-border text-dash-gray rounded-3xl hover:bg-graywhite font-semibold transition-colors"
+                                className="cursor-pointer w-full sm:w-auto px-6 py-3 border-2 border-dash-border dark:border-border text-dash-gray dark:text-zinc-300 rounded-3xl hover:bg-graywhite dark:hover:bg-zinc-800/70 font-semibold transition-colors"
                             >
                                 Limpiar
                             </button>

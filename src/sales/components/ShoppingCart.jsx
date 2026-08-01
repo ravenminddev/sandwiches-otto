@@ -124,9 +124,9 @@ export default function ShoppingCart({ carrito, onAumentar, onDisminuir, onElimi
     };
 
     return (
-<div className='bg-white rounded-3xl shadow-[0_4px_24px_rgba(0,0,0,0.06)] p-4 sm:p-6 sticky top-0 h-fit max-h-[85dvh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent'>
+<div className='bg-white dark:bg-card rounded-3xl shadow-[0_4px_24px_rgba(0,0,0,0.06)] p-4 sm:p-6 sticky top-0 h-fit max-h-[85dvh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent'>
             {/* Título */}
-            <div className='flex items-center gap-2 mb-6 pb-4 border-b border-gray-100'>
+            <div className='flex items-center gap-2 mb-6 pb-4 border-b border-gray-100 dark:border-zinc-700'>
                 <div className='w-9 h-9 rounded-xl bg-yellow-otto/10 flex items-center justify-center'>
                     <FontAwesomeIcon icon={faReceipt} className='text-yellow-otto' size='sm' />
                 </div>
@@ -141,7 +141,7 @@ export default function ShoppingCart({ carrito, onAumentar, onDisminuir, onElimi
                     <div className='w-14 h-14 flex items-center justify-center mb-3'>
                         <FontAwesomeIcon icon={faCartShopping} className='text-gray-300' size='lg' />
                     </div>
-                    <p className='text-gray-400 text-sm'>Aún no hay productos</p>
+                    <p className='text-gray-400 dark:text-zinc-500 text-sm'>Aún no hay productos</p>
                     <p className='text-gray-300 text-xs mt-0.5'>Agrega items desde el catálogo</p>
                 </div>
             ) : (
@@ -149,14 +149,14 @@ export default function ShoppingCart({ carrito, onAumentar, onDisminuir, onElimi
                     {carrito.map(item => (
                         <div
                             key={item.id}
-                            className='group bg-gray-50/70 hover:bg-gray-50 p-3 rounded-2xl transition-colors duration-200'
+                            className='group bg-gray-50/70 dark:bg-zinc-800/70 hover:bg-gray-50 dark:hover:bg-zinc-800/50 p-3 rounded-2xl transition-colors duration-200'
                         >
                             <div className='flex justify-between items-start mb-2.5'>
                                 <div className='flex-1 min-w-0 pr-2'>
                                     <h4 className='font-semibold text-sm text-gray-900 truncate'>
                                         {item.name}
                                     </h4>
-                                    <p className='text-xs text-gray-500 mt-0.5'>
+                                    <p className='text-xs text-gray-500 dark:text-zinc-400 mt-0.5'>
                                         ${item.precio.toLocaleString('es-CO')} c/u
                                     </p>
                                 </div>
@@ -169,24 +169,24 @@ export default function ShoppingCart({ carrito, onAumentar, onDisminuir, onElimi
                             </div>
 
                             <div className='flex items-center justify-between'>
-                                <div className='flex items-center gap-1 bg-white rounded-full p-1 shadow-sm'>
+                                <div className='flex items-center gap-1 bg-white dark:bg-card rounded-full p-1 shadow-sm'>
                                     <button
                                         onClick={() => onDisminuir(item.id)}
-                                        className='cursor-pointer w-6 h-6 flex items-center justify-center bg-gray-100 text-gray-600 rounded-full hover:bg-yellow-otto hover:text-white active:scale-90 transition-all duration-150'
+                                        className='cursor-pointer w-6 h-6 flex items-center justify-center bg-gray-100 dark:bg-zinc-800/70 text-gray-600 dark:text-zinc-400 rounded-full hover:bg-yellow-otto hover:text-white active:scale-90 transition-all duration-150'
                                     >
                                         <FontAwesomeIcon icon={faMinus} size='xs' />
                                     </button>
-                                    <span className='w-6 text-center text-sm font-bold text-gray-900'>
+                                    <span className='w-6 text-center text-sm font-bold text-gray-900 dark:text-zinc-100'>
                                         {item.cantidad}
                                     </span>
                                     <button
                                         onClick={() => onAumentar(item.id)}
-                                        className='cursor-pointer w-6 h-6 flex items-center justify-center bg-gray-100 text-gray-600 rounded-full hover:bg-yellow-otto hover:text-white active:scale-90 transition-all duration-150'
+                                        className='cursor-pointer w-6 h-6 flex items-center justify-center bg-gray-100 dark:bg-zinc-800/70 text-gray-600 dark:text-zinc-400 rounded-full hover:bg-yellow-otto hover:text-white active:scale-90 transition-all duration-150'
                                     >
                                         <FontAwesomeIcon icon={faPlus} size='xs' />
                                     </button>
                                 </div>
-                                <p className='font-bold text-gray-900 text-sm'>
+                                <p className='font-bold text-gray-900 dark:text-zinc-100 text-sm'>
                                     ${(item.precio * item.cantidad).toLocaleString('es-CO')}
                                 </p>
                             </div>
@@ -197,12 +197,12 @@ export default function ShoppingCart({ carrito, onAumentar, onDisminuir, onElimi
 
             {/* Descuento */}
             {carrito.length > 0 && (
-                <div className='mb-5 pt-4 border-t border-gray-100'>
-                    <label className='text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 block'>
+                <div className='mb-5 pt-4 border-t border-gray-100 dark:border-zinc-700'>
+                    <label className='text-xs font-semibold text-gray-500 dark:text-zinc-400 uppercase tracking-wide mb-2 block'>
                         Descuento
                     </label>
                     <div className='relative'>
-                        <span className='absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm'>$</span>
+                        <span className='absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-zinc-500 text-sm'>$</span>
                         <input
                             type='number'
                             value={descuento}
@@ -217,7 +217,7 @@ export default function ShoppingCart({ carrito, onAumentar, onDisminuir, onElimi
                                 setDescuento(Math.max(0, parseFloat(value) || 0));
                             }}
                             placeholder='0'
-                            className='w-full bg-gray-50 border border-transparent rounded-2xl pl-7 pr-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-yellow-otto focus:bg-white transition-all duration-200 text-sm'
+                            className='w-full bg-gray-50 dark:bg-zinc-800/50 border border-transparent rounded-2xl pl-7 pr-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-yellow-otto focus:bg-white dark:focus:bg-input transition-all duration-200 text-sm'
                             min='0'
                             max={subtotal}
                         />
@@ -227,10 +227,10 @@ export default function ShoppingCart({ carrito, onAumentar, onDisminuir, onElimi
 
             {/* Totales */}
             {carrito.length > 0 && (
-                <div className='space-y-2 pt-4 border-t border-gray-100 mb-6'>
+                <div className='space-y-2 pt-4 border-t border-gray-100 dark:border-zinc-700 mb-6'>
                     <div className='flex justify-between text-sm'>
-                        <span className='text-gray-500'>Subtotal</span>
-                        <span className='font-semibold text-gray-700'>${subtotal.toLocaleString('es-CO')}</span>
+                        <span className='text-gray-500 dark:text-zinc-400'>Subtotal</span>
+                        <span className='font-semibold text-gray-700 dark:text-zinc-300'>${subtotal.toLocaleString('es-CO')}</span>
                     </div>
                     {descuento > 0 && (
                         <div className='flex justify-between text-sm'>
@@ -239,7 +239,7 @@ export default function ShoppingCart({ carrito, onAumentar, onDisminuir, onElimi
                         </div>
                     )}
                     <div className='flex justify-between items-center bg-yellow-otto/10 rounded-2xl px-4 py-3 mt-3'>
-                        <span className='text-sm font-semibold text-gray-700'>Total</span>
+                        <span className='text-sm font-semibold text-gray-700 dark:text-zinc-300'>Total</span>
                         <span className='text-2xl font-extrabold text-yellow-otto'>${total.toLocaleString('es-CO')}</span>
                     </div>
                 </div>
@@ -247,18 +247,18 @@ export default function ShoppingCart({ carrito, onAumentar, onDisminuir, onElimi
 
             {/* Sección de Pagos */}
             {carrito.length > 0 && (
-                <div className='pt-4 border-t border-gray-100 mb-6'>
+                <div className='pt-4 border-t border-gray-100 dark:border-zinc-700 mb-6'>
                     <h3 className='font-bold text-sm text-gray-900 mb-3 flex items-center gap-1.5'>
-                        <FontAwesomeIcon icon={faCreditCard} className='text-gray-400' size='xs' />
+                        <FontAwesomeIcon icon={faCreditCard} className='text-gray-400 dark:text-zinc-500' size='xs' />
                         Pagos
                     </h3>
 
                     {/* Agregar pago */}
-                    <div className='space-y-2 mb-4 bg-gray-50/70 p-3 rounded-2xl'>
+                    <div className='space-y-2 mb-4 bg-gray-50/70 dark:bg-zinc-800/70 p-3 rounded-2xl'>
                         <select
                             value={metodoPagoTemp}
                             onChange={(e) => setMetodoPagoTemp(e.target.value)}
-                            className='cursor-pointer w-full bg-white border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-otto transition-all duration-200'
+                            className='cursor-pointer w-full bg-white dark:bg-card text-gray-700 dark:text-zinc-300 border border-gray-200 dark:border-border rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-otto transition-all duration-200'
                         >
                             <option value="">Selecciona método de pago</option>
                             {metodosPago.map(metodo => (
@@ -273,7 +273,7 @@ export default function ShoppingCart({ carrito, onAumentar, onDisminuir, onElimi
                             value={montoPagoTemp}
                             onChange={(e) => setMontoPagoTemp(e.target.value)}
                             placeholder={`Ingresa monto (Pendiente: $${pendiente.toLocaleString('es-CO')})`}
-                            className='w-full bg-white border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-otto transition-all duration-200'
+                            className='w-full bg-white dark:bg-card text-gray-700 dark:text-zinc-300 border border-gray-200 dark:border-border rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-otto transition-all duration-200'
                             min='0'
                         />
 
@@ -298,7 +298,7 @@ export default function ShoppingCart({ carrito, onAumentar, onDisminuir, onElimi
                                             <FontAwesomeIcon icon={faCheck} className='text-white' size='xs' />
                                         </div>
                                         <div className='text-sm'>
-                                            <p className='font-semibold text-gray-900 leading-tight'>
+                                            <p className='font-semibold text-gray-900 dark:text-zinc-100 leading-tight'>
                                                 {pago.nombre_metodo}
                                             </p>
                                             <p className='text-green-600 text-xs font-medium'>
@@ -319,9 +319,9 @@ export default function ShoppingCart({ carrito, onAumentar, onDisminuir, onElimi
 
                     {/* Resumen de pagos */}
                     <div className='flex items-center justify-between gap-3'>
-                        <div className='flex-1 bg-gray-50 rounded-xl px-3 py-2'>
-                            <p className='text-[11px] text-gray-400 font-medium uppercase tracking-wide'>Pagado</p>
-                            <p className='text-sm font-bold text-gray-900'>${totalPagado.toLocaleString('es-CO')}</p>
+                        <div className='flex-1 bg-gray-50 dark:bg-zinc-800/50 rounded-xl px-3 py-2'>
+                            <p className='text-[11px] text-gray-400 dark:text-zinc-500 font-medium uppercase tracking-wide'>Pagado</p>
+                            <p className='text-sm font-bold text-gray-900 dark:text-zinc-100'>${totalPagado.toLocaleString('es-CO')}</p>
                         </div>
                         <div className={`flex-1 rounded-xl px-3 py-2 ${pendiente <= 0 ? 'bg-green-50' : 'bg-orange-50'}`}>
                             <p className={`text-[11px] font-medium uppercase tracking-wide ${pendiente <= 0 ? 'text-green-500' : 'text-orange-400'}`}>Pendiente</p>
@@ -338,7 +338,7 @@ export default function ShoppingCart({ carrito, onAumentar, onDisminuir, onElimi
                 <button
                     onClick={handleRegistrarVenta}
                     disabled={carrito.length === 0 || pendiente > 0 || loading}
-                    className='cursor-pointer w-full py-3.5 bg-black text-white font-bold rounded-2xl hover:brightness-110 active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100 transition-all duration-200 shadow-lg shadow-black/10'
+                    className='cursor-pointer w-full py-3.5 bg-black dark:bg-zinc-200 dark:text-zinc-900 text-white font-bold rounded-2xl hover:brightness-110 dark:hover:brightness-90 active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100 transition-all duration-200 shadow-lg shadow-black/10 dark:shadow-black/30'
                 >
                     {loading
                         ? 'Registrando...'

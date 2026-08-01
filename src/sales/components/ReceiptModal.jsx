@@ -14,8 +14,8 @@ export default function ReceiptModal({ venta, onClose }) {
     });
 
     return (
-        <div className='fixed inset-0 bg-white/50 backdrop-blur-sm flex items-center justify-center z-50 p-4'>
-            <div className='bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-[90dvh] overflow-y-auto'>
+        <div className='fixed inset-0 bg-white dark:bg-card/50 backdrop-blur-sm flex items-center justify-center z-50 p-4'>
+            <div className='bg-white dark:bg-card rounded-lg shadow-2xl max-w-2xl w-full max-h-[90dvh] overflow-y-auto'>
                 
                 {/* Header */}
                 <div className='bg-yellow-otto text-white p-6 flex justify-between items-center sticky top-0'>
@@ -35,19 +35,19 @@ export default function ReceiptModal({ venta, onClose }) {
                     <div className='mb-8 pb-6 border-b'>
                         <div className='grid grid-cols-2 gap-4 mb-4'>
                             <div>
-                                <p className='text-gray-600 text-sm'>ID Venta</p>
+                                <p className='text-gray-600 dark:text-zinc-400 text-sm'>ID Venta</p>
                                 <p className='text-lg font-bold'>{venta.id_venta}</p>
                             </div>
                             <div>
-                                <p className='text-gray-600 text-sm'>Empleado</p>
+                                <p className='text-gray-600 dark:text-zinc-400 text-sm'>Empleado</p>
                                 <p className='text-lg font-bold'>{venta.usuarios?.nombre_completo || 'N/A'}</p>
                             </div>
                             <div>
-                                <p className='text-gray-600 text-sm'>Cliente</p>
+                                <p className='text-gray-600 dark:text-zinc-400 text-sm'>Cliente</p>
                                 <p className='text-lg font-bold'>{venta.id_cliente || 'Cliente anónimo'}</p>
                             </div>
                             <div>
-                                <p className='text-gray-600 text-sm'>Fecha y Hora</p>
+                                <p className='text-gray-600 dark:text-zinc-400 text-sm'>Fecha y Hora</p>
                                 <p className='text-lg font-bold'>{fechaFormateada}</p>
                             </div>
                         </div>
@@ -61,13 +61,13 @@ export default function ReceiptModal({ venta, onClose }) {
                                 venta.detalles_venta.map(detalle => (
                                     <div 
                                         key={detalle.id_detalle}
-                                        className='flex justify-between items-center bg-gray-50 p-4 rounded-lg'
+                                        className='flex justify-between items-center bg-gray-50 dark:bg-zinc-800/50 p-4 rounded-lg'
                                     >
                                         <div className='flex-1'>
-                                            <p className='font-semibold text-gray-900'>
+                                            <p className='font-semibold text-gray-900 dark:text-zinc-100'>
                                                 {detalle.productos?.nombre_producto || 'Producto desconocido'}
                                             </p>
-                                            <p className='text-sm text-gray-600'>
+                                            <p className='text-sm text-gray-600 dark:text-zinc-400'>
                                                 Cantidad: {detalle.cantidad} x ${detalle.precio_unitario.toLocaleString('es-CO')}
                                             </p>
                                         </div>
@@ -77,14 +77,14 @@ export default function ReceiptModal({ venta, onClose }) {
                                     </div>
                                 ))
                             ) : (
-                                <p className='text-gray-600'>No hay productos</p>
+                                <p className='text-gray-600 dark:text-zinc-400'>No hay productos</p>
                             )}
                         </div>
                     </div>
 
                     {/* Totales */}
                     <div className='mb-8 pb-6 border-b space-y-2'>
-                        <div className='flex justify-between text-gray-700'>
+                        <div className='flex justify-between text-gray-700 dark:text-zinc-300'>
                             <span>Subtotal:</span>
                             <span>${venta.subtotal.toLocaleString('es-CO')}</span>
                         </div>
@@ -111,10 +111,10 @@ export default function ReceiptModal({ venta, onClose }) {
                                         className='flex justify-between items-center bg-green-50 p-4 rounded-lg border border-green-200'
                                     >
                                         <div>
-                                            <p className='font-semibold text-gray-900'>
+                                            <p className='font-semibold text-gray-900 dark:text-zinc-100'>
                                                 {pago.metodos_pago?.nombre_metodo || 'Método desconocido'}
                                             </p>
-                                            <p className='text-sm text-gray-600'>
+                                            <p className='text-sm text-gray-600 dark:text-zinc-400'>
                                                 {new Date(pago.fecha_pago).toLocaleTimeString('es-CO')}
                                             </p>
                                         </div>
@@ -124,7 +124,7 @@ export default function ReceiptModal({ venta, onClose }) {
                                     </div>
                                 ))
                             ) : (
-                                <p className='text-gray-600'>No hay pagos registrados</p>
+                                <p className='text-gray-600 dark:text-zinc-400'>No hay pagos registrados</p>
                             )}
                         </div>
                     </div>
@@ -143,7 +143,7 @@ export default function ReceiptModal({ venta, onClose }) {
                 </div>
 
                 {/* Footer */}
-                <div className='bg-gray-100 p-6 border-t flex gap-4'>
+                <div className='bg-gray-100 dark:bg-zinc-800/70 p-6 border-t flex gap-4'>
                     <button
                         onClick={onClose}
                         className='cursor-pointer flex-1 bg-gray-500 text-white font-bold py-2 rounded-lg hover:bg-gray-600'
