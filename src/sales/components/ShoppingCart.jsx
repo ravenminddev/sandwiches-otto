@@ -130,7 +130,7 @@ export default function ShoppingCart({ carrito, onAumentar, onDisminuir, onElimi
                 <div className='w-9 h-9 rounded-xl bg-yellow-otto/10 flex items-center justify-center'>
                     <FontAwesomeIcon icon={faReceipt} className='text-yellow-otto' size='sm' />
                 </div>
-                <h2 className='text-xl font-bold text-gray-900'>
+                <h2 className='text-xl font-bold text-gray-900 dark:text-zinc-100'>
                     Factura
                 </h2>
             </div>
@@ -139,10 +139,10 @@ export default function ShoppingCart({ carrito, onAumentar, onDisminuir, onElimi
             {carrito.length === 0 ? (
                 <div className='flex flex-col items-center justify-center py-10 text-center'>
                     <div className='w-14 h-14 flex items-center justify-center mb-3'>
-                        <FontAwesomeIcon icon={faCartShopping} className='text-gray-300' size='lg' />
+                        <FontAwesomeIcon icon={faCartShopping} className='text-gray-300 dark:text-zinc-600' size='lg' />
                     </div>
                     <p className='text-gray-400 dark:text-zinc-500 text-sm'>Aún no hay productos</p>
-                    <p className='text-gray-300 text-xs mt-0.5'>Agrega items desde el catálogo</p>
+                    <p className='text-gray-300 dark:text-zinc-500 text-xs mt-0.5'>Agrega items desde el catálogo</p>
                 </div>
             ) : (
                 <div className='space-y-2.5 mb-6 max-h-40 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent'>
@@ -153,7 +153,7 @@ export default function ShoppingCart({ carrito, onAumentar, onDisminuir, onElimi
                         >
                             <div className='flex justify-between items-start mb-2.5'>
                                 <div className='flex-1 min-w-0 pr-2'>
-                                    <h4 className='font-semibold text-sm text-gray-900 truncate'>
+                                    <h4 className='font-semibold text-sm text-gray-900 dark:text-zinc-100 truncate'>
                                         {item.name}
                                     </h4>
                                     <p className='text-xs text-gray-500 dark:text-zinc-400 mt-0.5'>
@@ -162,7 +162,7 @@ export default function ShoppingCart({ carrito, onAumentar, onDisminuir, onElimi
                                 </div>
                                 <button
                                     onClick={() => onEliminar(item.id)}
-                                    className='cursor-pointer text-gray-300 hover:text-red-500 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-200 p-1'
+                                    className='cursor-pointer text-gray-300 dark:text-zinc-500 hover:text-red-500 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-200 p-1'
                                 >
                                     <FontAwesomeIcon icon={faTrash} size='sm' />
                                 </button>
@@ -217,7 +217,7 @@ export default function ShoppingCart({ carrito, onAumentar, onDisminuir, onElimi
                                 setDescuento(Math.max(0, parseFloat(value) || 0));
                             }}
                             placeholder='0'
-                            className='w-full bg-gray-50 dark:bg-zinc-800/50 border border-transparent rounded-2xl pl-7 pr-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-yellow-otto focus:bg-white dark:focus:bg-input transition-all duration-200 text-sm'
+                            className='w-full bg-gray-50 dark:bg-zinc-800/50 text-gray-700 dark:text-zinc-300 border border-transparent rounded-2xl pl-7 pr-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-yellow-otto focus:bg-white dark:focus:bg-input transition-all duration-200 text-sm'
                             min='0'
                             max={subtotal}
                         />
@@ -248,7 +248,7 @@ export default function ShoppingCart({ carrito, onAumentar, onDisminuir, onElimi
             {/* Sección de Pagos */}
             {carrito.length > 0 && (
                 <div className='pt-4 border-t border-gray-100 dark:border-zinc-700 mb-6'>
-                    <h3 className='font-bold text-sm text-gray-900 mb-3 flex items-center gap-1.5'>
+                    <h3 className='font-bold text-sm text-gray-900 dark:text-zinc-100 mb-3 flex items-center gap-1.5'>
                         <FontAwesomeIcon icon={faCreditCard} className='text-gray-400 dark:text-zinc-500' size='xs' />
                         Pagos
                     </h3>
@@ -291,7 +291,7 @@ export default function ShoppingCart({ carrito, onAumentar, onDisminuir, onElimi
                             {pagos.map(pago => (
                                 <div
                                     key={pago.id}
-                                    className='group flex justify-between items-center bg-green-50/70 p-2.5 rounded-xl'
+                                    className='group flex justify-between items-center bg-green-50/70 dark:bg-green-500/10 p-2.5 rounded-xl'
                                 >
                                     <div className='flex items-center gap-2.5'>
                                         <div className='w-7 h-7 rounded-full bg-green-500 flex items-center justify-center shrink-0'>
@@ -301,14 +301,14 @@ export default function ShoppingCart({ carrito, onAumentar, onDisminuir, onElimi
                                             <p className='font-semibold text-gray-900 dark:text-zinc-100 leading-tight'>
                                                 {pago.nombre_metodo}
                                             </p>
-                                            <p className='text-green-600 text-xs font-medium'>
+                                            <p className='text-green-600 dark:text-green-400 text-xs font-medium'>
                                                 ${pago.monto.toLocaleString('es-CO')}
                                             </p>
                                         </div>
                                     </div>
                                     <button
                                         onClick={() => eliminarPago(pago.id)}
-                                        className='cursor-pointer text-gray-300 hover:text-red-500 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-200 p-1'
+                                        className='cursor-pointer text-gray-300 dark:text-zinc-500 hover:text-red-500 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-200 p-1'
                                     >
                                         <FontAwesomeIcon icon={faTrash} size='sm' />
                                     </button>
@@ -323,9 +323,9 @@ export default function ShoppingCart({ carrito, onAumentar, onDisminuir, onElimi
                             <p className='text-[11px] text-gray-400 dark:text-zinc-500 font-medium uppercase tracking-wide'>Pagado</p>
                             <p className='text-sm font-bold text-gray-900 dark:text-zinc-100'>${totalPagado.toLocaleString('es-CO')}</p>
                         </div>
-                        <div className={`flex-1 rounded-xl px-3 py-2 ${pendiente <= 0 ? 'bg-green-50' : 'bg-orange-50'}`}>
-                            <p className={`text-[11px] font-medium uppercase tracking-wide ${pendiente <= 0 ? 'text-green-500' : 'text-orange-400'}`}>Pendiente</p>
-                            <p className={`text-sm font-bold ${pendiente <= 0 ? 'text-green-600' : 'text-orange-600'}`}>
+                        <div className={`flex-1 rounded-xl px-3 py-2 ${pendiente <= 0 ? 'bg-green-50 dark:bg-green-500/10' : 'bg-orange-50 dark:bg-orange-500/10'}`}>
+                            <p className={`text-[11px] font-medium uppercase tracking-wide ${pendiente <= 0 ? 'text-green-500 dark:text-green-400' : 'text-orange-400 dark:text-orange-300'}`}>Pendiente</p>
+                            <p className={`text-sm font-bold ${pendiente <= 0 ? 'text-green-600 dark:text-green-400' : 'text-orange-600 dark:text-orange-300'}`}>
                                 ${Math.max(0, pendiente).toLocaleString('es-CO')}
                             </p>
                         </div>
