@@ -89,7 +89,7 @@ export default function ReceiptModal({ venta, onClose }) {
                             <span>${venta.subtotal.toLocaleString('es-CO')}</span>
                         </div>
                         {venta.descuento > 0 && (
-                            <div className='flex justify-between text-red-600'>
+                            <div className='flex justify-between text-red-600 dark:text-red-400'>
                                 <span>Descuento:</span>
                                 <span>-${venta.descuento.toLocaleString('es-CO')}</span>
                             </div>
@@ -108,7 +108,7 @@ export default function ReceiptModal({ venta, onClose }) {
                                 venta.pagos.map(pago => (
                                     <div 
                                         key={pago.id_pago}
-                                        className='flex justify-between items-center bg-green-50 p-4 rounded-lg border border-green-200'
+                                        className='flex justify-between items-center bg-green-50 dark:bg-green-500/10 p-4 rounded-lg border border-green-200 dark:border-green-500/30'
                                     >
                                         <div>
                                             <p className='font-semibold text-gray-900 dark:text-zinc-100'>
@@ -118,7 +118,7 @@ export default function ReceiptModal({ venta, onClose }) {
                                                 {new Date(pago.fecha_pago).toLocaleTimeString('es-CO')}
                                             </p>
                                         </div>
-                                        <p className='font-bold text-lg text-green-700'>
+                                        <p className='font-bold text-lg text-green-700 dark:text-green-400'>
                                             ${pago.monto.toLocaleString('es-CO')}
                                         </p>
                                     </div>
