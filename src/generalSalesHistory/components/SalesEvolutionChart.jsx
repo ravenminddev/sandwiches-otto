@@ -86,6 +86,7 @@ export default function SalesEvolutionChart({ data }) {
         if (!chart) return;
         chart.data.labels = data.map((d) => formatShortDate(d.date));
         chart.data.datasets[0].data = data.map((d) => d.total);
+        chart.options.plugins.tooltip.callbacks.title = (items) => formatLongDate(data[items[0].dataIndex].date);
         chart.update();
     }, [data]);
 

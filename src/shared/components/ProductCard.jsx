@@ -2,7 +2,7 @@ export default function ProductCard({ img, name, price, description, actions, ov
     const formattedPrice = Number(price || 0).toLocaleString('es-CO');
 
     return (
-        <section className={`relative h-full flex flex-col rounded-2xl bg-white dark:bg-card overflow-hidden pb-4 ring-1 ring-gray-100 dark:ring-transparent hover:ring-yellow-400 transition-all duration-300 ${className}`}>
+        <section className={`relative h-full flex flex-col rounded-2xl bg-white dark:bg-card overflow-hidden pb-4 ring-1 ring-gray-100 dark:ring-border hover:ring-yellow-400 transition-all duration-300 ${className}`}>
             <div className="relative w-full shrink-0">
                 <img
                     src={img}

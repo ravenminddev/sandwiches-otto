@@ -15,7 +15,7 @@ export default function ReceiptModal({ venta, onClose }) {
 
     return (
         <div className='fixed inset-0 bg-white dark:bg-card/50 backdrop-blur-sm flex items-center justify-center z-50 p-4'>
-            <div className='bg-white dark:bg-card rounded-lg shadow-2xl max-w-2xl w-full max-h-[90dvh] overflow-y-auto'>
+            <div className='bg-white dark:bg-card border border-gray-200/60 dark:border-border rounded-lg shadow-2xl max-w-2xl w-full max-h-[90dvh] overflow-y-auto'>
                 
                 {/* Header */}
                 <div className='bg-yellow-otto text-white p-6 flex justify-between items-center sticky top-0'>
@@ -89,7 +89,7 @@ export default function ReceiptModal({ venta, onClose }) {
                             <span>${venta.subtotal.toLocaleString('es-CO')}</span>
                         </div>
                         {venta.descuento > 0 && (
-                            <div className='flex justify-between text-red-600'>
+                            <div className='flex justify-between text-red-600 dark:text-red-400'>
                                 <span>Descuento:</span>
                                 <span>-${venta.descuento.toLocaleString('es-CO')}</span>
                             </div>
@@ -108,7 +108,7 @@ export default function ReceiptModal({ venta, onClose }) {
                                 venta.pagos.map(pago => (
                                     <div 
                                         key={pago.id_pago}
-                                        className='flex justify-between items-center bg-green-50 p-4 rounded-lg border border-green-200'
+                                        className='flex justify-between items-center bg-green-50 dark:bg-green-500/10 p-4 rounded-lg border border-green-200 dark:border-green-500/30'
                                     >
                                         <div>
                                             <p className='font-semibold text-gray-900 dark:text-zinc-100'>
@@ -118,7 +118,7 @@ export default function ReceiptModal({ venta, onClose }) {
                                                 {new Date(pago.fecha_pago).toLocaleTimeString('es-CO')}
                                             </p>
                                         </div>
-                                        <p className='font-bold text-lg text-green-700'>
+                                        <p className='font-bold text-lg text-green-700 dark:text-green-400'>
                                             ${pago.monto.toLocaleString('es-CO')}
                                         </p>
                                     </div>
