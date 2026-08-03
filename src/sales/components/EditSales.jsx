@@ -245,7 +245,7 @@ export default function EditSales() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-5xl">
 
                 {/* ── COLUMNA IZQUIERDA: Productos ─────────────────────────── */}
-                <div className="bg-white dark:bg-card rounded-2xl shadow-lg p-6 flex flex-col gap-4">
+                <div className="bg-white dark:bg-card border border-gray-200/60 dark:border-border rounded-2xl shadow-lg p-6 flex flex-col gap-4">
                     <div className="flex justify-between items-center border-b pb-4">
                         <h2 className="text-section-title">Productos</h2>
                         <button
@@ -376,7 +376,7 @@ export default function EditSales() {
                 </div>
 
                 {/* ── COLUMNA DERECHA: Pagos ───────────────────────────────── */}
-                <div className="bg-white dark:bg-card rounded-2xl shadow-lg p-6 flex flex-col gap-4">
+                <div className="bg-white dark:bg-card border border-gray-200/60 dark:border-border rounded-2xl shadow-lg p-6 flex flex-col gap-4">
                     <h2 className="text-section-title border-b pb-4">
                         Métodos de pago
                     </h2>

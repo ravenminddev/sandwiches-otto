@@ -124,7 +124,7 @@ export default function ShoppingCart({ carrito, onAumentar, onDisminuir, onElimi
     };
 
     return (
-<div className='bg-white dark:bg-card rounded-3xl shadow-[0_4px_24px_rgba(0,0,0,0.06)] p-4 sm:p-6 sticky top-0 h-fit max-h-[85dvh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent'>
+<div className='bg-white dark:bg-card rounded-3xl border border-gray-200/60 dark:border-border shadow-[0_4px_24px_rgba(0,0,0,0.06)] p-4 sm:p-6 sticky top-0 h-fit max-h-[85dvh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent'>
             {/* Título */}
             <div className='flex items-center gap-2 mb-6 pb-4 border-b border-gray-100 dark:border-zinc-700'>
                 <div className='w-9 h-9 rounded-xl bg-yellow-otto/10 flex items-center justify-center'>

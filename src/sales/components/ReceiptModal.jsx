@@ -15,7 +15,7 @@ export default function ReceiptModal({ venta, onClose }) {
 
     return (
         <div className='fixed inset-0 bg-white dark:bg-card/50 backdrop-blur-sm flex items-center justify-center z-50 p-4'>
-            <div className='bg-white dark:bg-card rounded-lg shadow-2xl max-w-2xl w-full max-h-[90dvh] overflow-y-auto'>
+            <div className='bg-white dark:bg-card border border-gray-200/60 dark:border-border rounded-lg shadow-2xl max-w-2xl w-full max-h-[90dvh] overflow-y-auto'>
                 
                 {/* Header */}
                 <div className='bg-yellow-otto text-white p-6 flex justify-between items-center sticky top-0'>
