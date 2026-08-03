@@ -46,7 +46,7 @@ export default function SalesMoney() {
     };
 
 return (
-    <div className='grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-md sm:max-w-2xl lg:max-w-5xl mx-auto pt-4 sm:pt-5'>
+    <div className='grid grid-cols-2 gap-3 w-full sm:max-w-2xl lg:max-w-5xl mx-auto pt-4 sm:pt-5'>
 
         <div 
             onMouseLeave={()=>setEnter('')} 
