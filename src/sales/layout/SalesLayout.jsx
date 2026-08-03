@@ -196,7 +196,7 @@ function SalesLayoutInner() {
             )}
             <Sidebar className='max-lg:hidden [grid-area:sidebar]' />
 
-            <main className='[grid-area:main] w-full px-4 sm:px-6 lg:px-10 lg:py-10 max-lg:pt-20 max-lg:pb-10 overflow-y-auto relative'>
+            <main className='[grid-area:main] w-full px-4 sm:px-6 lg:px-10 lg:py-10 max-lg:pt-24 max-lg:pb-10 overflow-y-auto relative'>
                 <div className="flex w-full relative z-10">
                     <div className={`transition-all duration-700 ease-out ${hasDesktopCart ? 'lg:w-2/3 lg:pr-6' : 'lg:w-full lg:pr-0'}`}>
                         <Outlet context={{ agregarAlCarrito, carrito }} />
