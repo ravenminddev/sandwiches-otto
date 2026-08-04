@@ -32,7 +32,7 @@ export default function EditProduct() {
             if (result.success) {
                 setProducto(result.data);
                 setFormData({
-                    nombre_producto: result.data.nombre_producto,
+                    nombre_producto: result.data.nombre,
                     precio: result.data.precio,
                     descripcion: result.data.descripcion || ''
                 });
@@ -95,7 +95,7 @@ export default function EditProduct() {
                 return;
             }
 
-            let imagenUrl = producto?.imagen_producto;
+            let imagenUrl = producto?.url_imagen;
 
             // Si hay archivo nuevo, subirlo a Cloudinary
             if (file) {
@@ -108,10 +108,10 @@ export default function EditProduct() {
 
             // Actualizar producto en BD
             const result = await updateProduct(producto.id_producto, {
-                nombre_producto: formData.nombre_producto,
+                nombre: formData.nombre_producto,
                 precio: parseFloat(formData.precio),
                 descripcion: formData.descripcion,
-                imagen_producto: imagenUrl
+                url_imagen: imagenUrl
             });
 
             if (result.success) {
@@ -192,8 +192,8 @@ export default function EditProduct() {
                     <div className="sm:w-60 shrink-0">
                         <div className="relative w-full aspect-4/3 sm:aspect-square rounded-2xl overflow-hidden bg-graywhite dark:bg-zinc-800/70 ring-1 ring-dash-border/60 dark:ring-zinc-700/60">
                             <img
-                                src={file ? URL.createObjectURL(file) : (producto?.imagen_producto || 'https://via.placeholder.com/160')}
-                                alt={producto?.nombre_producto}
+                                src={file ? URL.createObjectURL(file) : (producto?.url_imagen || 'https://via.placeholder.com/160')}
+                                alt={producto?.nombre}
                                 className='w-full h-full object-cover'
                             />
 

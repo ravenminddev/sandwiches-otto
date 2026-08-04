@@ -1,5 +1,11 @@
 import { config } from "../../config.js";
 
+/*
+Este archivo no se utiliza actualmente, pero no se descarta su implementación en un futuro cercano 
+(dependiendo de la evolución del proyecto y las necesidades del cliente).
+*/
+
+
 
 export const sendInvitationEmail= async (email, token, nombreUsuario) => {
     try{

@@ -57,8 +57,8 @@ export default function EditSales() {
             // Cargar productos al carrito
             const productosFormateados = venta.detalles_venta.map(detalle => ({
                 id: detalle.id_producto,
-                name: detalle.productos.nombre_producto,
-                img: detalle.productos.imagen_producto,
+                name: detalle.producto.nombre,
+                img: detalle.producto.url_imagen,
                 precio: detalle.precio_unitario,
                 cantidad: detalle.cantidad
             }));

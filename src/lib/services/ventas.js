@@ -94,7 +94,7 @@ export const createSale = async (salesData) => {
         const { data, error } = await supabase
             .from("venta")
             .insert([{
-                id_usuario: salesData.id_empleado, // Debería ser id_usuario
+                id_usuario: salesData.id_empleado, // Debería ser id_usuario (*) 
                 subtotal: salesData.subtotal || 0,
                 descuento: salesData.descuento || 0,
                 total: totalCalculated.total || 0,
@@ -139,7 +139,7 @@ export const addSaleDetail = async (saleDetailData) => {
         const subtotal = saleDetailData.cantidad * saleDetailData.precio_unitario;
 
         const { data, error } = await supabase
-            .from("detalle_ventas")
+            .from("detalle_venta")
             .insert([{
                 id_venta: saleDetailData.id_venta,
                 id_producto: saleDetailData.id_producto,
@@ -166,7 +166,6 @@ export const addSaleDetail = async (saleDetailData) => {
     }
 };
 
-// Estoy revisando:
 export const getSaleById = async (saleId) => {
     try {
         if (!saleId) {
@@ -180,16 +179,16 @@ export const getSaleById = async (saleId) => {
             .from("ventas")
             .select(`
                 *,
-                usuarios(nombre_completo, nombre_usuario),
-                detalles_venta(
-                    id_detalle,
+                usuario (nombre, apellido, usuario),
+                detalle_venta(
+                    id_detalle_venta,
                     cantidad,
                     precio_unitario,
                     subtotal,
-                    productos(nombre_producto, imagen_producto)
+                    producto (nombre, url_imagen) 
                 )
-            `)
-            .eq("id_venta", saleId)
+            `) 
+            .eq("id_venta", saleId) 
             .single();
 
         if (error) throw error;
@@ -215,6 +214,10 @@ export const getSaleById = async (saleId) => {
         };
     }
 };
+
+/*
+
+// Esta función no tiene ningún uso real en el código y ya no se almacena el estado de las ventas en la base de datos, por lo que se puede eliminar o comentar.
 
 export const cancelSale = async (saleId) => {
     try {
@@ -247,25 +250,24 @@ export const cancelSale = async (saleId) => {
         };
     }
 };
+*/
 
-export const getAllSales = async (includeCompleted = true) => {
+
+export const getAllSales = async () => {
     try {
         let query = supabase
             .from("ventas")
             .select(`
                 *,
-                usuarios(nombre_completo, nombre_usuario),
-                detalles_venta(
+                usuario (nombre, apellido, usuario),
+                detalle_venta (
+                    id_detalle_venta,
                     cantidad,
                     precio_unitario,
                     subtotal,
-                    productos(nombre_producto)
+                    producto (nombre, url_imagen)
                 )
             `);
-
-        if (includeCompleted) {
-            query = query.eq("estado_venta", true);
-        }
 
         const { data, error } = await query.order("fecha_venta", { ascending: false });
 
@@ -286,9 +288,11 @@ export const getAllSales = async (includeCompleted = true) => {
     }
 };
 
-export const getSalesByEmployee = async (idEmpleado, includeCompleted = true) => {
+// NO se maneja una cuenta por empleado todavía; sin embargo no se descarta su implementación en un futuro próximo
+
+export const getSalesByEmployee = async (idEmployee) => {
     try {
-        if (!idEmpleado) {
+        if (!idEmployee) {
             return {
                 success: false,
                 error: "El ID del empleado es requerido"
@@ -299,19 +303,15 @@ export const getSalesByEmployee = async (idEmpleado, includeCompleted = true) =>
             .from("ventas")
             .select(`
                 *,
-                usuarios(nombre_completo, nombre_usuario),
-                detalles_venta(
+                usuario (nombre, apellido, usuario),
+                detalle_venta (
                     cantidad,
                     precio_unitario,
                     subtotal,
-                    productos(nombre_producto)
+                    producto (nombre, url_imagen)
                 )
             `)
-            .eq("id_empleado", idEmpleado);
-
-        if (includeCompleted) {
-            query = query.eq("estado_venta", true);
-        }
+            .eq("id_empleado", idEmployee);
 
         const { data, error } = await query.order("fecha_venta", { ascending: false });
 
@@ -344,17 +344,16 @@ export const getSalesToday = async () => {
             .from("ventas")
             .select(`
                 *,
-                usuarios(nombre_completo, nombre_usuario),
+                usuarios(nombre, apellido, usuario),
                 detalles_venta(
                     cantidad,
                     precio_unitario,
                     subtotal,
-                    productos(nombre_producto)
+                    producto (nombre, url_imagen)
                 )
             `)
             .gte("fecha_venta", inicioDelDia)
             .lt("fecha_venta", finDelDia)
-            .eq("estado_venta", true)
             .order("fecha_venta", { ascending: false });
 
         if (error) throw error;
@@ -387,21 +386,20 @@ export const getSaleDetails = async (idVenta) => {
             .from("ventas")
             .select(`
                 *,
-                usuarios(nombre_completo, nombre_usuario),
-                detalles_venta(
-                    id_detalle,
+                usuario (nombre, apellido, usuario),
+                detalle_venta (
+                    id_detalle_venta,
                     id_producto,
                     cantidad,
                     precio_unitario,
                     subtotal,
-                    productos(nombre_producto, imagen_producto)
+                    producto (nombre, url_imagen)
                 ),
-                pagos(
+                pago (
                     id_pago,
                     id_metodo_pago,
                     monto,
-                    fecha_pago,
-                    metodos_pago(nombre_metodo)
+                    metodo_pago (nombre_metodo)
                 )
             `)
             .eq("id_venta", idVenta)
@@ -423,54 +421,52 @@ export const getSaleDetails = async (idVenta) => {
     }
 };
 
-export const actualizarVentaCompleta = async (idVenta, datosVenta, detalles, pagos) => {
+export const updateFullSale = async (saleId, saleData, details, payments) => {
     try {
         const { error: ventaError } = await supabase
             .from('ventas')
             .update({
-                id_cliente: datosVenta.id_cliente || null,
-                subtotal: datosVenta.subtotal,
-                descuento: datosVenta.descuento,
-                total: datosVenta.total,
-                notas: datosVenta.notas || null
+                subtotal: saleData.subtotal,
+                descuento: saleData.descuento,
+                total: saleData.total,
+                notas: saleData.notas || null
             })
-            .eq('id_venta', idVenta);
+            .eq('id_venta', saleId);
 
         if (ventaError) throw ventaError;
 
-        const { error: deleteDetallesError } = await supabase
-            .from('detalles_venta')
+        const { error: deleteDetailsError } = await supabase
+            .from('detalle_venta')
             .delete()
-            .eq('id_venta', idVenta);
+            .eq('id_venta', saleId);
 
-        if (deleteDetallesError) throw deleteDetallesError;
+        if (deleteDetailsError) throw deleteDetailsError;
 
-        const detallesFormateados = detalles.map(detalle => ({
-            id_venta: idVenta,
-            id_producto: detalle.id_producto,
-            cantidad: detalle.cantidad,
-            precio_unitario: detalle.precio_unitario,
-            subtotal: detalle.subtotal
+        const detallesFormateados = details.map(detail  => ({
+            id_venta: saleId,
+            id_producto: detail.id_producto,
+            cantidad: detail.cantidad,
+            precio_unitario: detail.precio_unitario,
+            subtotal: detail.subtotal
         }));
 
-        const { error: detallesError } = await supabase
-            .from('detalles_venta')
+        const { error: detailsError } = await supabase
+            .from('detalle_venta')
             .insert(detallesFormateados);
 
-        if (detallesError) throw detallesError;
+        if (detailsError) throw detailsError;
 
         const { error: deletePagosError } = await supabase
             .from('pagos')
             .delete()
-            .eq('id_venta', idVenta);
+            .eq('id_venta', saleId);
 
         if (deletePagosError) throw deletePagosError;
 
-        const pagosFormateados = pagos.map(pago => ({
-            id_venta: idVenta,
+        const pagosFormateados = payments.map(pago => ({
+            id_venta: saleId,
             id_metodo_pago: pago.id_metodo_pago,
             monto: pago.monto,
-            fecha_pago: new Date().toISOString() // guarda UTC, muestra con mostrarFechaColombia()
         }));
 
         const { error: pagosError } = await supabase

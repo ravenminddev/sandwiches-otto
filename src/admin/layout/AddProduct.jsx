@@ -160,13 +160,12 @@ export default function AddProduct({ onProductoAgregado }) {
 
         // 2. Crear producto con URL de Cloudinary
         const datosProducto = {
-            nombre_producto: formData.nombre_producto,
+            nombre: formData.nombre_producto,
             descripcion: formData.descripcion || null,
             precio: parseFloat(formData.precio),
-            imagen_producto: uploadResult.url,
+            url_imagen: uploadResult.url,
             id_categoria: parseInt(formData.id_categoria),
-            ingredientes: formData.ingredientes || null,
-            disponible: formData.disponible
+            activo: formData.disponible
         };
 
         const createResult = await createProduct(datosProducto);

@@ -89,7 +89,7 @@ export default function ProductList({ products = [], flat = false, search = '', 
                             <ProductListCard
                                 product={product}
                                 isDeleting={deletingId === product.id_producto}
-                                onDelete={() => handleDelete(product.id_producto, product.nombre_producto)}
+                                onDelete={() => handleDelete(product.id_producto, product.nombre)}
                             />
                         </li>
                     ))}
@@ -122,7 +122,7 @@ export default function ProductList({ products = [], flat = false, search = '', 
                                 <ProductListCard
                                     product={product}
                                     isDeleting={deletingId === product.id_producto}
-                                    onDelete={() => handleDelete(product.id_producto, product.nombre_producto)}
+                                    onDelete={() => handleDelete(product.id_producto, product.nombre)}
                                 />
                             </li>
                         ))}

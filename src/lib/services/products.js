@@ -1,33 +1,31 @@
 import supabase from "../supabase/client";
 
-export const createProduct = async (datosProducto) => {
+export const createProduct = async (productData) => {
     try {
-        if (!datosProducto || Object.keys(datosProducto).length === 0) {
+        if (!productData || Object.keys(productData).length === 0) {
             return {
                 success: false,
                 error: "Por favor, proporcione los datos del producto."
             };
         }
 
-        if (!datosProducto.nombre_producto || !datosProducto.precio || !datosProducto.id_categoria) {
+        if (!productData.nombre || !productData.precio || !productData.id_categoria) {
             return {
                 success: false,
-                error: "Los campos nombre_producto, precio e id_categoria son obligatorios."
+                error: "Los campos nombre, precio e id_categoria son obligatorios."
             };
         }
 
         const { data, error } = await supabase
-            .from("productos")
+            .from("producto")
             .insert([
                 {
-                    nombre_producto: datosProducto.nombre_producto,
-                    descripcion: datosProducto.descripcion || null,
-                    precio: datosProducto.precio,
-                    imagen_producto: datosProducto.imagen_producto,
-                    id_categoria: datosProducto.id_categoria,
-                    ingredientes: datosProducto.ingredientes || null,
-                    estado: true,
-                    disponible: datosProducto.disponible !== false
+                    nombre: productData.nombre,
+                    descripcion: productData.descripcion || null,
+                    precio: productData.precio,
+                    url_imagen: productData.url_imagen,
+                    id_categoria: productData.id_categoria,
+                    activo: productData.activo !== false
                 }
             ]).select();
 
@@ -47,17 +45,12 @@ export const createProduct = async (datosProducto) => {
     }
 };
 
-export const getProducts = async (includeInactive = false) => {
+export const getProducts = async () => {
     try {
-        let query = supabase
-            .from("productos")
-            .select("*, categorias(nombre_categoria)");
-
-        if (!includeInactive) {
-            query = query.eq("estado", true);
-        }
-
-        const { data, error } = await query.order("nombre_producto", { ascending: true });
+        const { data, error } = await supabase
+            .from("producto")
+            .select("*, categoria_producto(nombre)")
+            .order("nombre", { ascending: true });
 
         if (error) throw error;
 
@@ -94,8 +87,8 @@ export const getProductById = async (id) => {
         }
 
         const { data, error } = await supabase
-            .from("productos")
-            .select("*")
+            .from("producto")
+            .select("*, categoria_producto(nombre)")
             .eq("id_producto", id)
             .single();
 
@@ -115,14 +108,15 @@ export const getProductById = async (id) => {
         }
 
     } catch (error) {
+        console.log("Error al obtener el producto con el id", id, ":", error)
         return {
             success: false,
-            error: "Ocurrió un error al obtener el producto. Por favor, inténtelo de nuevo."
+            error: error.message || "Ocurrió un error al obtener el producto. Por favor, inténtelo de nuevo."
         };
     }
 };
 
-export const updateProduct = async (id, datosProducto) => {
+export const updateProduct = async (id, productData) => {
     try {
         if (id === undefined || id === null) {
             return {
@@ -131,21 +125,16 @@ export const updateProduct = async (id, datosProducto) => {
             };
         }
 
-        if (!datosProducto || Object.keys(datosProducto).length === 0) {
+        if (!productData || Object.keys(productData).length === 0) {
             return {
                 success: false,
                 error: "Por favor, proporcione los datos del producto para actualizar."
             };
         }
 
-        const dataWithTimestamp = {
-            ...datosProducto,
-            fecha_ultima_modificacion: new Date().toISOString()
-        };
-
         const { data, error } = await supabase
-            .from("productos")
-            .update(dataWithTimestamp)
+            .from("producto")
+            .update(productData)
             .eq("id_producto", id)
             .select();
 
@@ -176,11 +165,8 @@ export const deactivateProduct = async (id) => {
         }
 
         const { data, error } = await supabase
-            .from("productos")
-            .update({ 
-                estado: false, 
-                fecha_ultima_modificacion: new Date().toISOString() 
-            })
+            .from("producto")
+            .update({ activo: false })
             .eq("id_producto", id)
             .select();
 
@@ -211,11 +197,8 @@ export const activateProduct = async (id) => {
         }
 
         const { data, error } = await supabase
-            .from("productos")
-            .update({ 
-                estado: true, 
-                fecha_ultima_modificacion: new Date().toISOString() 
-            })
+            .from("producto")
+            .update({ activo: true })
             .eq("id_producto", id)
             .select();
 
@@ -235,7 +218,7 @@ export const activateProduct = async (id) => {
     }
 };
 
-export const getProductsByCategory = async (categoryId, includeInactive = false) => {
+export const getProductsByCategory = async (categoryId) => {
     try {
         if (!categoryId) {
             return {
@@ -244,16 +227,11 @@ export const getProductsByCategory = async (categoryId, includeInactive = false)
             };
         }
 
-        let query = supabase
-            .from("productos")
-            .select("*, categorias(nombre_categoria)")
-            .eq("id_categoria", categoryId);
-
-        if (!includeInactive) {
-            query = query.eq("estado", true);
-        }
-
-        const { data, error } = await query.order("nombre_producto", { ascending: true });
+        const { data, error } = await supabase
+            .from("producto")
+            .select("*, categoria_producto(nombre)")
+            .eq("id_categoria", categoryId)
+            .order("nombre", { ascending: true });
 
         if (error) throw error;
 
@@ -283,11 +261,10 @@ export const getProductsByCategory = async (categoryId, includeInactive = false)
 export const getAvailableProducts = async () => {
     try {
         const { data, error } = await supabase
-            .from("productos")
-            .select("*, categorias(nombre_categoria)")
-            .eq("estado", true)
-            .eq("disponible", true)
-            .order("nombre_producto", { ascending: true });
+            .from("producto")
+            .select("*, categoria_producto(nombre)")
+            .eq("activo", true)
+            .order("nombre", { ascending: true });
 
         if (error) throw error;
 
@@ -318,17 +295,16 @@ export const searchProducts = async (searchTerm) => {
         const palabras = searchTerm.trim().split(" ");
 
         let query = supabase
-            .from("productos")
-            .select("*, categorias(nombre_categoria)")
-            .eq("estado", true);
+            .from("producto")
+            .select("*, categoria_producto(nombre)");
 
         const condiciones = palabras
-            .map(palabra => `nombre_producto.ilike.%${palabra}%,descripcion.ilike.%${palabra}%,ingredientes.ilike.%${palabra}%`)
+            .map(palabra => `nombre.ilike.%${palabra}%,descripcion.ilike.%${palabra}%`)
             .join(";");
 
         const { data, error } = await query
             .or(condiciones)
-            .order("nombre_producto", { ascending: true });
+            .order("nombre", { ascending: true });
 
         if (error) throw error;
 

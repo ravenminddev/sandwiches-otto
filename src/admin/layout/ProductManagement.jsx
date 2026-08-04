@@ -12,7 +12,7 @@ export default function ProductManagement({ products = [], onProductosActualizad
     const productosFiltrados = useMemo(() => {
         if (!query) return products;
         return products.filter(producto =>
-            producto.nombre_producto?.toLowerCase().includes(query)
+            producto.nombre?.toLowerCase().includes(query)
         );
     }, [products, query]);
 

@@ -19,10 +19,10 @@ export default function ProductSelectorModal({ show, onClose, carritoActual, onA
             if (result.success) {
                 const formateados = result.data.map(p => ({
                     id: p.id_producto,
-                    name: p.nombre_producto,
-                    img: p.imagen_producto,
+                    name: p.nombre,
+                    img: p.url_imagen,
                     precio: p.precio,
-                    categoria: p.categorias?.nombre_categoria
+                    categoria: p.categoria_producto?.nombre
                 }));
                 setProductos(formateados);
             } else {

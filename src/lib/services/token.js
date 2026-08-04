@@ -4,7 +4,7 @@ import { sendInvitationEmail } from "./email/email.js";
 // ============ GENERAR TOKEN DE INVITACIÓN ============
 
 /*
-ADVERTENCIA: ESTA FUNCION SE USA
+ADVERTENCIA: ESTA FUNCION NO SE USA
 */
 export const generateInvitationToken = async (idAdmin, emailNuevoUsuario) => {
     try {
@@ -133,9 +133,6 @@ export const validateInvitationToken = async (email, token) => {
 };
 
 // ============ MARCAR TOKEN COMO USADO ============
-/*
-ADVERTENCIA: ESTA FUNCION SE USA
-*/
 export const markTokenAsUsed = async (token, idUsuarioCreado) => {
     try {
         if (!token || !idUsuarioCreado) {
@@ -183,6 +180,9 @@ export const markTokenAsUsed = async (token, idUsuarioCreado) => {
 };
 
 // ============ REENVIAR EMAIL DE INVITACIÓN ============
+/*
+ADVERTENCIA: ESTA FUNCIÓN NO SE USA
+*/
 export const resendInvitationEmail = async (email) => {
     try {
         if (!email) {
