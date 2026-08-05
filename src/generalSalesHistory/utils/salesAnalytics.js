@@ -57,7 +57,7 @@ export const filterSalesByPeriod = (sales, period) => {
     const hoyKey = getVentaDateKey(new Date().toISOString());
 
     if (period === 'today') {
-        return sales.filter((venta) => getVentaDateKey(venta.fecha_venta) === hoyKey);
+        return sales.filter((venta) => getVentaDateKey(venta.fecha_pago) === hoyKey);
     }
 
     const dias = PERIOD_TO_DAYS[period];
@@ -67,14 +67,14 @@ export const filterSalesByPeriod = (sales, period) => {
     limite.setDate(limite.getDate() - (dias - 1));
     const limiteKey = getVentaDateKey(limite.toISOString());
 
-    return sales.filter((venta) => getVentaDateKey(venta.fecha_venta) >= limiteKey);
+    return sales.filter((venta) => getVentaDateKey(venta.fecha_pago) >= limiteKey);
 };
 
 export const computeSummary = (sales) => {
     const pedidosTotales = sales.length;
     const totalPeriodo = sales.reduce((acc, venta) => acc + Number(venta.total || 0), 0);
     const unidadesVendidas = sales.reduce((acc, venta) => {
-        const unidadesVenta = (venta.detalles_venta || []).reduce((sum, d) => sum + Number(d.cantidad || 0), 0);
+        const unidadesVenta = (venta.detalle_venta || []).reduce((sum, d) => sum + Number(d.cantidad || 0), 0);
         return acc + unidadesVenta;
     }, 0);
     const ventaPromedio = pedidosTotales > 0 ? totalPeriodo / pedidosTotales : 0;
@@ -90,7 +90,7 @@ export const computeDailyEvolution = (sales) => {
     const porDia = new Map();
 
     sales.forEach((venta) => {
-        const key = getVentaDateKey(venta.fecha_venta);
+        const key = getVentaDateKey(venta.fecha_pago);
         const actual = porDia.get(key) || { date: key, total: 0, pedidos: 0 };
         actual.total += Number(venta.total || 0);
         actual.pedidos += 1;
@@ -109,8 +109,8 @@ export const computeProductRanking = (sales, limit = 5) => {
     const porProducto = new Map();
 
     sales.forEach((venta) => {
-        (venta.detalles_venta || []).forEach((detalle) => {
-            const nombre = detalle.productos?.nombre_producto || 'Producto eliminado';
+        (venta.detalle_venta || []).forEach((detalle) => {
+            const nombre = detalle.producto?.nombre || 'Producto eliminado';
             const actual = porProducto.get(nombre) || { nombre, cantidad: 0, totalVendido: 0 };
             actual.cantidad += Number(detalle.cantidad || 0);
             actual.totalVendido += Number(detalle.subtotal || 0);

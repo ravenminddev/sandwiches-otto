@@ -14,7 +14,7 @@ export const insertFullSale = async (salesData, details, payments) => {
         const { data: retrievedSalesData, error: saleError } = await supabase
             .from("venta")
             .insert([{
-                id_usuario: salesData.id_empleado, // Debería ser id_usuario
+                id_usuario: salesData.id_usuario,
                 subtotal: salesData.subtotal,
                 descuento: salesData.descuento,
                 total: salesData.total,
@@ -77,10 +77,10 @@ export const createSale = async (salesData) => {
             };
         }
 
-        if (!salesData.id_empleado) {
+        if (!salesData.id_usuario) {
             return {
                 success: false,
-                error: "El id del empleado es requerido para crear una venta."
+                error: "El id del usuario es requerido para crear una venta."
             };
         }
 
@@ -89,17 +89,17 @@ export const createSale = async (salesData) => {
             salesData.descuento || 0
         );
  
-        if (!totalCalculated.success) return totalCalculated; // NOTA SANTIAGO: Debo analizar esto
+        if (!totalCalculated.success) return totalCalculated;
 
         const { data, error } = await supabase
             .from("venta")
             .insert([{
-                id_usuario: salesData.id_empleado, // Debería ser id_usuario (*) 
+                id_usuario: salesData.id_usuario,
                 subtotal: salesData.subtotal || 0,
                 descuento: salesData.descuento || 0,
                 total: totalCalculated.total || 0,
                 notas: salesData.notas || "",
-                fecha_venta: salesData.fecha_venta || new Date().toISOString(), // Si no se proporciona fecha_venta, se asigna la fecha actual en formato UTC
+                fecha_pago: salesData.fecha_pago || new Date().toISOString(),
             }])
             .select();
 
@@ -176,7 +176,7 @@ export const getSaleById = async (saleId) => {
         }
 
         const { data, error } = await supabase
-            .from("ventas")
+            .from("venta")
             .select(`
                 *,
                 usuario (nombre, apellido, usuario),
@@ -256,7 +256,7 @@ export const cancelSale = async (saleId) => {
 export const getAllSales = async () => {
     try {
         let query = supabase
-            .from("ventas")
+            .from("venta")
             .select(`
                 *,
                 usuario (nombre, apellido, usuario),
@@ -269,7 +269,7 @@ export const getAllSales = async () => {
                 )
             `);
 
-        const { data, error } = await query.order("fecha_venta", { ascending: false });
+        const { data, error } = await query.order("fecha_pago", { ascending: false });
 
         if (error) throw error;
 
@@ -300,7 +300,7 @@ export const getSalesByEmployee = async (idEmployee) => {
         }
 
         let query = supabase
-            .from("ventas")
+            .from("venta")
             .select(`
                 *,
                 usuario (nombre, apellido, usuario),
@@ -311,9 +311,9 @@ export const getSalesByEmployee = async (idEmployee) => {
                     producto (nombre, url_imagen)
                 )
             `)
-            .eq("id_empleado", idEmployee);
+            .eq("id_usuario", idEmployee);
 
-        const { data, error } = await query.order("fecha_venta", { ascending: false });
+        const { data, error } = await query.order("fecha_pago", { ascending: false });
 
         if (error) throw error;
 
@@ -341,20 +341,20 @@ export const getSalesToday = async () => {
         const finDelDia = new Date(`${hoyStr}T23:59:59-05:00`).toISOString();
 
         const { data, error } = await supabase
-            .from("ventas")
+            .from("venta")
             .select(`
                 *,
-                usuarios(nombre, apellido, usuario),
-                detalles_venta(
+                usuario(nombre, apellido, usuario),
+                detalle_venta(
                     cantidad,
                     precio_unitario,
                     subtotal,
                     producto (nombre, url_imagen)
                 )
             `)
-            .gte("fecha_venta", inicioDelDia)
-            .lt("fecha_venta", finDelDia)
-            .order("fecha_venta", { ascending: false });
+            .gte("fecha_pago", inicioDelDia)
+            .lt("fecha_pago", finDelDia)
+            .order("fecha_pago", { ascending: false });
 
         if (error) throw error;
 
@@ -383,7 +383,7 @@ export const getSaleDetails = async (idVenta) => {
         }
 
         const { data, error } = await supabase
-            .from("ventas")
+            .from("venta")
             .select(`
                 *,
                 usuario (nombre, apellido, usuario),
@@ -399,7 +399,7 @@ export const getSaleDetails = async (idVenta) => {
                     id_pago,
                     id_metodo_pago,
                     monto,
-                    metodo_pago (nombre_metodo)
+                    metodo_pago (nombre)
                 )
             `)
             .eq("id_venta", idVenta)
@@ -424,7 +424,7 @@ export const getSaleDetails = async (idVenta) => {
 export const updateFullSale = async (saleId, saleData, details, payments) => {
     try {
         const { error: ventaError } = await supabase
-            .from('ventas')
+            .from('venta')
             .update({
                 subtotal: saleData.subtotal,
                 descuento: saleData.descuento,
@@ -457,7 +457,7 @@ export const updateFullSale = async (saleId, saleData, details, payments) => {
         if (detailsError) throw detailsError;
 
         const { error: deletePagosError } = await supabase
-            .from('pagos')
+            .from('pago')
             .delete()
             .eq('id_venta', saleId);
 
@@ -470,7 +470,7 @@ export const updateFullSale = async (saleId, saleData, details, payments) => {
         }));
 
         const { error: pagosError } = await supabase
-            .from('pagos')
+            .from('pago')
             .insert(pagosFormateados);
 
         if (pagosError) throw pagosError;
@@ -499,7 +499,7 @@ export const deleteSale = async (idVenta) => {
         }
 
         const { error } = await supabase
-            .from('ventas')
+            .from('venta')
             .delete()
             .eq('id_venta', idVenta);
 

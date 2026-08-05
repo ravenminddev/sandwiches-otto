@@ -2,8 +2,6 @@ import supabase from "../supabase/client";
 
 export const createCategory = async (categoryData) => {
     try {
-
-
         if (!categoryData || Object.keys(categoryData).length === 0) {
             return {
                 success: false,
@@ -11,32 +9,32 @@ export const createCategory = async (categoryData) => {
             };
         }
 
-        if (!categoryData.nombre_categoria) {
+        const nombre = categoryData.nombre || categoryData.nombre_categoria;
+
+        if (!nombre) {
             return {
                 success: false,
-                error: "El campo nombre categoria es obligatorio."
+                error: "El campo nombre es obligatorio."
             }
         }
 
-        const { data: categoriaExistente, error: errorCategoria } = await supabase
-            .from("categorias").select("*").eq("nombre_categoria", categoryData.nombre_categoria).single();
+        const { data: existingCategory, error: categoryError } = await supabase
+            .from("categoria_producto").select("*").eq("nombre", nombre).single();
 
-        if (categoriaExistente) {
+        if (existingCategory) {
             return {
                 success: false,
-                error: "Ya existe esta categoria en la base de datos."
+                error: "Ya existe esta categoría en la base de datos."
             };
         }
 
-        if (errorCategoria && errorCategoria.code !== 'PGRST116') {
-            throw errorCategoria;
+        if (categoryError && categoryError.code !== 'PGRST116') {
+            throw categoryError;
         }
 
         const { data, error } = await supabase
-            .from("categorias").insert([{
-                nombre_categoria: categoryData.nombre_categoria,
-                descripcion: categoryData.descripcion_categoria,
-                estado_categoria: true
+            .from("categoria_producto").insert([{
+                nombre: nombre
             }]).select();
 
         if (error) throw error;
@@ -62,7 +60,7 @@ export const getCategoryById = async (id) => {
                 error: "Por favor, seleccione una categoría."
             };
         }
-        const { data, error } = await supabase.from("categorias").select("*").eq("id", id).single();
+        const { data, error } = await supabase.from("categoria_producto").select("*").eq("id_categoria", id).single();
 
         if (error) throw error;
 
@@ -80,19 +78,13 @@ export const getCategoryById = async (id) => {
 };
 
 
-export const getAllCategories = async (includeInactive= false) => {
+export const getAllCategories = async () => {
     try {
-        let query = supabase.from("categorias").select("*");
-
-        if (!includeInactive) {
-            query = query.eq("estado_categoria", true);
-        }
-
-        const { data, error } = await query.order("nombre_categoria", { ascending: true });
+        const { data, error } = await supabase.from("categoria_producto").select("*").order("nombre", { ascending: true });
 
         if (error) throw error;
 
-        return {   
+        return {
             success: true,
             data: data,
             count: data.length
@@ -103,10 +95,10 @@ export const getAllCategories = async (includeInactive= false) => {
             success: false,
             error: error.message || "Error al obtener las categorías."
         };
-    }   
+    }
 };
 
-export const updatecategory= async (id, datosActualizados) => {
+export const updateCategory = async (id, updatedData) => {
     try {
         if (!id) {
             return {
@@ -115,16 +107,16 @@ export const updatecategory= async (id, datosActualizados) => {
             };
         }
 
-        if (!datosActualizados || Object.keys(datosActualizados).length === 0) {
+        if (!updatedData || Object.keys(updatedData).length === 0) {
             return {
                 success: false,
                 error: "No se proporcionaron datos para actualizar."
             };
         }
 
-            const { data, error } = await supabase
-            .from("categorias")
-            .update(datosActualizados)
+        const { data, error } = await supabase
+            .from("categoria_producto")
+            .update(updatedData)
             .eq("id_categoria", id)
             .select();
 
@@ -137,7 +129,7 @@ export const updatecategory= async (id, datosActualizados) => {
         };
     } catch (error) {
         console.error("Error al actualizar la categoría:", error);
-        return {    
+        return {
             success: false,
             error: error.message || "Error al actualizar la categoría."
         };
@@ -145,24 +137,18 @@ export const updatecategory= async (id, datosActualizados) => {
 };
 
 
-export const deleteLogicCategory = async (id) => {
+export const deleteCategory = async (id) => {
     try {
         if (!id) {
             return {
                 success: false,
                 error: "Por favor, seleccione una categoría."
             };
-}
-        const {data: existeCategoria} = await supabase.from("categorias").select("*").eq("id_categoria", id).single();  
-        
-        if (!existeCategoria) {
-            return {
-                success: false,
-                error: "La categoría que intenta eliminar no existe."
-            };
         }
-
-        const { data, error } = await supabase.from("categorias").update({estado_categoria: false}).eq("id_categoria", id);
+        const { error } = await supabase
+            .from("categoria_producto")
+            .delete()
+            .eq("id_categoria", id);
 
         if (error) throw error;
 
@@ -179,40 +165,9 @@ export const deleteLogicCategory = async (id) => {
     }
 };
 
-export const activeLogicCategory = async (id) => {
-    try {
-        if (!id) { 
-            return {
-                success: false,
-                error: "Por favor, seleccione una categoría."
-            };
-        }
-        const {data: existeCategoria} = await supabase.from("categorias").select("*").eq("id_categoria", id).single();
-        if (!existeCategoria) {
-            return {
-                success: false,
-                error: "La categoría que intenta activar no existe."
-            };
-        }
-
-        const { data, error } = await supabase.from("categorias").update({estado_categoria: true}).eq("id_categoria", id);
-
-        if (error) throw error;
-
-        return {
-            success: true,
-            message: "Categoría activada exitosamente."
-        };
-    }
-    catch (error) {
-        console.error("Error al activar la categoría:", error);
-        return {    
-            success: false,
-            error: error.message || "Error al activar la categoría."
-        };
-    }
-};
-
+/*
+ADVERTENCIA: ESTA FUNCIÓN NO SE USA
+*/
 export const searchCategories = async (searchTerm) => {
     try {
         if (!searchTerm || searchTerm.trim().length === 0) {
@@ -222,22 +177,19 @@ export const searchCategories = async (searchTerm) => {
             };
         }
 
-        
         const palabras = searchTerm.trim().split(" ");
 
         let query = supabase
-            .from("categorias")
+            .from("categoria_producto")
             .select("*")
-            .eq("estado_categoria", true);
 
-      
         const condiciones = palabras
-            .map(palabra => `nombre_categoria.ilike.%${palabra}%,descripcion.ilike.%${palabra}%`)
+            .map(palabra => `nombre.ilike.%${palabra}%`)
             .join(";");
 
         const { data, error } = await query
             .or(condiciones)
-            .order("nombre_categoria", { ascending: true });
+            .order("nombre", { ascending: true });
 
         if (error) throw error;
 

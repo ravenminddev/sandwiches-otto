@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faTrash, faCheck, faCreditCard, faCartShopping, faReceipt } from '@fortawesome/free-solid-svg-icons';
 import { getAllPaymentMethods } from '@/lib/services/pagos.js';
-import { registrarVentaCompleta } from '@/lib/services/ventas.js';
+import { insertFullSale } from '@/lib/services/ventas.js';
 import { useAuth } from '../../lib/hooks/useAuth.js';
 import alertPop from '@/utils/alertPop.js';
 
@@ -27,7 +27,7 @@ export default function ShoppingCart({ carrito, onAumentar, onDisminuir, onElimi
             if (result.success) {
                 setMetodosPago(result.data);
                 if (result.data.length > 0) {
-                    setMetodoPagoTemp(result.data[0].id_metodo);
+                    setMetodoPagoTemp(result.data[0].id_metodo_pago);
                 }
             }
         };
@@ -54,14 +54,14 @@ export default function ShoppingCart({ carrito, onAumentar, onDisminuir, onElimi
             return;
         }
 
-        const metodo = metodosPago.find(m => m.id_metodo == metodoPagoTemp);
+        const metodo = metodosPago.find(m => m.id_metodo_pago == metodoPagoTemp);
 
         setPagos([
             ...pagos,
             {
                 id: Date.now(),
                 id_metodo_pago: parseInt(metodoPagoTemp),
-                nombre_metodo: metodo.nombre_metodo,
+                nombre: metodo.nombre,
                 monto: monto
             }
         ]);
@@ -89,8 +89,7 @@ export default function ShoppingCart({ carrito, onAumentar, onDisminuir, onElimi
 
         // Preparar datos de la venta
         const datosVenta = {
-            id_empleado: userData.id_usuario,
-            id_cliente: null,
+            id_usuario: userData.id_usuario,
             subtotal: subtotal,
             descuento: descuento,
             total: total,
@@ -106,10 +105,13 @@ export default function ShoppingCart({ carrito, onAumentar, onDisminuir, onElimi
         }));
 
         // Preparar pagos (sin el id temporal)
-        const pagosParaGuardar = pagos.map(({ id, nombre_metodo, ...rest }) => rest);
+        const pagosParaGuardar = pagos.map(pago => ({
+            id_metodo_pago: pago.id_metodo_pago,
+            monto: pago.monto
+        }));
 
         // Registrar venta
-        const result = await registrarVentaCompleta(datosVenta, detalles, pagosParaGuardar);
+        const result = await insertFullSale(datosVenta, detalles, pagosParaGuardar);
         setLoading(false);
 
         if (result.success) {
@@ -262,8 +264,8 @@ export default function ShoppingCart({ carrito, onAumentar, onDisminuir, onElimi
                         >
                             <option value="">Selecciona método de pago</option>
                             {metodosPago.map(metodo => (
-                                <option key={metodo.id_metodo} value={metodo.id_metodo}>
-                                    {metodo.nombre_metodo}
+                                <option key={metodo.id_metodo_pago} value={metodo.id_metodo_pago}>
+                                    {metodo.nombre}
                                 </option>
                             ))}
                         </select>
@@ -299,7 +301,7 @@ export default function ShoppingCart({ carrito, onAumentar, onDisminuir, onElimi
                                         </div>
                                         <div className='text-sm'>
                                             <p className='font-semibold text-gray-900 dark:text-zinc-100 leading-tight'>
-                                                {pago.nombre_metodo}
+                                                {pago.nombre}
                                             </p>
                                             <p className='text-green-600 text-xs font-medium'>
                                                 ${pago.monto.toLocaleString('es-CO')}

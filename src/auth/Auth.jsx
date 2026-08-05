@@ -7,20 +7,20 @@ import InputBasic from '../shared/components/InputBasic';
 import AnimatedPattern from './AnimatedPattern';
 
 export default function Auth() {
-    const [emailOrUsername, setEmailOrUsername] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const { loginStep1, loading } = useAuth();
+    const { login, loading } = useAuth();
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
 
-        if (!emailOrUsername || !password) {
+        if (!username || !password) {
             await alertPop('ERROR', 'Por favor completa todos los campos', 'error', 'Continuar');
             return;
         }
 
-        const result = await loginStep1(emailOrUsername, password);
+        const result = await login(username, password);
 
         if (result.success) {
             await alertPop('ÉXITO', 'Inicio de sesión exitoso', 'success', 'Continuar').then(() => {
@@ -53,15 +53,15 @@ export default function Auth() {
 
                 <form className='flex flex-col w-full gap-3 sm:gap-6 px-5 sm:px-10' onSubmit={handleLogin}>
                     <div className='flex flex-col gap-2'>
-                        <label className='font-semibold text-gray-800 dark:text-zinc-300' htmlFor='emailOrUsername'>
-                            Correo electrónico o Usuario
+                        <label className='font-semibold text-gray-800 dark:text-zinc-300' htmlFor='username'>
+                            Usuario
                         </label>
                         <InputBasic 
                             type={'text'} 
-                            placeholder={"Ingresa tu correo electrónico o usuario"} 
-                            value={emailOrUsername} 
-                            onChange={(e) => setEmailOrUsername(e.target.value)}
-                            id='emailOrUsername'
+                            placeholder={"Ingresa tu usuario"} 
+                            value={username} 
+                            onChange={(e) => setUsername(e.target.value)}
+                            id='username'
                         />
                     </div>
 

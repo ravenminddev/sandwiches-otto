@@ -1,80 +1,73 @@
 import supabase from "../supabase/client";
 
 
-export const createPayment = async (datosPago) => {
+export const createPayment = async (paymentData) => {
     try {
-        if (!datosPago || Object.keys(datosPago).length === 0) {
+        if (!paymentData || Object.keys(paymentData).length === 0) {
             return {
                 success: false,
                 error: "Los datos del pago no pueden estar vacíos"
             };
         }
 
-        if (!datosPago.id_venta || !datosPago.id_metodo_pago || !datosPago.monto) {
+        if (!paymentData.id_venta || !paymentData.id_metodo_pago || !paymentData.monto) {
             return {
                 success: false,
                 error: "id_venta, id_metodo_pago y monto son requeridos"
             };
         }
 
-        if (datosPago.monto <= 0) {
+        if (paymentData.monto <= 0) {
             return {
                 success: false,
                 error: "El monto debe ser mayor a 0"
             };
         }
 
-    
-        const { data: venta, error: ventaError } = await supabase
-            .from("ventas")
+        const { data: sale, error: saleError } = await supabase
+            .from("venta")
             .select("total")
-            .eq("id_venta", datosPago.id_venta)
+            .eq("id_venta", paymentData.id_venta)
             .single();
 
-        if (ventaError) throw ventaError;
+        if (saleError) throw saleError;
 
-
-        const { data: pagosPrevios, error: pagosError } = await supabase
-            .from("pagos")
+        const { data: previousPayments, error: paymentsError } = await supabase
+            .from("pago")
             .select("monto")
-            .eq("id_venta", datosPago.id_venta);
+            .eq("id_venta", paymentData.id_venta);
 
-        if (pagosError) throw pagosError;
+        if (paymentsError) throw paymentsError;
 
-       
-        const sumaPagosAnteriores = pagosPrevios.reduce((sum, pago) => sum + pago.monto, 0);
-        const totalNuevoPago = sumaPagosAnteriores + datosPago.monto;
+        const previousPaymentsSum = previousPayments.reduce((sum, payment) => sum + payment.monto, 0);
+        const newPaymentTotal = previousPaymentsSum + paymentData.monto;
 
-       
-        if (totalNuevoPago > venta.total) {
+        if (newPaymentTotal > sale.total) {
             return {
                 success: false,
-                error: `El monto excede el total de la venta. Total: ${venta.total}, Pagado hasta ahora: ${sumaPagosAnteriores}, Intentas agregar: ${datosPago.monto}`
+                error: `El monto excede el total de la venta. Total: ${sale.total}, Pagado hasta ahora: ${previousPaymentsSum}, Intentas agregar: ${paymentData.monto}`
             };
         }
 
-       
         const { data, error } = await supabase
-            .from("pagos")
+            .from("pago")
             .insert([{
-                id_venta: datosPago.id_venta,
-                id_metodo_pago: datosPago.id_metodo_pago,
-                monto: datosPago.monto,
-                fecha_pago: datosPago.fecha_pago || new Date().toISOString()
+                id_venta: paymentData.id_venta,
+                id_metodo_pago: paymentData.id_metodo_pago,
+                monto: paymentData.monto
             }])
             .select();
 
         if (error) throw error;
 
-        
-        const ventaPagada = totalNuevoPago === venta.total;
+        const ventaPagada = newPaymentTotal === sale.total;
 
         return {
             success: true,
             data: data[0],
             ventaPagada: ventaPagada,
-            pendiente: venta.total - totalNuevoPago,
-            message: ventaPagada ? "Pago registrado. Venta completamente pagada" : `Pago registrado. Pendiente: ${venta.total - totalNuevoPago}`
+            pendiente: sale.total - newPaymentTotal,
+            message: ventaPagada ? "Pago registrado. Venta completamente pagada" : `Pago registrado. Pendiente: ${sale.total - newPaymentTotal}`
         };
 
     } catch (error) {
@@ -86,7 +79,7 @@ export const createPayment = async (datosPago) => {
     }
 };
 
-export const getPaymentsByVenta = async (idVenta) => {
+export const getPaymentsBySale = async (idVenta) => {
     try {
         if (!idVenta) {
             return {
@@ -96,10 +89,9 @@ export const getPaymentsByVenta = async (idVenta) => {
         }
 
         const { data, error } = await supabase
-            .from("pagos")
-            .select("*, metodos_pago(nombre_metodo)")
-            .eq("id_venta", idVenta)
-            .order("fecha_pago", { ascending: true });
+            .from("pago")
+            .select("*, metodo_pago (nombre)")
+            .eq("id_venta", idVenta);
 
         if (error) throw error;
 
@@ -132,8 +124,8 @@ export const getPaymentById = async (id) => {
         }
 
         const { data, error } = await supabase
-            .from("pagos")
-            .select("*, metodos_pago(nombre_metodo), ventas(total, id_empleado)")
+            .from("pago")
+            .select("*, metodo_pago (nombre), venta (total, id_usuario)")
             .eq("id_pago", id)
             .single();
 
@@ -154,17 +146,12 @@ export const getPaymentById = async (id) => {
 };
 
 
-export const getAllPaymentMethods = async (includeInactive = false) => {
+export const getAllPaymentMethods = async () => {
     try {
-        let query = supabase
-            .from("metodos_pago")
-            .select("*");
-
-        if (!includeInactive) {
-            query = query.eq("activo", true);
-        }
-
-        const { data, error } = await query.order("nombre_metodo", { ascending: true });
+        const { data, error } = await supabase
+            .from("metodo_pago")
+            .select("*")
+            .order("nombre", { ascending: true });
 
         if (error) throw error;
 
@@ -193,15 +180,14 @@ export const getPaymentsByDateRange = async (fechaInicio, fechaFin) => {
         }
 
         const { data, error } = await supabase
-            .from("pagos")
-            .select("*, metodos_pago(nombre_metodo), ventas(id_empleado, usuarios(nombre_completo))")
-            .gte("fecha_pago", fechaInicio)
-            .lte("fecha_pago", fechaFin)
-            .order("fecha_pago", { ascending: false });
+            .from("pago")
+            .select("*, metodo_pago (nombre), venta!inner (id_usuario, fecha_pago, usuario (nombre, apellido))")
+            .gte("venta.fecha_pago", fechaInicio)
+            .lte("venta.fecha_pago", fechaFin)
+            .order("venta.fecha_pago", { ascending: false });
 
         if (error) throw error;
 
-        
         const totalPagado = data.reduce((sum, pago) => sum + pago.monto, 0);
 
         return {
@@ -229,21 +215,21 @@ export const getPaymentsSummaryToday = async () => {
         const finDelDia = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1).toISOString();
 
         const { data, error } = await supabase
-        .from("pagos")
-        .select(`
-            monto,
-            metodos_pago(id_metodo, nombre_metodo),
-            ventas!inner(fecha_venta)
-        `)
-        .gte("ventas.fecha_venta", inicioDelDia)
-        .lt("ventas.fecha_venta", finDelDia);
+            .from("pago")
+            .select(`
+                monto,
+                metodo_pago (nombre),
+                venta!inner (fecha_pago)
+            `)
+            .gte("venta.fecha_pago", inicioDelDia)
+            .lt("venta.fecha_pago", finDelDia);
 
         if (error) throw error;
 
-   
         const resumen = {};
         data.forEach(pago => {
-            const nombreMetodo = pago.metodos_pago.nombre_metodo;
+            const nombreMetodo = pago.metodo_pago?.nombre;
+            if (!nombreMetodo) return;
             if (!resumen[nombreMetodo]) {
                 resumen[nombreMetodo] = 0;
             }
