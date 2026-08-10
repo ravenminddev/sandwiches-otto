@@ -1,5 +1,5 @@
 import logoOtto from '@/assets/logo.png';
-import { Link, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import { useState } from 'react';
 import { useAuth } from '@/lib/hooks/useAuth';
 import alertPop from '@/utils/alertPop.js';

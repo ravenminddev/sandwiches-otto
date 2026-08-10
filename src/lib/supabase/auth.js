@@ -1,6 +1,8 @@
 import supabase from "../supabase/client.js";
+import bcrypt from "bcryptjs";
 
 // ============ LOGIN ============
+
 export const login = async (username, password) => {
     try {
         if (!username || !password) {
@@ -9,13 +11,13 @@ export const login = async (username, password) => {
                 error: "Usuario y contraseña son requeridos"
             };
         }
-
+        console.log(username);
         const { data: userData, error: userError } = await supabase
             .from("usuario")
-            .select("*, rol (id_rol, nombre)")
+            .select("*, rol(id_rol, nombre)")
             .eq("usuario", username)
             .eq("activo", true);
-
+        console.log(userData);
         if (userError) throw userError;
 
         if (!userData || userData.length === 0) {
@@ -26,8 +28,10 @@ export const login = async (username, password) => {
         }
 
         const user = userData[0];
+        console.log("Probando 3");
+        const isEqual = await bcrypt.compare(password, user.contrasenia);
 
-        if (user.contraseña !== password) {
+        if (!isEqual) {
             return {
                 success: false,
                 error: "Contraseña incorrecta"

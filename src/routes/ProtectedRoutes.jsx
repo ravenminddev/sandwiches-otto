@@ -8,7 +8,9 @@ export default function ProtectedRoutes({ children, requiredRole = null }) {
     if (!isAuthenticated && !loading) {
         return <Navigate to="/login" />;
     }
-
+    if (!userData){
+        return <Navigate to="/login" />;
+    }
     if (loading) {
         return <div>Cargando...</div>;
     }
