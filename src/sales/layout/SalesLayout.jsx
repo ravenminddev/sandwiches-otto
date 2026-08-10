@@ -42,7 +42,6 @@ function SalesLayoutInner() {
     const { isModalOpen } = useModal();
     const location = useLocation();
     const isRegisterRoute = location.pathname === '/sales/' || location.pathname === '/sales';
-    const isAdminRoute = location.pathname.startsWith('/sales/admin');
     const [carrito, setCarrito] = useState([]);
     const hasDesktopCart = isRegisterRoute && carrito.length > 0;
     const [showCart, setShowCart] = useState(false);
@@ -196,9 +195,9 @@ function SalesLayoutInner() {
             )}
             <Sidebar className='max-lg:hidden [grid-area:sidebar]' />
 
-            <main className='[grid-area:main] w-full px-4 sm:px-6 lg:px-10 lg:py-10 max-lg:pt-20 max-lg:pb-10 overflow-y-auto relative'>
+            <main className='[grid-area:main] w-full px-4 sm:px-6 lg:px-10 lg:py-10 max-lg:pt-24 max-lg:pb-10 overflow-y-auto relative'>
                 <div className="flex w-full relative z-10">
-                    <div className={`transition-all duration-700 ease-out ${hasDesktopCart ? 'lg:w-2/3 lg:pr-6' : 'lg:w-full lg:pr-0'}`}>
+                    <div className={`w-full transition-all duration-700 ease-out ${hasDesktopCart ? 'lg:w-2/3 lg:pr-6' : 'lg:w-full lg:pr-0'}`}>
                         <Outlet context={{ agregarAlCarrito, carrito }} />
                     </div>
                     <div
@@ -217,20 +216,20 @@ function SalesLayoutInner() {
                 </div>
             </main>
 
-            {(totalItems > 0 && !showCart) || isModalOpen || isAdminRoute ? (
-                <button
-                    onClick={() => setShowCart(true)}
-                    className={`cursor-pointer lg:hidden fixed bottom-6 right-6 z-40 bg-yellow-otto text-white p-4 rounded-full shadow-lg hover:brightness-95 transition-all duration-[2000ms] active:scale-90 ${
-                        isModalOpen || isAdminRoute ? 'translate-y-40 opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'
-                    }`}
-                    aria-label="Abrir carrito"
-                >
-                    <FontAwesomeIcon icon={faCartShopping} className="text-2xl" />
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full min-w-6 h-6 flex items-center justify-center shadow-md">
-                        {totalItems}
-                    </span>
-                </button>
-            ) : null}
+            <button
+                onClick={() => setShowCart(true)}
+                className={`cursor-pointer lg:hidden fixed bottom-6 right-6 z-40 bg-yellow-otto text-white p-4 rounded-full shadow-lg hover:brightness-95 transition-all duration-[2000ms] active:scale-90 ${
+                    isRegisterRoute && totalItems > 0
+                        ? 'translate-y-0 opacity-100'
+                        : 'translate-y-40 opacity-0 pointer-events-none'
+                }`}
+                aria-label="Abrir carrito"
+            >
+                <FontAwesomeIcon icon={faCartShopping} className="text-2xl" />
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full min-w-6 h-6 flex items-center justify-center shadow-md">
+                    {totalItems}
+                </span>
+            </button>
 
             <CartDrawer show={showCart} onClose={() => setShowCart(false)}>
                 <ShoppingCart

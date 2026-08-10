@@ -76,7 +76,7 @@ export default function DiarySales() {
                 <div className="flex flex-row text-left mb-6">
                     <h1 className="text-page-title text-pretty">{`Ventas del ${fechaFormateada}`}</h1>
                 </div>
-                <div className="bg-white dark:bg-card rounded-lg shadow-lg p-4 sm:p-8 text-center">
+                <div className="bg-white dark:bg-card border border-gray-200/60 dark:border-border rounded-lg shadow-lg p-4 sm:p-8 text-center">
                     <h2 className='text-empty-state mb-4'>No hay ventas</h2>
                     <p className='text-sm sm:text-base text-gray-600 dark:text-zinc-400'>No se han registrado ventas para hoy</p>
                 </div>
@@ -90,7 +90,7 @@ export default function DiarySales() {
                 <h1 className="text-page-title text-pretty">{`Ventas del ${fechaFormateada}`}</h1>
             </div>
 
-            <div className="bg-white dark:bg-card rounded-lg shadow-lg p-6 mb-6">
+            <div className="bg-white dark:bg-card border border-gray-200/60 dark:border-border rounded-lg shadow-lg p-6 mb-6">
                 <Table
                     rowData={sales}
                     onVerRecibo={handleVerRecibo}

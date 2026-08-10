@@ -232,7 +232,7 @@ export default function EditSales() {
             <button
                 type="button"
                 onClick={() => navigate(-1)}
-                className="cursor-pointer mb-6 text-gray-700 dark:text-zinc-300 p-2 hover:text-gray-900 dark:text-zinc-100 transition-all inline-flex items-center gap-2"
+                className="cursor-pointer mb-6 text-gray-700 dark:text-zinc-300 p-2 hover:text-gray-900 hover:dark:text-zinc-100 transition-all inline-flex items-center gap-2"
             >
                 <FontAwesomeIcon icon={faArrowLeft} size="lg" />
                 <span>Volver</span>
@@ -245,8 +245,8 @@ export default function EditSales() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-5xl">
 
                 {/* ── COLUMNA IZQUIERDA: Productos ─────────────────────────── */}
-                <div className="bg-white dark:bg-card rounded-2xl shadow-lg p-6 flex flex-col gap-4">
-                    <div className="flex justify-between items-center border-b pb-4">
+                <div className="bg-white dark:bg-card border border-gray-200/60 dark:border-border rounded-2xl shadow-lg p-6 flex flex-col gap-4">
+                    <div className="flex justify-between items-center border-b border-gray-200 dark:border-border pb-4">
                         <h2 className="text-section-title">Productos</h2>
                         <button
                             onClick={() => setShowModal(true)}
@@ -283,7 +283,7 @@ export default function EditSales() {
                                             <p className="font-semibold text-sm text-gray-900 dark:text-zinc-100 truncate">
                                                 {item.name}
                                             </p>
-                                            <p className="text-sm">
+                                            <p className="text-sm text-gray-600 dark:text-zinc-400">
                                                 ${item.precio.toLocaleString('es-CO')}
                                             </p>
                                         </div>
@@ -304,7 +304,7 @@ export default function EditSales() {
                                             >
                                                 <FontAwesomeIcon icon={faMinus} size="xs" />
                                             </button>
-                                            <span className="w-6 h-6 text-center bg-gray-200 dark:bg-zinc-700 rounded text-sm font-semibold">
+                                            <span className="w-6 h-6 text-center bg-gray-200 dark:bg-zinc-700 rounded text-sm font-semibold text-gray-900 dark:text-zinc-100">
                                                 {item.cantidad}
                                             </span>
                                             <button
@@ -326,7 +326,7 @@ export default function EditSales() {
                     )}
 
                     {/* Cliente y Descuento */}
-                    <div className="border-t pt-4 space-y-3">
+                    <div className="border-t border-gray-200 dark:border-border pt-4 space-y-3">
                         <div className="flex flex-col gap-1">
                             <label className="text-sm font-medium text-gray-700 dark:text-zinc-300">
                                 Nombre del cliente
@@ -357,7 +357,7 @@ export default function EditSales() {
                     </div>
 
                     {/* Totales */}
-                    <div className="border-t pt-4 space-y-2">
+                    <div className="border-t border-gray-200 dark:border-border pt-4 space-y-2">
                         <div className="flex justify-between text-sm text-gray-600 dark:text-zinc-400">
                             <span>Subtotal:</span>
                             <span className="font-semibold">${subtotal.toLocaleString('es-CO')}</span>
@@ -368,7 +368,7 @@ export default function EditSales() {
                                 <span>-${parseFloat(descuento).toLocaleString('es-CO')}</span>
                             </div>
                         )}
-                        <div className="flex justify-between text-lg font-bold border-t pt-2">
+                        <div className="flex justify-between text-lg font-bold border-t border-gray-200 dark:border-border pt-2">
                             <span>Total:</span>
                             <span className="text-yellow-otto">${total.toLocaleString('es-CO')}</span>
                         </div>
@@ -376,7 +376,7 @@ export default function EditSales() {
                 </div>
 
                 {/* ── COLUMNA DERECHA: Pagos ───────────────────────────────── */}
-                <div className="bg-white dark:bg-card rounded-2xl shadow-lg p-6 flex flex-col gap-4">
+                <div className="bg-white dark:bg-card border border-gray-200/60 dark:border-border rounded-2xl shadow-lg p-6 flex flex-col gap-4">
                     <h2 className="text-section-title border-b pb-4">
                         Métodos de pago
                     </h2>
@@ -419,13 +419,13 @@ export default function EditSales() {
                             {pagos.map(pago => (
                                 <div
                                     key={pago.id}
-                                    className="flex justify-between items-center bg-green-50 border border-green-200 rounded-lg p-3"
+                                    className="flex justify-between items-center bg-green-50 border border-green-200 dark:bg-green-500/10 dark:border-green-500/30 rounded-lg p-3"
                                 >
                                     <div>
                                         <p className="font-semibold text-sm text-gray-900 dark:text-zinc-100">
                                             {pago.nombre_metodo}
                                         </p>
-                                        <p className="text-green-700 text-sm">
+                                        <p className="text-green-700 dark:text-green-400 text-sm">
                                             ${pago.monto.toLocaleString('es-CO')}
                                         </p>
                                     </div>
@@ -446,7 +446,7 @@ export default function EditSales() {
                             <span className="text-gray-600 dark:text-zinc-400">Total pagado:</span>
                             <span className="font-semibold">${totalPagado.toLocaleString('es-CO')}</span>
                         </div>
-                        <div className={`flex justify-between font-bold ${pendiente <= 0 ? 'text-green-600' : 'text-orange-500'}`}>
+                        <div className={`flex justify-between font-bold ${pendiente <= 0 ? 'text-green-600 dark:text-green-400' : 'text-orange-500 dark:text-orange-400'}`}>
                             <span>Pendiente:</span>
                             <span>${Math.max(0, pendiente).toLocaleString('es-CO')}</span>
                         </div>

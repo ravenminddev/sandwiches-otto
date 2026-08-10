@@ -65,7 +65,7 @@ export default function RegisterSales({ isAdmin = false }) {
         return (
             <div className='flex items-center justify-center min-h-[50vh]'>
                 <h1 className='sr-only'>Registrar venta</h1>
-                <div className='bg-white dark:bg-card rounded-lg shadow-lg p-8 text-center'>
+                <div className='bg-white dark:bg-card border border-gray-200/60 dark:border-border rounded-lg shadow-lg p-8 text-center'>
                     <h2 className='text-empty-state'>No hay productos</h2>
                     <p className='text-gray-600 dark:text-zinc-400'>No se han registrado productos en la BD</p>
                 </div>
