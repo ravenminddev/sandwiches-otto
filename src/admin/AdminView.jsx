@@ -32,7 +32,7 @@ export default function AdminView() {
     const [loading, setLoading] = useState(true);
 
     const cargarProductos = async () => {
-        const result = await getProducts(false);
+        const result = await getProducts(true);
 
         if (result.success) {
             const productosFormateados = result.data.map(prod => ({

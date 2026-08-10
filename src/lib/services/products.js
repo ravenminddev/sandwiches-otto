@@ -1,3 +1,4 @@
+import { ca } from "zod/v4/locales";
 import supabase from "../supabase/client";
 
 export const createProduct = async (productData) => {
@@ -45,12 +46,13 @@ export const createProduct = async (productData) => {
     }
 };
 
-export const getProducts = async () => {
+export const getProducts = async (active = true) => {
     try {
         const { data, error } = await supabase
             .from("producto")
             .select("*, categoria_producto(nombre)")
-            .order("nombre", { ascending: true });
+            .order("nombre", { ascending: true })
+            .eq("activo", active);
 
         if (error) throw error;
 
@@ -69,6 +71,38 @@ export const getProducts = async () => {
         };
 
     } catch (error) {
+        console.error(error.message);
+        return {
+            success: false,
+            error: "Ocurrió un error al obtener los productos. Por favor, inténtelo de nuevo."
+        };
+    }
+};
+
+export const getAllProducts = async () => {
+    try {
+        const { data, error } = await supabase
+            .from("producto")
+            .select("*, categoria_producto(nombre)")
+            .order("nombre", { ascending: true });
+            
+        if (error) throw error;
+
+        if (!data || data.length === 0) {
+            return {
+                success: false,
+                error: "No se encontraron productos en la base de datos"
+            };
+        }
+
+        return {
+            success: true,
+            data: data,
+            count: data.length,
+            message: "Se han obtenido todos los productos correctamente"
+        };
+    }
+    catch (error) {
         console.error(error.message);
         return {
             success: false,

@@ -328,7 +328,7 @@ export default function AddProduct({ onProductoAgregado }) {
                                         <option value="">Selecciona una categoría</option>
                                         {categorias.map(cat => (
                                             <option key={cat.id_categoria} value={cat.id_categoria}>
-                                                {cat.nombre_categoria}
+                                                {cat.nombre}
                                             </option>
                                         ))}
                                     </select>
@@ -348,21 +348,6 @@ export default function AddProduct({ onProductoAgregado }) {
                                         className={inputClass}
                                     />
                                 </div>
-                            </div>
-
-                            {/* Ingredientes */}
-                            <div className='flex gap-2 flex-col'>
-                                <label htmlFor="ingredientes" className={labelClass}>
-                                    Ingredientes
-                                </label>
-                                <textarea
-                                    name="ingredientes"
-                                    id="ingredientes"
-                                    placeholder='Ej: Pan, pollo, lechuga, tomate, mayonesa'
-                                    value={formData.ingredientes}
-                                    onChange={handleInputChange}
-                                    className={`${inputClass} resize-none h-20`}
-                                />
                             </div>
                         </form>
 

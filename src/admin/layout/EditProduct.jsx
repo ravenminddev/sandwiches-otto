@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faCamera } from '@fortawesome/free-solid-svg-icons';
 import alertPop from '@/utils/alertPop.js';
 import { updateProduct, getProductById } from '../../lib/services/products.js';
+import { getAllCategories } from '../../lib/services/categories.js';
 import { uploadImageToCloudinary, validateImage } from '../../lib/services/cloudinary/cloudinary.js';
 
 const inputClass = 'w-full rounded-xl border border-dash-border dark:border-border bg-white dark:bg-input px-4 py-3 text-sm sm:text-base text-dash-ink dark:text-zinc-100 placeholder-dash-gray-soft dark:placeholder:text-zinc-500 shadow-sm transition-all duration-200 outline-none focus:border-yellow-otto focus:ring-4 focus:ring-yellow-otto/15 dark:focus:border-yellow-otto hover:border-dash-gray-soft dark:hover:border-zinc-500';
@@ -19,10 +20,13 @@ export default function EditProduct() {
     const inputRef = useRef(null);
     const navigate = useNavigate();
 
+    const [categorias, setCategorias] = useState([]);
+
     const [formData, setFormData] = useState({
         nombre_producto: '',
         precio: '',
-        descripcion: ''
+        descripcion: '',
+        id_categoria: ''
     });
 
     // Cargar producto al montar
@@ -34,7 +38,8 @@ export default function EditProduct() {
                 setFormData({
                     nombre_producto: result.data.nombre,
                     precio: result.data.precio,
-                    descripcion: result.data.descripcion || ''
+                    descripcion: result.data.descripcion || '',
+                    id_categoria: result.data.id_categoria || ''
                 });
             } else {
                 await alertPop(
@@ -49,6 +54,17 @@ export default function EditProduct() {
         };
         cargarProducto();
     }, [productId, navigate]);
+
+    // Cargar categorías al montar
+    useEffect(() => {
+        const cargarCategorias = async () => {
+            const result = await getAllCategories();
+            if (result.success) {
+                setCategorias(result.data);
+            }
+        };
+        cargarCategorias();
+    }, []);
 
     const clickEvent = () => {
         inputRef.current.click();
@@ -111,6 +127,7 @@ export default function EditProduct() {
                 nombre: formData.nombre_producto,
                 precio: parseFloat(formData.precio),
                 descripcion: formData.descripcion,
+                id_categoria: parseInt(formData.id_categoria),
                 url_imagen: imagenUrl
             });
 
@@ -258,18 +275,40 @@ export default function EditProduct() {
                             </div>
                         </div>
 
-                        <div className='flex gap-2 flex-col'>
-                            <label htmlFor="descripcion" className={labelClass}>
-                                Descripción (opcional)
-                            </label>
-                            <textarea
-                                name="descripcion"
-                                id="descripcion"
-                                value={formData.descripcion}
-                                onChange={handleInputChange}
-                                placeholder='Descripción del producto'
-                                className={`${inputClass} resize-none h-24`}
-                            />
+                        <div className='grid grid-cols-1 md:grid-cols-2 gap-5'>
+                            <div className='flex gap-2 flex-col'>
+                                <label htmlFor="id_categoria" className={labelClass}>
+                                    Categoría
+                                </label>
+                                <select
+                                    name="id_categoria"
+                                    id="id_categoria"
+                                    value={formData.id_categoria}
+                                    onChange={handleInputChange}
+                                    className={`cursor-pointer ${inputClass}`}
+                                >
+                                    <option value="">Selecciona una categoría</option>
+                                    {categorias.map(cat => (
+                                        <option key={cat.id_categoria} value={cat.id_categoria}>
+                                            {cat.nombre}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            <div className='flex gap-2 flex-col'>
+                                <label htmlFor="descripcion" className={labelClass}>
+                                    Descripción (opcional)
+                                </label>
+                                <textarea
+                                    name="descripcion"
+                                    id="descripcion"
+                                    value={formData.descripcion}
+                                    onChange={handleInputChange}
+                                    placeholder='Descripción del producto'
+                                    className={`${inputClass} resize-none h-24`}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
