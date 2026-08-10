@@ -53,9 +53,13 @@ return (
             onMouseEnter={()=>setEnter('first')} 
             className='col-span-2 relative bg-white dark:bg-card border border-gray-200/60 dark:border-border w-full flex flex-col justify-center items-center py-5 lg:py-7 rounded-3xl gap-3 hover:ring-4 hover:ring-yellow-500/15 transition-all hover:-translate-y-1 overflow-hidden'
         >
-            <h1 className='relative z-10 text-section-title'>Total ingresado el día de hoy</h1>
-            <div className='relative z-10 bg-yellow-500/25 text-yellow-500 font-extrabold text-xl md:text-2xl lg:text-[26px] px-7 py-3 rounded-xl'>
-                <p>{loading?'cargando...':formatMoney(nequiMoney+cashMoney)}</p>
+            <p className='relative z-10 text-sm sm:text-base font-semibold text-dash-gray dark:text-zinc-400'>Total ingresado el día de hoy</p>
+            <div className='relative z-10 bg-yellow-500/25 text-yellow-500 px-7 py-3 rounded-xl'>
+                {loading ? (
+                    <span className='text-sm font-medium text-dash-gray-soft dark:text-zinc-500 animate-pulse'>Cargando...</span>
+                ) : (
+                    <p className='text-money-amount text-2xl sm:text-3xl'>{formatMoney(nequiMoney+cashMoney)}</p>
+                )}
             </div>
 
             <FloatingElements figure1={Dog} figure2={Utensils} enter={enter}/>
@@ -70,13 +74,17 @@ return (
                 <img src={nequiWhiteIcon} alt='Nequi' className='hidden max-h-full max-w-full object-contain dark:block' />
             </div>
 
-            <div className='font-bold text-[18px] md:text-xl lg:text-2xl flex flex-col justify-center items-center'> 
-                <p>{loading?'cargando...': formatMoney(nequiMoney)}</p>
-                <p className='text-[#7500A3]'>
-                {loading 
-                    ? 'Información': `${nequiPercent.toFixed(0)}% del total`
-                }
-                </p>
+            <div className='flex flex-col justify-center items-center'> 
+                {loading ? (
+                    <span className='text-sm font-medium text-dash-gray-soft dark:text-zinc-500 animate-pulse'>Cargando...</span>
+                ) : (
+                    <>
+                        <p className='text-money-amount text-lg sm:text-xl lg:text-2xl text-gray-900 dark:text-zinc-100'>{formatMoney(nequiMoney)}</p>
+                        <p className='text-xs sm:text-sm font-bold tabular-nums text-[#7500A3]'>
+                            {`${nequiPercent.toFixed(0)}% del total`}
+                        </p>
+                    </>
+                )}
             </div>
         </div>
 
@@ -87,13 +95,17 @@ return (
                 <img src={moneyIcon} alt='Efectivo' className='max-h-full max-w-full object-contain' />
             </div>
 
-            <div className='font-bold text-[18px] md:text-xl lg:text-2xl flex flex-col justify-center items-center'> 
-                <p>{loading?'cargando...': formatMoney(cashMoney)}</p>
-                <p className='text-[#40D39B]'>
-                {loading 
-                    ? 'Información':`${cashPercent.toFixed(0)}% del total`
-                }
-                </p>
+            <div className='flex flex-col justify-center items-center'> 
+                {loading ? (
+                    <span className='text-sm font-medium text-dash-gray-soft dark:text-zinc-500 animate-pulse'>Cargando...</span>
+                ) : (
+                    <>
+                        <p className='text-money-amount text-lg sm:text-xl lg:text-2xl text-gray-900 dark:text-zinc-100'>{formatMoney(cashMoney)}</p>
+                        <p className='text-xs sm:text-sm font-bold tabular-nums text-[#40D39B]'>
+                            {`${cashPercent.toFixed(0)}% del total`}
+                        </p>
+                    </>
+                )}
             </div>
         </div>
 
@@ -104,7 +116,7 @@ return (
                 <div className='w-full'>
                     <div className='flex justify-between text-sm font-semibold mb-1'>
                         <span>Efectivo</span>
-                        <span>{loading ? '...' : `${cashPercent.toFixed(0)}%`}</span>
+                        <span className='tabular-nums'>{loading ? '...' : `${cashPercent.toFixed(0)}%`}</span>
                     </div>
                     <div className='w-full h-7 bg-gray-200 dark:bg-white/15 rounded-full overflow-hidden'>
                         <div 
@@ -118,7 +130,7 @@ return (
                 <div className='w-full'>
                     <div className='flex justify-between text-sm font-semibold mb-1'>
                         <span>Transferencias</span>
-                        <span>{loading ? '...' : `${nequiPercent.toFixed(0)}%`}</span>
+                        <span className='tabular-nums'>{loading ? '...' : `${nequiPercent.toFixed(0)}%`}</span>
                     </div>
                     <div className='w-full h-7 bg-gray-200 dark:bg-white/15 rounded-full overflow-hidden'>
                         <div 

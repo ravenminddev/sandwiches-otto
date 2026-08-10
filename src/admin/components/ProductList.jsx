@@ -83,7 +83,7 @@ export default function ProductList({ products = [], flat = false, search = '', 
                 <p className="text-sm text-dash-gray dark:text-zinc-300 animate-fade-in">
                     {products.length} {products.length === 1 ? 'resultado' : 'resultados'} para &quot;{search}&quot;
                 </p>
-                <ul className="list-none grid grid-cols-3 gap-3 sm:gap-4">
+                    <ul className="list-none grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
                     {products.map((product, i) => (
                         <li key={product.id_producto} className="animate-rise" style={stagger(i)}>
                             <ProductListCard
@@ -112,7 +112,7 @@ export default function ProductList({ products = [], flat = false, search = '', 
                         </span>
                     </header>
 
-                    <ul className="list-none grid grid-cols-3 gap-3 sm:gap-4">
+                <ul className="list-none grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
                         {items.map((product, i) => (
                             <li
                                 key={product.id_producto}

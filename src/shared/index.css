@@ -154,6 +154,14 @@
     @apply text-base sm:text-lg font-bold text-slate-800 dark:text-zinc-200;
 }
 
+/* Número grande de métrica monetaria. Solo define el carácter
+   tipográfico (peso, tracking, alineación de dígitos); el tamaño y
+   color los pone el contexto (hero vs tarjeta).
+   Ej: SalesMoney (total/nequi/efectivo). */
+@utility text-money-amount {
+    @apply font-black tracking-tight tabular-nums;
+}
+
 /* Título de ítem repetido dentro de una grilla de tarjetas
    (nombre de producto). Ej: ProductCard (shared). */
 @utility text-item-title {
