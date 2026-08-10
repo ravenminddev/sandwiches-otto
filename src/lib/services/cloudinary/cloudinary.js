@@ -1,4 +1,5 @@
-import { VALIDACIONES } from "../../constants";
+import { config } from "../../config.js";
+import { VALIDACIONES } from "../../constants.js";
 
 export const validateImage = (file) => {
     try {
@@ -45,9 +46,9 @@ export const uploadImageToCloudinary = async (file) => {
 
         const formData = new FormData();
         formData.append("file", file);
-        formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+        formData.append("upload_preset", config.cloudinary.uploadPreset);
 
-        const reponse = await fetch(`https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/upload`, {
+        const reponse = await fetch(`https://api.cloudinary.com/v1_1/${config.cloudinary.cloudName}/upload`, {
             method: "POST",
             body: formData
         });

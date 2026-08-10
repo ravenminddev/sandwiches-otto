@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisVertical, faPen, faTrash, faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 export default function ProductListCard({ product, onDelete, isDeleting }) {
-    const { id_producto, nombre_producto: name, imagen_producto: img, precio: price } = product;
+    const { id_producto, nombre: name, url_imagen: img, precio: price, descripcion: description } = product;
     const formattedPrice = Number(price || 0).toLocaleString('es-CO');
     const [menuOpen, setMenuOpen] = useState(false);
     const menuRef = useRef(null);
@@ -97,6 +97,11 @@ export default function ProductListCard({ product, onDelete, isDeleting }) {
                 <p className="text-[13px] font-medium text-dash-gray dark:text-zinc-400 mt-0.5">
                     ${formattedPrice}
                 </p>
+                {description && (
+                    <p className="text-[11px] leading-snug line-clamp-2 text-dash-gray-soft dark:text-zinc-500 mt-1">
+                        {description}
+                    </p>
+                )}
             </div>
         </article>
     );

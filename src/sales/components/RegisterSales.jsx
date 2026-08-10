@@ -19,12 +19,11 @@ export default function RegisterSales({ isAdmin = false }) {
             if (result.success) {
                 const productosFormateados = result.data.map(producto => ({
                     id: producto.id_producto,
-                    name: producto.nombre_producto,
-                    img: producto.imagen_producto,
+                    name: producto.nombre,
+                    img: producto.url_imagen,
                     precio: producto.precio,
                     descripcion: producto.descripcion,
-                    ingredientes: producto.ingredientes,
-                    categoria: producto.categorias?.nombre_categoria
+                    categoria: producto.categoria_producto?.nombre
                 }));
                 setProducts(productosFormateados);
             } else {

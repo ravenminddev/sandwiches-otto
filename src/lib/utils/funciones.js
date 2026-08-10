@@ -1,4 +1,4 @@
-export const calculateTotal = (subtotal, descuento=0) => {
+export const calculateTotal = (subtotal, descuento = 0) => {
     try {
         if (typeof subtotal !== 'number' || subtotal < 0) {
             return {

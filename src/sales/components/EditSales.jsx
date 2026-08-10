@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faPlus, faMinus, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { getSaleDetails } from '@/lib/services/ventas.js';
-import { actualizarVentaCompleta } from '@/lib/services/ventas.js';
+import { getSaleDetails, updateFullSale } from '@/lib/services/ventas.js';
 import { getAllPaymentMethods } from '@/lib/services/pagos.js';
 import ProductSelectorModal from '@/shared/components/ProductSelectorModal.jsx';
 import alertPop from '@/utils/alertPop.js';
@@ -51,14 +50,14 @@ export default function EditSales() {
             const venta = result.data;
 
             // Cargar cliente y descuento
-            setCliente(venta.id_cliente || '');
+            setCliente('');
             setDescuento(venta.descuento || 0);
 
             // Cargar productos al carrito
-            const productosFormateados = venta.detalles_venta.map(detalle => ({
+            const productosFormateados = venta.detalle_venta.map(detalle => ({
                 id: detalle.id_producto,
-                name: detalle.productos.nombre_producto,
-                img: detalle.productos.imagen_producto,
+                name: detalle.producto.nombre,
+                img: detalle.producto.url_imagen,
                 precio: detalle.precio_unitario,
                 cantidad: detalle.cantidad
             }));
@@ -66,10 +65,10 @@ export default function EditSales() {
             console.log('Carrito agregado: ', productosFormateados);
 
             // Cargar pagos existentes
-            const pagosFormateados = venta.pagos.map(pago => ({
+            const pagosFormateados = venta.pago.map(pago => ({
                 id: Date.now() + Math.random(), // ID temporal para el frontend
                 id_metodo_pago: pago.id_metodo_pago,
-                nombre_metodo: pago.metodos_pago.nombre_metodo,
+                nombre: pago.metodo_pago?.nombre,
                 monto: pago.monto
             }));
             setPagos(pagosFormateados);
@@ -87,7 +86,7 @@ export default function EditSales() {
             if (result.success) {
                 setMetodosPago(result.data);
                 if (result.data.length > 0) {
-                    setMetodoPagoTemp(result.data[0].id_metodo);
+                    setMetodoPagoTemp(result.data[0].id_metodo_pago);
                 }
             }
         };
@@ -148,12 +147,12 @@ export default function EditSales() {
             return;
         }
 
-        const metodo = metodosPago.find(m => m.id_metodo == metodoPagoTemp);
+        const metodo = metodosPago.find(m => m.id_metodo_pago == metodoPagoTemp);
 
         setPagos([...pagos, {
             id: Date.now(),
             id_metodo_pago: parseInt(metodoPagoTemp),
-            nombre_metodo: metodo.nombre_metodo,
+            nombre: metodo.nombre,
             monto: monto
         }]);
 
@@ -189,7 +188,6 @@ export default function EditSales() {
         setGuardando(true);
 
         const datosVenta = {
-            id_cliente: cliente || null,
             subtotal,
             descuento: parseFloat(descuento) || 0,
             total
@@ -202,9 +200,12 @@ export default function EditSales() {
             subtotal: item.precio * item.cantidad
         }));
 
-        const pagosParaGuardar = pagos.map(({ id, nombre_metodo, ...rest }) => rest);
+        const pagosParaGuardar = pagos.map(pago => ({
+            id_metodo_pago: pago.id_metodo_pago,
+            monto: pago.monto
+        }));
 
-        const result = await actualizarVentaCompleta(idVenta, datosVenta, detalles, pagosParaGuardar);
+        const result = await updateFullSale(idVenta, datosVenta, detalles, pagosParaGuardar);
 
         setGuardando(false);
 
@@ -390,8 +391,8 @@ export default function EditSales() {
                         >
                             <option value="">Selecciona método de pago</option>
                             {metodosPago.map(metodo => (
-                                <option key={metodo.id_metodo} value={metodo.id_metodo}>
-                                    {metodo.nombre_metodo}
+                                <option key={metodo.id_metodo_pago} value={metodo.id_metodo_pago}>
+                                    {metodo.nombre}
                                 </option>
                             ))}
                         </select>
@@ -423,7 +424,7 @@ export default function EditSales() {
                                 >
                                     <div>
                                         <p className="font-semibold text-sm text-gray-900 dark:text-zinc-100">
-                                            {pago.nombre_metodo}
+                                            {pago.nombre}
                                         </p>
                                         <p className="text-green-700 dark:text-green-400 text-sm">
                                             ${pago.monto.toLocaleString('es-CO')}

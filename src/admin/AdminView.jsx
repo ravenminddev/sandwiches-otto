@@ -32,20 +32,18 @@ export default function AdminView() {
     const [loading, setLoading] = useState(true);
 
     const cargarProductos = async () => {
-        const result = await getProducts(false);
+        const result = await getProducts(true);
 
         if (result.success) {
-            // Mapear datos al formato esperado
             const productosFormateados = result.data.map(prod => ({
                 id_producto: prod.id_producto,
-                nombre_producto: prod.nombre_producto,
+                nombre: prod.nombre,
                 precio: prod.precio,
-                imagen_producto: prod.imagen_producto,
-                estado: prod.estado,
+                url_imagen: prod.url_imagen,
+                activo: prod.activo,
                 descripcion: prod.descripcion,
-                ingredientes: prod.ingredientes,
                 id_categoria: prod.id_categoria,
-                categoria: prod.categorias?.nombre_categoria || 'Sin categoría'
+                categoria: prod.categoria_producto?.nombre || 'Sin categoría'
             }));
             setProductos(productosFormateados);
         } else {

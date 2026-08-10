@@ -4,7 +4,7 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 export default function ReceiptModal({ venta, onClose }) {
     if (!venta) return null;
 
-    const fecha = new Date(venta.fecha_venta);
+    const fecha = new Date(venta.fecha_pago);
     const fechaFormateada = fecha.toLocaleDateString('es-CO', {
         year: 'numeric',
         month: 'long',
@@ -12,6 +12,10 @@ export default function ReceiptModal({ venta, onClose }) {
         hour: '2-digit',
         minute: '2-digit'
     });
+
+    const nombreEmpleado = venta.usuario
+        ? `${venta.usuario.nombre} ${venta.usuario.apellido}`.trim()
+        : 'N/A';
 
     return (
         <div className='fixed inset-0 bg-white dark:bg-card/50 backdrop-blur-sm flex items-center justify-center z-50 p-4'>
@@ -40,11 +44,11 @@ export default function ReceiptModal({ venta, onClose }) {
                             </div>
                             <div>
                                 <p className='text-gray-600 dark:text-zinc-400 text-sm'>Empleado</p>
-                                <p className='text-lg font-bold'>{venta.usuarios?.nombre_completo || 'N/A'}</p>
+                                <p className='text-lg font-bold'>{nombreEmpleado}</p>
                             </div>
                             <div>
                                 <p className='text-gray-600 dark:text-zinc-400 text-sm'>Cliente</p>
-                                <p className='text-lg font-bold'>{venta.id_cliente || 'Cliente anónimo'}</p>
+                                <p className='text-lg font-bold'>Cliente anónimo</p>
                             </div>
                             <div>
                                 <p className='text-gray-600 dark:text-zinc-400 text-sm'>Fecha y Hora</p>
@@ -57,15 +61,15 @@ export default function ReceiptModal({ venta, onClose }) {
                     <div className='mb-8'>
                         <h3 className='text-modal-subsection mb-4'>Productos</h3>
                         <div className='space-y-3'>
-                            {venta.detalles_venta && venta.detalles_venta.length > 0 ? (
-                                venta.detalles_venta.map(detalle => (
+                            {venta.detalle_venta && venta.detalle_venta.length > 0 ? (
+                                venta.detalle_venta.map(detalle => (
                                     <div 
-                                        key={detalle.id_detalle}
+                                        key={detalle.id_detalle_venta}
                                         className='flex justify-between items-center bg-gray-50 dark:bg-zinc-800/50 p-4 rounded-lg'
                                     >
                                         <div className='flex-1'>
                                             <p className='font-semibold text-gray-900 dark:text-zinc-100'>
-                                                {detalle.productos?.nombre_producto || 'Producto desconocido'}
+                                                {detalle.producto?.nombre || 'Producto desconocido'}
                                             </p>
                                             <p className='text-sm text-gray-600 dark:text-zinc-400'>
                                                 Cantidad: {detalle.cantidad} x ${detalle.precio_unitario.toLocaleString('es-CO')}
@@ -104,18 +108,18 @@ export default function ReceiptModal({ venta, onClose }) {
                     <div className='mb-8'>
                         <h3 className='text-modal-subsection mb-4'>Pagos</h3>
                         <div className='space-y-3'>
-                            {venta.pagos && venta.pagos.length > 0 ? (
-                                venta.pagos.map(pago => (
+                            {venta.pago && venta.pago.length > 0 ? (
+                                venta.pago.map(pago => (
                                     <div 
                                         key={pago.id_pago}
                                         className='flex justify-between items-center bg-green-50 dark:bg-green-500/10 p-4 rounded-lg border border-green-200 dark:border-green-500/30'
                                     >
                                         <div>
                                             <p className='font-semibold text-gray-900 dark:text-zinc-100'>
-                                                {pago.metodos_pago?.nombre_metodo || 'Método desconocido'}
+                                                {pago.metodo_pago?.nombre || 'Método desconocido'}
                                             </p>
                                             <p className='text-sm text-gray-600 dark:text-zinc-400'>
-                                                {new Date(pago.fecha_pago).toLocaleTimeString('es-CO')}
+                                                {fechaFormateada}
                                             </p>
                                         </div>
                                         <p className='font-bold text-lg text-green-700 dark:text-green-400'>
@@ -131,12 +135,8 @@ export default function ReceiptModal({ venta, onClose }) {
 
                     {/* Estado */}
                     <div className='text-center'>
-                        <span className={`px-4 py-2 rounded-full text-white font-bold ${
-                            venta.estado_venta 
-                                ? 'bg-green-500' 
-                                : 'bg-red-500'
-                        }`}>
-                            {venta.estado_venta ? '✓ Completada' : '✗ Cancelada'}
+                        <span className={`px-4 py-2 rounded-full text-white font-bold bg-green-500`}>
+                            ✓ Completada
                         </span>
                     </div>
 
