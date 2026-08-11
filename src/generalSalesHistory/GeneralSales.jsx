@@ -45,6 +45,7 @@ export default function GeneralSales(){
     }, []);
 
     useEffect(() => {
+        cargarVentas();
     }, [cargarVentas]);
 
     const handleVerRecibo = async (idVenta) => {
@@ -67,10 +68,6 @@ export default function GeneralSales(){
     // los datos crudos que usa el dashboard).
     const sales = useMemo(() => rawSales.map(venta => ({
         id_venta: venta.id_venta,
-        empleado: venta.usuario
-            ? `${venta.usuario.nombre} ${venta.usuario.apellido}`.trim()
-            : 'N/A',
-        cliente: 'Cliente anónimo',
         subtotal: venta.subtotal.toLocaleString('es-CO'),
         descuento: venta.descuento.toLocaleString('es-CO'),
         total: venta.total.toLocaleString('es-CO'),
@@ -80,8 +77,7 @@ export default function GeneralSales(){
             day: 'numeric',
             hour: '2-digit',
             minute: '2-digit'
-        }),
-        estado: '✓ Completada'
+        })
     })), [rawSales]);
 
     const ventasDelPeriodo = useMemo(() => filterSalesByPeriod(rawSales, periodo), [rawSales, periodo]);
