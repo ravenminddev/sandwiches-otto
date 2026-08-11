@@ -2,7 +2,7 @@ export default function ProductCard({ img, name, price, description, actions, ov
     const formattedPrice = Number(price || 0).toLocaleString('es-CO');
 
     return (
-        <section className={`relative h-full flex flex-col rounded-2xl bg-white overflow-hidden pb-4 ring-1 ring-gray-100 hover:ring-yellow-400 transition-all duration-300 ${className}`}>
+        <section className={`relative h-full flex flex-col rounded-2xl bg-white dark:bg-card overflow-hidden pb-4 ring-1 ring-gray-100 dark:ring-border hover:ring-yellow-400 transition-all duration-300 ${className}`}>
             <div className="relative w-full shrink-0">
                 <img
                     src={img}
@@ -13,7 +13,7 @@ export default function ProductCard({ img, name, price, description, actions, ov
                         e.currentTarget.nextElementSibling.style.display = 'flex';
                     }}
                 />
-                <div className="hidden absolute inset-0 items-center justify-center bg-gray-50 text-3xl" aria-hidden="true">
+                <div className="hidden absolute inset-0 items-center justify-center bg-gray-50 dark:bg-zinc-800/50 text-3xl" aria-hidden="true">
                     🍽️
                 </div>
                 {overlay}
@@ -25,11 +25,11 @@ export default function ProductCard({ img, name, price, description, actions, ov
                         ${formattedPrice}
                     </p>
                 )}
-                <h3 className="font-semibold text-xs sm:text-sm lg:text-base text-center leading-tight line-clamp-2 min-h-8 sm:min-h-10 text-gray-700">
+                <h3 className="text-item-title text-center leading-tight line-clamp-2 min-h-8 sm:min-h-10">
                     {name}
                 </h3>
                 {description && (
-                    <p className="text-xs text-gray-400 text-center leading-snug line-clamp-2 w-full max-w-[90%]">
+                    <p className="text-xs text-gray-400 dark:text-zinc-500 text-center leading-snug line-clamp-2 w-full max-w-[90%]">
                         {description}
                     </p>
                 )}

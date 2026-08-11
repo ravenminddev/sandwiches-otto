@@ -45,7 +45,6 @@ export default function GeneralSales(){
     }, []);
 
     useEffect(() => {
-        cargarVentas();
     }, [cargarVentas]);
 
     const handleVerRecibo = async (idVenta) => {
@@ -68,19 +67,21 @@ export default function GeneralSales(){
     // los datos crudos que usa el dashboard).
     const sales = useMemo(() => rawSales.map(venta => ({
         id_venta: venta.id_venta,
-        empleado: venta.usuarios?.nombre_completo || 'N/A',
-        cliente: venta.id_cliente || 'Cliente anónimo',
+        empleado: venta.usuario
+            ? `${venta.usuario.nombre} ${venta.usuario.apellido}`.trim()
+            : 'N/A',
+        cliente: 'Cliente anónimo',
         subtotal: venta.subtotal.toLocaleString('es-CO'),
         descuento: venta.descuento.toLocaleString('es-CO'),
         total: venta.total.toLocaleString('es-CO'),
-        fecha: new Date(venta.fecha_venta).toLocaleDateString('es-CO', {
+        fecha: new Date(venta.fecha_pago).toLocaleDateString('es-CO', {
             year: 'numeric',
             month: 'short',
             day: 'numeric',
             hour: '2-digit',
             minute: '2-digit'
         }),
-        estado: venta.estado_venta ? '✓ Completada' : '✗ Cancelada'
+        estado: '✓ Completada'
     })), [rawSales]);
 
     const ventasDelPeriodo = useMemo(() => filterSalesByPeriod(rawSales, periodo), [rawSales, periodo]);
@@ -89,17 +90,17 @@ export default function GeneralSales(){
 
     if (loading) {
         return (
-            <section className="min-h-screen flex items-center justify-center bg-slate-50">
+            <section className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-app">
                 <div className="flex flex-col items-center gap-3">
                     <div className="w-9 h-9 rounded-full border-[3px] border-amber-200 border-t-amber-500 animate-spin" />
-                    <p className="text-sm font-medium text-slate-500">Cargando historial...</p>
+                    <p className="text-sm font-medium text-slate-500 dark:text-zinc-400">Cargando historial...</p>
                 </div>
             </section>
         );
     }
 
     return(
-        <section className="min-h-screen bg-slate-50">
+        <section className="min-h-screen bg-slate-50 dark:bg-app">
 
             <style>{`
                 @keyframes fade-in-up {
@@ -111,40 +112,40 @@ export default function GeneralSales(){
                 }
             `}</style>
 
-            <header className={`bg-white/90 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-50 flex items-center justify-between gap-3 px-4 sm:px-6 py-3.5 sm:py-4 transition-transform duration-300 ${showHeader ? 'translate-y-0' : '-translate-y-full'}`}>
+            <header className={`bg-white dark:bg-card/90 backdrop-blur-sm border-b border-slate-200 dark:border-border sticky top-0 z-50 flex items-center justify-between gap-3 px-4 sm:px-6 py-3.5 sm:py-4 transition-transform duration-300 ${showHeader ? 'translate-y-0' : '-translate-y-full'}`}>
                 <div className="flex items-center gap-3">
                     <Link to={'/sales'}>
-                        <button className="cursor-pointer w-9 h-9 rounded-full flex items-center justify-center text-slate-500 transition-colors duration-200 hover:bg-slate-100 hover:text-slate-800">
+                        <button className="cursor-pointer w-9 h-9 rounded-full flex items-center justify-center text-slate-500 dark:text-zinc-400 transition-colors duration-200 hover:bg-slate-100 dark:hover:bg-zinc-800/70 hover:text-slate-800 dark:hover:text-zinc-200">
                             <span className="inline-block transition-transform duration-300 hover:-translate-x-0.5">
                                 <FontAwesomeIcon icon={faArrowLeft} size="lg"/>
                             </span>
                         </button>
                     </Link>
-                    <h1 className="m-0 text-lg sm:text-2xl font-bold text-slate-800">Historial de ventas</h1>
+                    <p className="m-0 text-compact-header-title">Historial de ventas</p>
                 </div>
             </header>
 
             <main className="max-w-[1180px] mx-auto w-full px-4 sm:px-8 lg:px-20 py-5 sm:py-6 flex flex-col gap-3.5 sm:gap-4">
             
-                <div className="flex flex-row text-2xl sm:text-3xl lg:text-4xl font-black text-black tracking-tighter text-left mb-6">
-                    <h1>Historial de ventas histórico</h1>
+                <div className="flex flex-row text-left mb-6">
+                    <h1 className="text-page-title">Historial de ventas histórico</h1>
                 </div>
 
                 {rawSales.length === 0 ? (
-                    <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-8 text-center w-full animate-fade-in-up">
-                        <h2 className='text-2xl font-bold text-slate-800 mb-3'>No hay ventas</h2>
-                        <p className='text-slate-500'>No se han registrado ventas en el sistema</p>
+                    <div className="bg-white dark:bg-card rounded-2xl border border-slate-200 dark:border-border/80 shadow-sm p-8 text-center w-full animate-fade-in-up">
+                        <h2 className='text-empty-state mb-3'>No hay ventas</h2>
+                        <p className='text-slate-500 dark:text-zinc-400'>No se han registrado ventas en el sistema</p>
                     </div>
                 ) : (
                     <>
                         {/* Selector de período global (alimenta totales y evolución) */}
-                        <div className="flex gap-1.5 self-start bg-white border border-slate-200 rounded-full p-1 shadow-sm animate-fade-in-up">
+                        <div className="flex gap-1.5 self-start bg-white dark:bg-card border border-slate-200 dark:border-border rounded-full p-1 shadow-sm animate-fade-in-up">
                             {PERIOD_OPTIONS.map((opcion) => (
                                 <button
                                     key={opcion.value}
                                     onClick={() => setPeriodo(opcion.value)}
-                                    className={`cursor-pointer px-3.5 py-1.5 rounded-full text-xs sm:text-[13px] font-semibold transition-all duration-200 ${
-                                        periodo === opcion.value ? 'bg-slate-800 text-white shadow-sm' : 'text-slate-500 hover:bg-slate-100'
+                                    className={`btn-filter-chip py-1.5 rounded-full text-xs sm:text-[13px] ${
+                                        periodo === opcion.value ? 'bg-yellow-otto text-gray-900 shadow-sm' : 'text-slate-500 dark:text-zinc-400 hover:bg-slate-100 dark:hover:bg-zinc-800/70'
                                     }`}
                                 >
                                     {opcion.label}
@@ -155,12 +156,12 @@ export default function GeneralSales(){
                         <TotalsCard
                             ventas={formatCOP(resumen.totalPeriodo)}
                             pedidos={resumen.pedidosTotales}
-                            ticketPromedio={formatCOP(resumen.ticketPromedio)}
+                            ventaPromedio={formatCOP(resumen.ventaPromedio)}
                             unidades={resumen.unidadesVendidas}
                         />
 
-                        <div className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 shadow-sm animate-fade-in-up transition-shadow duration-300 hover:shadow-md" style={{ animationDelay: '80ms' }}>
-                            <h3 className="text-[15px] font-bold text-slate-800 mb-2.5">Evolución de ventas</h3>
+                        <div className="bg-white dark:bg-card border border-slate-200 dark:border-border/80 rounded-2xl p-4 sm:p-5 shadow-sm animate-fade-in-up transition-shadow duration-300 hover:shadow-md" style={{ animationDelay: '80ms' }}>
+                            <h2 className="text-section-title mb-2.5">Evolución de ventas</h2>
                             <SalesEvolutionChart data={evolucion} />
                         </div>
 
@@ -173,7 +174,7 @@ export default function GeneralSales(){
 
                         {/* Detalle de ventas */}
                         <div className="pt-2 animate-fade-in-up" style={{ animationDelay: '200ms' }}>
-                            <h3 className="font-bold text-lg text-slate-800 mb-4">Detalle de ventas</h3>
+                            <h2 className="text-section-title mb-4">Detalle de ventas</h2>
                             <Table 
                                 rowData={sales}
                                 onVerRecibo={handleVerRecibo}

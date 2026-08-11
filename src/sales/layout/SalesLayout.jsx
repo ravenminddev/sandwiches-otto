@@ -5,8 +5,9 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import ShoppingCart from '../components/ShoppingCart.jsx';
 import CartDrawer from '../components/CartDrawer.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCartShopping, faBars, faCashRegister, faCircleDollarToSlot, faClockRotateLeft, faCog, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { faCartShopping, faBars, faCashRegister, faCircleDollarToSlot, faClockRotateLeft, faCog, faRightFromBracket, faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../../lib/hooks/useAuth.js';
+import { useTheme } from '../../lib/context/ThemeContext.jsx';
 import alertDecision from '../../utils/alertDecision.js';
 import { ModalProvider, useModal } from '../../lib/context/ModalContext.jsx';
 
@@ -28,10 +29,10 @@ function DrawerLink({ icon, label, path, onClick, onAction }) {
             className={`w-full flex items-center gap-3 px-3 py-3 rounded-xl transition-colors font-medium ${
                 isActive
                     ? 'bg-yellow-otto/20 text-yellow-otto'
-                    : 'hover:bg-yellow-otto/10 text-gray-700'
+                    : 'hover:bg-yellow-otto/10 text-gray-700 dark:text-zinc-300 dark:hover:text-zinc-100'
             }`}
         >
-            <FontAwesomeIcon icon={icon} className={`w-5 ${isActive ? 'text-yellow-otto' : 'text-gray-500'}`} />
+            <FontAwesomeIcon icon={icon} className={`w-5 ${isActive ? 'text-yellow-otto' : 'text-gray-500 dark:text-zinc-400'}`} />
             <span>{label}</span>
         </button>
     );
@@ -40,11 +41,13 @@ function DrawerLink({ icon, label, path, onClick, onAction }) {
 function SalesLayoutInner() {
     const { isModalOpen } = useModal();
     const location = useLocation();
-    const isAdminRoute = location.pathname.startsWith('/sales/admin');
+    const isRegisterRoute = location.pathname === '/sales/' || location.pathname === '/sales';
     const [carrito, setCarrito] = useState([]);
+    const hasDesktopCart = isRegisterRoute && carrito.length > 0;
     const [showCart, setShowCart] = useState(false);
     const [showMobileSidebar, setShowMobileSidebar] = useState(false);
     const { userData } = useAuth();
+    const { theme, toggleTheme } = useTheme();
     const isAdmin = userData?.id_rol === 1;
     const [navbarHidden, setNavbarHidden] = useState(false);
     const lastScrollY = useRef(0);
@@ -127,44 +130,59 @@ function SalesLayoutInner() {
     return (
         <div className="grid [grid-template-areas:'sidebar_main'] grid-cols-[clamp(70px,12vw,150px)_1fr] max-lg:[grid-template-areas:'main'] max-lg:grid-cols-1 min-h-dvh">
 
-            {/* ── Mobile floating navbar ── */}
-            <div className={`lg:hidden fixed top-3 left-8 right-8 z-50 transition-all duration-300 ${
-                    navbarHidden || isModalOpen ? '-translate-y-[calc(100%+3rem)] opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'
+            {/* ── Mobile navbar (full-width, integrated) ── */}
+            <div className={`lg:hidden fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+                    navbarHidden || isModalOpen ? '-translate-y-full opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'
                 }`}>
                 <nav
-                    className="bg-white rounded-2xl shadow-lg flex items-center justify-between px-4 h-20"
+                    className="bg-white dark:bg-card rounded-2xl shadow-lg flex items-center justify-between px-4 h-20"
                 >
                     <button
                         onClick={() => setShowMobileSidebar(true)}
-                        className={`text-2xl transition-colors ${showMobileSidebar ? 'text-yellow-otto' : 'text-gray-700'}`}
+                        className={`text-2xl transition-colors ${showMobileSidebar ? 'text-yellow-otto' : 'text-gray-700 dark:text-zinc-300'}`}
                         aria-label="Abrir menú"
                     >
                         <FontAwesomeIcon icon={faBars} />
                     </button>
 
-                    <div className="flex items-center">
-                        <img src={ottoLogo} alt="Otto" className="w-16 h-16" />
+                    <div className="flex items-center gap-3">
+                        <button
+                            type="button"
+                            onClick={toggleTheme}
+                            title={theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}
+                            className="cursor-pointer text-muted hover:text-yellow-otto transition-colors"
+                        >
+                            <FontAwesomeIcon icon={theme === 'dark' ? faSun : faMoon} className="text-lg" />
+                        </button>
+                        <button
+                            type="button"
+                            onClick={toggleTheme}
+                            title={theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}
+                            className="cursor-pointer"
+                        >
+                            <img src={ottoLogo} alt="Otto" className="w-16 h-16 select-none" />
+                        </button>
                     </div>
                 </nav>
             </div>
 
             {/* ── Mobile dropdown drawer (expands downward from navbar) ── */}
             <div
-                className={`lg:hidden fixed left-8 right-8 z-40 bg-white rounded-2xl shadow-xl overflow-hidden transition-all duration-300 ease-in-out ${
+                className={`lg:hidden fixed left-0 right-0 z-40 bg-white dark:bg-card rounded-2xl shadow-xl overflow-hidden transition-all duration-300 ease-in-out ${
                     showMobileSidebar
                         ? 'max-h-[75dvh] opacity-100 translate-y-0'
                         : 'max-h-0 opacity-0 -translate-y-2 pointer-events-none'
                 }`}
-                style={{ top: 'calc(5rem + 0.75rem + 0.75rem)' }} // 5rem = h-20, 0.75rem = top-3, extra gap
+                style={{ top: '4rem' }}
             >
                 <div className="p-4 space-y-1">
-                    <DrawerLink icon={faCashRegister} label="Registrar" path="/sales/" onClick={() => setShowMobileSidebar(false)} />
+                    <DrawerLink icon={faCashRegister} label="Registrar" path="/sales" onClick={() => setShowMobileSidebar(false)} />
                     <DrawerLink icon={faCircleDollarToSlot} label="Ventas" path="/sales/money" onClick={() => setShowMobileSidebar(false)} />
                     <DrawerLink icon={faClockRotateLeft} label="Historial" path="/sales/history" onClick={() => setShowMobileSidebar(false)} />
                     {isAdmin && (
                         <DrawerLink icon={faCog} label="Admin" path="/sales/admin" onClick={() => setShowMobileSidebar(false)} />
                     )}
-                    <hr className="my-2 border-gray-200" />
+                    <hr className="my-2 border-gray-200 dark:border-border" />
                     <DrawerLink icon={faRightFromBracket} label="Salir" onClick={() => setShowMobileSidebar(false)} onAction={handleLogout} />
                 </div>
             </div>
@@ -176,14 +194,17 @@ function SalesLayoutInner() {
                 />
             )}
             <Sidebar className='max-lg:hidden [grid-area:sidebar]' />
-            {isModalOpen && <div className='max-lg:hidden [grid-area:sidebar] bg-black/50 z-[101]' />}
 
-            <main className='[grid-area:main] w-full px-5 sm:px-10 lg:py-10 max-lg:pt-28 max-lg:pb-10 overflow-y-auto relative'>
-                <div className='grid grid-cols-1 lg:grid-cols-3 gap-6 relative z-10'>
-                    <div className='lg:col-span-2'>
+            <main className='[grid-area:main] w-full px-4 sm:px-6 lg:px-10 lg:py-10 max-lg:pt-24 max-lg:pb-10 overflow-y-auto relative'>
+                <div className="flex w-full relative z-10">
+                    <div className={`w-full transition-all duration-700 ease-out ${hasDesktopCart ? 'lg:w-2/3 lg:pr-6' : 'lg:w-full lg:pr-0'}`}>
                         <Outlet context={{ agregarAlCarrito, carrito }} />
                     </div>
-                    <div className='hidden lg:block lg:col-span-1'>
+                    <div
+                        className={`hidden lg:block transition-all duration-700 ease-out overflow-hidden ${
+                            hasDesktopCart ? 'lg:w-1/3 translate-y-0 opacity-100' : 'lg:w-0 translate-y-12 opacity-0 pointer-events-none'
+                        }`}
+                    >
                         <ShoppingCart
                             carrito={carrito}
                             onAumentar={aumentarCantidad}
@@ -195,20 +216,20 @@ function SalesLayoutInner() {
                 </div>
             </main>
 
-            {(totalItems > 0 && !showCart) || isModalOpen || isAdminRoute ? (
-                <button
-                    onClick={() => setShowCart(true)}
-                    className={`cursor-pointer lg:hidden fixed bottom-6 right-6 z-60 bg-yellow-otto text-white p-4 rounded-full shadow-lg hover:brightness-95 transition-all duration-[2000ms] active:scale-90 ${
-                        isModalOpen || isAdminRoute ? 'translate-y-40 opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'
-                    }`}
-                    aria-label="Abrir carrito"
-                >
-                    <FontAwesomeIcon icon={faCartShopping} className="text-2xl" />
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full min-w-6 h-6 flex items-center justify-center shadow-md">
-                        {totalItems}
-                    </span>
-                </button>
-            ) : null}
+            <button
+                onClick={() => setShowCart(true)}
+                className={`cursor-pointer lg:hidden fixed bottom-6 right-6 z-40 bg-yellow-otto text-white p-4 rounded-full shadow-lg hover:brightness-95 transition-all duration-[2000ms] active:scale-90 ${
+                    isRegisterRoute && totalItems > 0
+                        ? 'translate-y-0 opacity-100'
+                        : 'translate-y-40 opacity-0 pointer-events-none'
+                }`}
+                aria-label="Abrir carrito"
+            >
+                <FontAwesomeIcon icon={faCartShopping} className="text-2xl" />
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full min-w-6 h-6 flex items-center justify-center shadow-md">
+                    {totalItems}
+                </span>
+            </button>
 
             <CartDrawer show={showCart} onClose={() => setShowCart(false)}>
                 <ShoppingCart

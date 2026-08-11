@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
     --color-yellow-otto: #E7B901;
     --color-yellow-otto-light: #FFD630;
@@ -14,11 +16,26 @@
     --color-dash-border: #e6e4dc;
     --color-dash-green: #2E7D32;
 
+    /* Tokens semanticos para modo claro/oscuro */
+    --color-app: #F7F6F2;
+    --color-card: #ffffff;
+    --color-input: #ffffff;
+    --color-nav: #ffffff;
+    --color-main: #111827;
+    --color-muted: #4b5563;
+    --color-border: #e5e7eb;
+    --color-border-strong: #d1d5db;
+
     --animate-slide-up: slide-up 0.3s ease-out;
     --animate-slide-left: slide-left 0.3s ease-out;
     --animate-slide-out-left: slide-out-left 0.3s ease-in forwards;
     --animate-pop: pop 0.25s ease-in-out;
     --animate-pattern: pattern 30s linear infinite;
+
+    /* Entradas del rediseño de admin: solo transform/opacity */
+    --animate-fade-in: fade-in 0.25s ease-out both;
+    --animate-rise: rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+    --animate-scale-in: scale-in 0.22s ease-out both;
 }
 
 @keyframes slide-up {
@@ -52,9 +69,175 @@
   }
 }
 
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scale-in {
+    from { opacity: 0; transform: scale(0.96); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* Las animaciones/entradas se desactivan si el usuario pidió
+   reducir movimiento en su sistema (accesibilidad). */
+@media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
 @custom-variant landscape (@media (orientation: landscape));
 @custom-variant portrait (@media (orientation: portrait));
 
+/* ============================================================
+   TIPOGRAFÍA — roles visuales (Capa 2)
+   Independientes del tag HTML (h1-h4) usado en cada componente.
+   El tag se elige por jerarquía de documento; la clase de aquí
+   por el contexto de layout donde vive el texto.
+   ============================================================ */
+
+/* Título de página completa. Aparece una vez por vista, en el
+   flujo principal (no en barras sticky/compactas).
+   Ej: Auth, Register, AdminView, EditProduct, EditSales,
+   DiarySales, GeneralSales (h1 de main). */
+@utility text-page-title {
+    @apply text-2xl sm:text-3xl font-black tracking-tighter text-gray-900 dark:text-zinc-100;
+}
+
+/* Subtítulo bajo un page-title (Auth/Register). */
+@utility text-page-subtitle {
+    @apply text-base sm:text-lg font-semibold text-gray-600 dark:text-zinc-400;
+}
+
+/* Título dentro de una barra sticky/compacta (poco alto
+   disponible, conviven con botones e íconos).
+   Ej: GeneralSales, barra superior. No es un heading por sí solo
+   cuando ya existe un h1 de página real más abajo. */
+@utility text-compact-header-title {
+    @apply text-lg sm:text-xl font-bold text-slate-800 dark:text-zinc-200;
+}
+
+/* Encabezado de una sección de contenido dentro de una página
+   (no es el título de la página, no es un modal, no es una tarjeta).
+   Ej: SalesMoney (Nequi/Efectivo/Distribución/Pedidos),
+   GeneralSales (Evolución de ventas/Productos/Ventas por día/Detalle),
+   ProductManagement (Catálogo de productos). */
+@utility text-section-title {
+    @apply text-lg sm:text-xl font-bold text-gray-900 dark:text-zinc-100;
+}
+
+/* Título de cabecera de modal/diálogo. */
+@utility text-modal-title {
+    @apply text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-zinc-100;
+}
+
+/* Subencabezado dentro de un modal (subordinado al modal-title).
+   Ej: ReceiptModal "Productos"/"Pagos". */
+@utility text-modal-subsection {
+    @apply text-lg sm:text-xl font-bold text-gray-900 dark:text-zinc-100;
+}
+
+/* Título de tarjeta de métrica/dashboard (contexto compacto,
+   varias por fila). Ej: DayPerformanceCard, ProductRankingCard
+   (actualmente sin uso en el código, pero token listo para cuando
+   se conecten). */
+@utility text-card-title {
+    @apply text-base sm:text-lg font-bold text-slate-800 dark:text-zinc-200;
+}
+
+/* Número grande de métrica monetaria. Solo define el carácter
+   tipográfico (peso, tracking, alineación de dígitos); el tamaño y
+   color los pone el contexto (hero vs tarjeta).
+   Ej: SalesMoney (total/nequi/efectivo). */
+@utility text-money-amount {
+    @apply font-black tracking-tight tabular-nums;
+}
+
+/* Título de ítem repetido dentro de una grilla de tarjetas
+   (nombre de producto). Ej: ProductCard (shared). */
+@utility text-item-title {
+    @apply text-xs sm:text-sm lg:text-base font-semibold text-gray-700 dark:text-zinc-300;
+}
+
+/* Encabezado de sección dentro de un aside persistente y angosto
+   (el carrito de compras). Contexto mucho más comprimido que un
+   modal de pantalla completa, por eso no comparte token con
+   text-modal-title/text-modal-subsection. */
+@utility text-aside-section-title {
+    @apply text-xl font-bold text-gray-900 dark:text-zinc-100;
+}
+@utility text-aside-subsection {
+    @apply font-bold text-sm text-gray-900 dark:text-zinc-100;
+}
+
+/* Nombre de producto dentro de una fila de carrito (lista densa,
+   una línea, truncada). Ya no es un heading (ver auditoría de
+   jerarquía), pero conserva su peso visual. */
+@utility text-cart-item-name {
+    @apply font-semibold text-sm text-gray-900 dark:text-zinc-100 truncate;
+}
+
+/* Mensaje de estado vacío ("No hay ventas", "No hay productos"). */
+@utility text-empty-state {
+    @apply text-lg sm:text-xl font-bold text-gray-700 dark:text-zinc-300;
+}
+
+/* ============================================================
+   BOTONES — misma altura y tipografía en toda la app, aunque
+   la forma (radius) siga comunicando el tipo de acción:
+   pill = toggle de filtro, rounded-md = acción de fila,
+   rounded-xl con borde = acción de página/CTA secundaria.
+   ============================================================ */
+@utility btn-filter-chip {
+    @apply text-sm font-semibold px-3.5 py-2 cursor-pointer transition-all duration-200;
+}
+
+@utility btn-row-action {
+    @apply text-sm font-semibold px-3 py-2 rounded-md cursor-pointer transition-all duration-200;
+}
+
+@utility btn-page-action {
+    @apply text-sm font-semibold px-6 py-2 rounded-xl border-2 cursor-pointer transition-all duration-200;
+}
+
 body{
-    background-color: #F7F6F2;
+    background-color: var(--color-app);
+    color: var(--color-main);
+}
+
+html.dark {
+    --color-app: #09090b;
+    --color-card: #18181b;
+    --color-input: #27272a;
+    --color-nav: #18181b;
+    --color-main: #fafafa;
+    --color-muted: #a1a1aa;
+    --color-border: #3f3f46;
+    --color-border-strong: #52525b;
+
+    --ag-background-color: #18181b;
+    --ag-header-background-color: #27272a;
+    --ag-row-hover-color: rgba(255,255,255,0.04);
+    --ag-odd-row-background-color: rgba(255,255,255,0.02);
+    --ag-border-color: #3f3f46;
+    --ag-foreground-color: #fafafa;
+    --ag-secondary-foreground-color: #a1a1aa;
+    --ag-header-foreground-color: #fafafa;
+    --ag-input-focus-border-color: #E7B901;
+    --ag-range-selection-border-color: #E7B901;
+
+    --ag-control-panel-background-color: #18181b;
+    --ag-subheader-background-color: #27272a;
+    --ag-selected-row-background-color: rgba(231,185,1,0.1);
+    --ag-alpine-active-color: #E7B901;
+    --ag-input-disabled-background-color: #3f3f46;
 }

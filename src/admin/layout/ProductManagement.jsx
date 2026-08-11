@@ -1,66 +1,67 @@
 import { useState, useMemo } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import ProductList from "../components/ProductList";
 import AddProduct from "./AddProduct";
-import SearchBar from "../../shared/components/SearchBar";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTableCellsLarge, faTableCells } from '@fortawesome/free-solid-svg-icons';
-
-function GridButton({ cols, onClick, className = '' }) {
-    return (
-        <button
-            type='button'
-            onClick={onClick}
-            className={`cursor-pointer w-9 h-9 rounded-lg bg-white border border-gray-200 text-gray-500 hover:text-yellow-otto hover:border-yellow-300 flex items-center justify-center transition-colors shrink-0 ${className}`}
-            title={cols === 2 ? 'Vista de 3 columnas' : 'Vista de 2 columnas'}
-        >
-            <FontAwesomeIcon icon={cols === 2 ? faTableCellsLarge : faTableCells} className='text-sm' />
-        </button>
-    );
-}
 
 export default function ProductManagement({ products = [], onProductosActualizados }) {
     const [search, setSearch] = useState('');
-    const [cols, setCols] = useState(() => window.innerWidth < 1024 ? 2 : 3);
+
+    const query = search.trim().toLowerCase();
 
     const productosFiltrados = useMemo(() => {
-        const query = search.trim().toLowerCase();
         if (!query) return products;
         return products.filter(producto =>
-            producto.nombre_producto?.toLowerCase().includes(query)
+            producto.nombre?.toLowerCase().includes(query)
         );
-    }, [products, search]);
+    }, [products, query]);
 
     const totalProductos = products.length;
 
     return (
-        <section className="relative flex flex-col gap-6 bg-graywhite rounded-3xl p-4 sm:p-6 lg:p-8">
+        <section className="relative flex flex-col gap-5 pb-24">
 
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-                <div>
-                    <h2 className="text-lg sm:text-xl lg:text-2xl font-bold tracking-tighter text-gray-900">
-                        Catálogo de productos
+            <div className="flex flex-col gap-3 animate-rise">
+                <div className="inline-flex items-center gap-2">
+                    <h2 className="text-[22px] sm:text-[24px] font-bold text-gray-900 dark:text-zinc-100">
+                        Catálogo
                     </h2>
-                    <p className="text-sm text-gray-500 mt-0.5">
-                        {totalProductos === 0
-                            ? 'Aún no hay productos'
-                            : `${totalProductos} ${totalProductos === 1 ? 'producto' : 'productos'} en total`}
-                    </p>
+                    {totalProductos > 0 && (
+                        <span className="text-xs font-medium bg-yellow-otto/10 text-yellow-otto rounded-full px-2.5 py-1 leading-none">
+                            {totalProductos}
+                        </span>
+                    )}
                 </div>
 
-                <div className="flex flex-col items-start sm:flex-row sm:items-center gap-3 w-full sm:w-auto lg:w-auto">
-                    <GridButton cols={cols} onClick={() => setCols(c => c === 2 ? 3 : 2)} className='hidden lg:flex' />
-                    <SearchBar value={search} onChange={setSearch} placeholder="Buscar producto..." />
-                    <AddProduct onProductoAgregado={onProductosActualizados} />
+                <div className="relative">
+                    <FontAwesomeIcon
+                        icon={faMagnifyingGlass}
+                        className="absolute left-3.5 top-1/2 -translate-y-1/2 text-dash-gray-soft dark:text-zinc-400 text-sm pointer-events-none"
+                    />
+                    <input
+                        type="text"
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        placeholder="Buscar producto..."
+                        className="w-full h-11 pl-10 pr-4 rounded-xl bg-white dark:bg-input border border-dash-border/60 dark:border-border/60 text-[13px] text-dash-ink dark:text-zinc-100 placeholder:text-dash-gray-soft dark:placeholder:text-zinc-500 focus:outline-none focus:border-yellow-otto focus:ring-2 focus:ring-yellow-otto/15 transition-all"
+                    />
                 </div>
             </div>
 
             {totalProductos > 0 && productosFiltrados.length === 0 ? (
-                <div className="text-center py-14 text-gray-500">
-                    No se encontraron productos para "{search}"
+                <div className="text-center py-14 text-dash-gray dark:text-zinc-400 animate-fade-in">
+                    No se encontraron productos para &quot;{search}&quot;
                 </div>
             ) : (
-                <ProductList products={productosFiltrados} cols={cols} onProductosActualizados={onProductosActualizados} />
+                <ProductList
+                    products={productosFiltrados}
+                    flat={query.length > 0}
+                    search={search.trim()}
+                    onProductosActualizados={onProductosActualizados}
+                />
             )}
+
+            <AddProduct onProductoAgregado={onProductosActualizados} />
         </section>
     );
 }

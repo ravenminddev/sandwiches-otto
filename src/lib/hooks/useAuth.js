@@ -1,5 +1,5 @@
 import { useAuthStore } from "../authStore/useAuthStore.js";
-import { loginStep1, loginStep2, logout, register, verifyRegistrationCode } from "../supabase/auth.js";
+import { login, logout } from "../supabase/auth.js";
 
 export const useAuth = () => {
     const {
@@ -16,54 +16,14 @@ export const useAuth = () => {
         setLoading
     } = useAuthStore();
 
-    const handleLoginStep1 = async (email, password) => {
+    const handleLogin = async (username, password) => {
         setLoading(true);
-        const result = await loginStep1(email, password);
+        const result = await login(username, password);
         setLoading(false);
 
         if (result.success) {
             setUser(result.user, result.userData, result.session, result.esAdmin);
         } else {
-            setError(result.error);
-        }
-
-        return result;
-    };
-
-    const handleLoginStep2 = async (email, codigoTemporal) => {
-        setLoading(true);
-        const result = await loginStep2(email, codigoTemporal);
-        setLoading(false);
-
-        if (result.success) {
-            setUser(result.user, result.userData, result.session, result.esAdmin);
-        } else {
-            setError(result.error);
-        }
-
-        return result;
-    };
-
-    const handleRegister = async (email, password, nombreUsuario, codigoInvitacion) => {
-        setLoading(true);
-        const result = await register(email, password, nombreUsuario, codigoInvitacion);
-        setLoading(false);
-
-        if (result.success) {
-            setError(null);
-        } else {
-            setError(result.error);
-        }
-
-        return result;
-    };
-
-    const handleVerifyRegistrationCode = async (email, code) => {
-        setLoading(true);
-        const result = await verifyRegistrationCode(email, code);
-        setLoading(false);
-
-        if (!result.success) {
             setError(result.error);
         }
 
@@ -92,10 +52,7 @@ export const useAuth = () => {
         isAuthenticated,
         loading,
         error,
-        loginStep1: handleLoginStep1,
-        loginStep2: handleLoginStep2,
-        register: handleRegister,
-        verifyRegistrationCode: handleVerifyRegistrationCode,
+        login: handleLogin,
         logout: handleLogout,
         clearError: () => setError(null)
     };

@@ -1,5 +1,5 @@
 import logoOtto from '@/assets/logo.png';
-import { Link, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import { useState } from 'react';
 import { useAuth } from '@/lib/hooks/useAuth';
 import alertPop from '@/utils/alertPop.js';
@@ -7,20 +7,20 @@ import InputBasic from '../shared/components/InputBasic';
 import AnimatedPattern from './AnimatedPattern';
 
 export default function Auth() {
-    const [emailOrUsername, setEmailOrUsername] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const { loginStep1, loading } = useAuth();
+    const { login, loading } = useAuth();
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
 
-        if (!emailOrUsername || !password) {
+        if (!username || !password) {
             await alertPop('ERROR', 'Por favor completa todos los campos', 'error', 'Continuar');
             return;
         }
 
-        const result = await loginStep1(emailOrUsername, password);
+        const result = await login(username, password);
 
         if (result.success) {
             await alertPop('ÉXITO', 'Inicio de sesión exitoso', 'success', 'Continuar').then(() => {
@@ -45,28 +45,28 @@ export default function Auth() {
             <section className='px-9 py-4 sm:py-7 md:py-10 lg:py-14 w-full grid max-w-2xl gap-3 items-center text-[clamp(0.6rem,calc(1vw+1vh),1rem)] max-md:landscape:py-3 justify-self-center portrait:mt-10'>
 
                 <div className='flex flex-col items-center justify-center mb-4 sm:mb-10'>
-                    <h1 className='font-extrabold text-[clamp(1.6rem,calc(2vw+2vh),3rem)] text-center'>
+                    <h1 className='text-page-title text-center'>
                         BIENVENIDO/A
                     </h1>
-                    <h3 className='text-center font-semibold text-xl'>¡Otto te da una cálida bienvenida!</h3>
+                    <h2 className='text-page-subtitle text-center'>¡Otto te da una cálida bienvenida!</h2>
                 </div>
 
                 <form className='flex flex-col w-full gap-3 sm:gap-6 px-5 sm:px-10' onSubmit={handleLogin}>
                     <div className='flex flex-col gap-2'>
-                        <label className='font-semibold text-gray-800' htmlFor='emailOrUsername'>
-                            Correo electrónico o Usuario
+                        <label className='font-semibold text-gray-800 dark:text-zinc-300' htmlFor='username'>
+                            Usuario
                         </label>
                         <InputBasic 
                             type={'text'} 
-                            placeholder={"Ingresa tu correo electrónico o usuario"} 
-                            value={emailOrUsername} 
-                            onChange={(e) => setEmailOrUsername(e.target.value)}
-                            id='emailOrUsername'
+                            placeholder={"Ingresa tu usuario"} 
+                            value={username} 
+                            onChange={(e) => setUsername(e.target.value)}
+                            id='username'
                         />
                     </div>
 
                     <div className='flex flex-col gap-2'>
-                        <label className='font-semibold text-gray-800' htmlFor='password'>
+                        <label className='font-semibold text-gray-800 dark:text-zinc-300' htmlFor='password'>
                             Contraseña
                         </label>
                         <InputBasic 
@@ -82,7 +82,7 @@ export default function Auth() {
                         <button 
                             type='submit'
                             disabled={loading}
-                            className='bg-black text-white font-medium rounded-3xl py-4 sm:py-5 md:py-7 w-full max-w-64 sm:max-w-57.5 hover:brightness-95 transition-all
+                            className='bg-black text-white dark:bg-yellow-otto dark:text-gray-900 font-medium rounded-3xl py-4 sm:py-5 md:py-7 w-full max-w-64 sm:max-w-57.5 hover:brightness-95 dark:hover:brightness-90 transition-all
                                         h-auto flex justify-center items-center cursor-pointer disabled:opacity-50'
                         >
                             {loading ? 'Cargando...' : 'Iniciar sesión'}

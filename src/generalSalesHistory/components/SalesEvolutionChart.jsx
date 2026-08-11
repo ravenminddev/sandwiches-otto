@@ -1,17 +1,21 @@
 import { useEffect, useRef } from 'react';
 import { Chart, ensureChartRegistered, createVerticalGradient } from '../utils/chartSetup.js';
 import { formatShortDate, formatLongDate } from '../utils/salesAnalytics.js';
+import { useTheme } from '@/lib/context/ThemeContext.jsx';
 
 ensureChartRegistered();
 
 const AMBER = '#f59e0b';
-const INK = '#1e293b';
-const GRID = '#eef1f5';
-const MUTED = '#94a3b8';
 
 export default function SalesEvolutionChart({ data }) {
+    const { theme } = useTheme();
     const canvasRef = useRef(null);
     const chartRef = useRef(null);
+
+    const isDark = theme === 'dark';
+    const INK = isDark ? '#fafafa' : '#1e293b';
+    const GRID = isDark ? '#3f3f46' : '#eef1f5';
+    const MUTED = isDark ? '#a1a1aa' : '#94a3b8';
 
     useEffect(() => {
         if (!canvasRef.current) return;
@@ -29,7 +33,7 @@ export default function SalesEvolutionChart({ data }) {
                     fill: true,
                     tension: 0.4,
                     borderWidth: 2.5,
-                    pointBackgroundColor: '#fff',
+                    pointBackgroundColor: isDark ? '#18181b' : '#fff',
                     pointBorderColor: AMBER,
                     pointBorderWidth: 2,
                     pointRadius: 3,
@@ -45,9 +49,9 @@ export default function SalesEvolutionChart({ data }) {
                 plugins: {
                     legend: { display: false },
                     tooltip: {
-                        backgroundColor: '#1e293b',
-                        titleColor: '#fff',
-                        bodyColor: '#fff',
+                        backgroundColor: INK,
+                        titleColor: isDark ? '#18181b' : '#fff',
+                        bodyColor: isDark ? '#18181b' : '#fff',
                         padding: 10,
                         cornerRadius: 10,
                         displayColors: false,
@@ -75,13 +79,14 @@ export default function SalesEvolutionChart({ data }) {
 
         return () => chartRef.current?.destroy();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [theme]);
 
     useEffect(() => {
         const chart = chartRef.current;
         if (!chart) return;
         chart.data.labels = data.map((d) => formatShortDate(d.date));
         chart.data.datasets[0].data = data.map((d) => d.total);
+        chart.options.plugins.tooltip.callbacks.title = (items) => formatLongDate(data[items[0].dataIndex].date);
         chart.update();
     }, [data]);
 
@@ -93,7 +98,7 @@ export default function SalesEvolutionChart({ data }) {
                 aria-label="Gráfica de línea de evolución de ventas por fecha"
             />
             {data.length === 0 && (
-                <div className="absolute inset-0 flex items-center justify-center text-slate-400 text-sm">
+                <div className="absolute inset-0 flex items-center justify-center text-slate-400 dark:text-zinc-500 text-sm">
                     No hay ventas en este período para graficar
                 </div>
             )}
