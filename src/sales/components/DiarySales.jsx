@@ -26,18 +26,16 @@ export default function DiarySales() {
             if (result.success && result.data) {
                 const ventasFormateadas = result.data.map(venta => ({
                     id_venta: venta.id_venta,
-                    empleado: venta.usuario
-                        ? `${venta.usuario.nombre} ${venta.usuario.apellido}`.trim()
-                        : 'N/A',
-                    cliente: 'Cliente anónimo',
                     subtotal: venta.subtotal.toLocaleString('es-CO'),
                     descuento: venta.descuento.toLocaleString('es-CO'),
                     total: venta.total.toLocaleString('es-CO'),
-                    hora: new Date(venta.fecha_pago).toLocaleTimeString('es-CO', {
+                    fecha: new Date(venta.fecha_pago).toLocaleDateString('es-CO', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
                         hour: '2-digit',
                         minute: '2-digit'
                     }),
-                    estado: '✓ Completada',
                     // Guardar objeto original para el modal
                     _original: venta
                 }));

@@ -43,8 +43,7 @@ export const insertFullSale = async (salesData, details, payments) => {
         const pagosFormateados = payments.map(payment => ({
             id_venta: id_venta,
             id_metodo_pago: payment.id_metodo_pago,
-            monto: payment.monto,
-            fecha_pago: new Date().toISOString() // se guarda en UTC, se muestra con mostrarFechaColombia()
+            monto: payment.monto
         }));
 
         const { error: paymentsError } = await supabase

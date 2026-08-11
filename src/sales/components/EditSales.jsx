@@ -23,7 +23,6 @@ export default function EditSales() {
     const [montoPagoTemp, setMontoPagoTemp] = useState('');
 
     // ─── Otros estados ────────────────────────────────────────────────────────
-    const [cliente, setCliente] = useState('');
     const [descuento, setDescuento] = useState(0);
     const [showModal, setShowModal] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -49,8 +48,7 @@ export default function EditSales() {
 
             const venta = result.data;
 
-            // Cargar cliente y descuento
-            setCliente('');
+            // Cargar descuento
             setDescuento(venta.descuento || 0);
 
             // Cargar productos al carrito
@@ -326,21 +324,8 @@ export default function EditSales() {
                         </div>
                     )}
 
-                    {/* Cliente y Descuento */}
+                    {/* Descuento */}
                     <div className="border-t border-gray-200 dark:border-border pt-4 space-y-3">
-                        <div className="flex flex-col gap-1">
-                            <label className="text-sm font-medium text-gray-700 dark:text-zinc-300">
-                                Nombre del cliente
-                            </label>
-                            <input
-                                type="text"
-                                value={cliente}
-                                onChange={(e) => setCliente(e.target.value)}
-                                placeholder="Ej: Lucas Carvajal"
-                                className="border border-gray-300 dark:border-border-strong bg-white dark:bg-card text-gray-700 dark:text-zinc-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
-                            />
-                        </div>
-
                         <div className="flex flex-col gap-1">
                             <label className="text-sm font-medium text-gray-700 dark:text-zinc-300">
                                 Descuento

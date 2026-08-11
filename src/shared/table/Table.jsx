@@ -70,13 +70,10 @@ export default function Table({rowData, onVerRecibo,onDelete,  use='diary'}){
                 </button>
             )
         },
-        {headerName:'Empleado', field:'empleado'},
-        {headerName: 'Cliente', field:'cliente'},
         {headerName: 'Subtotal', field:'subtotal', valueFormatter: p=> `$${p.value}`},
         {headerName: 'Descuento', field:'descuento', valueFormatter: p=> `$${p.value}`},
         {headerName: 'Fecha', field:'fecha'},
-        {headerName: 'Estado', field:'estado'},
-        {headerName: 'Total', field:'total', valueFormatter: p=> `$${p.value}`},
+        {headerName: 'Total', field:'total', flex: 1, valueFormatter: p=> `$${p.value}`},
         {headerName: 'Acciones', field:'acciones', width: 200, flex:0, pinned: 'right',
             cellRenderer: (p)=>{
                 return(
