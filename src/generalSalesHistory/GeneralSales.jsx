@@ -45,6 +45,7 @@ export default function GeneralSales(){
     }, []);
 
     useEffect(() => {
+        cargarVentas();
     }, [cargarVentas]);
 
     const handleVerRecibo = async (idVenta) => {
